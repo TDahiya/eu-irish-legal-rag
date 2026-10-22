@@ -93,9 +93,18 @@ measured rather than asserted. Results in `eval/report.md`.
 
 Qdrant Cloud's free cluster is the best of the free tiers, but it is **suspended after
 one week idle and deleted after four**. A portfolio demo opened six weeks later would
-be dead. So the index is built locally and published as a GitHub Release asset that
-Render downloads at build time: no service, no signup, no second secret, and nothing
-that can expire. Qdrant is the documented path if the corpus ever outgrows one box.
+be dead.
+
+So there is no vector service at all. The corpus turned out to be ~10k chunks, which
+makes the FAISS index about 15 MB and the SQLite database about 10 MB — small enough
+that `data/index/` is simply **committed to the repository**. Render clones it. No
+build-time download, no release asset, no second secret, no network hop per query,
+and nothing that can expire or go stale.
+
+That is a deliberate trade: generated artifacts in git cost repository history on
+every rebuild. At 25 MB and a handful of rebuilds it is the cheaper side of the
+trade. Past roughly 500k chunks it stops being, and the index should move to a
+GitHub Release asset downloaded in the build command, or to Qdrant.
 
 ---
 
@@ -182,10 +191,9 @@ python -m pytest tests/
 
 ### Deploy
 
-[`render.yaml`](render.yaml) describes the service. Set `GROQ_API_KEY` and
-`INDEX_URL` (the GitHub Release asset holding `chunks.db` and `dense.faiss`) in the
-Render dashboard. The build downloads the index and warms the ONNX model so the first
-request isn't slow.
+[`render.yaml`](render.yaml) describes the service. Set `GROQ_API_KEY` in the Render
+dashboard; that is the only secret. The index is in the repository, so the build only
+installs dependencies and warms the ONNX model so the first request isn't slow.
 
 ---
 
@@ -198,7 +206,7 @@ LLM, and it is why:
 - embeddings run through **fastembed** (ONNX, 67 MB, no torch)
 - lexical search is **SQLite FTS5** rather than an in-memory BM25 library
 - generation is an **open-weight model over an API** rather than in-process
-- the index is **fetched at build time** rather than written at runtime
+- the index is **built offline and committed** rather than written at runtime
 
 Measured peak RSS is in `eval/report.md`. Budget was 450 MB.
 

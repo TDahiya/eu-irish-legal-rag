@@ -7,7 +7,6 @@ services:
     buildCommand: |
       pip install --upgrade pip
       pip install -r requirements.txt
-      python -m rag.get_index
       python -c "from fastembed import TextEmbedding; TextEmbedding('BAAI/bge-small-en-v1.5')"
     # Streamlit must bind the port Render hands it, on all interfaces.
     startCommand: >
@@ -20,9 +19,6 @@ services:
     envVars:
       # Set in the Render dashboard, not here.
       - key: GROQ_API_KEY
-        sync: false
-      # GitHub Release asset holding chunks.db + dense.faiss.
-      - key: INDEX_URL
         sync: false
       - key: PYTHON_VERSION
         value: "3.14.3"

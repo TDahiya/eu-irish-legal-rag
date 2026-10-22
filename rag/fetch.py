@@ -31,6 +31,9 @@ CELLAR = "https://publications.europa.eu/resource/celex/{celex}"
 # (404), only text/html. Try the better format first, fall back.
 CELLAR_ACCEPTS = ("application/xhtml+xml", "text/html")
 ELI = "https://www.irishstatutebook.ie/eli/{eli}/{stage}"
+# One request per year returns every Act (or SI) of that year as a table of
+# number + title, which beats probing ~70 URLs per year to find which exist.
+ISB_INDEX = "https://www.irishstatutebook.ie/eli/{year}/{kind}/"
 GUTENBERG = "https://www.gutenberg.org/cache/epub/{id}/pg{id}.txt"
 
 _last_hit: dict[str, float] = {}
@@ -65,8 +68,11 @@ def _jobs(manifest: dict) -> list[dict]:
     for source_type, group in manifest.items():
         if source_type == "crawl_delay":
             continue
-        fetcher = group["fetcher"]
         for item in group["items"]:
+            # An item may override the group's fetcher, so a curated list and a bulk
+            # sweep can share one source_type -- which is what lets the dedupe below
+            # keep the curated entry when both produce the same file.
+            fetcher = item.get("fetcher", group["fetcher"])
             meta = {"source_type": source_type, **{k: v for k, v in item.items()}}
             if fetcher == "cellar":
                 celex = item["celex"]
@@ -93,10 +99,26 @@ def _jobs(manifest: dict) -> list[dict]:
                     "path": f"{source_type}/{item['id']}-{_slug(item['short'])[:40]}.txt",
                     "meta": {**meta, "fmt": "txt"},
                 })
+            elif fetcher == "url":
+                out.append({
+                    "url": item["url"],
+                    "path": f"{source_type}/{_slug(item['short'])[:60]}.html",
+                    "meta": {**meta, "fmt": "html"},
+                })
             elif fetcher == "sitemap":
                 out.append({"expand": "sitemap", "url": item["sitemap"], "meta": meta,
                             "include": item.get("include", []),
                             "exclude": item.get("exclude", [])})
+            elif fetcher == "isb_index":
+                y0, y1 = item["years"]
+                for year in range(y0, y1 + 1):
+                    out.append({
+                        "expand": "isb_index",
+                        "url": ISB_INDEX.format(year=year, kind=item["kind"]),
+                        "year": year, "kind": item["kind"],
+                        "include": item.get("include", []),
+                        "meta": meta,
+                    })
             else:
                 raise ValueError(f"unknown fetcher {fetcher!r}")
     return out
@@ -121,6 +143,53 @@ def _expand_sitemap(job: dict, session, delays) -> list[dict]:
     } for u in keep]
 
 
+def _expand_isb_index(job: dict, session, delays) -> list[dict]:
+    """Turn one year of the Irish Statute Book into a job per Act or SI.
+
+    The year page is a table of number + title. Titles matter twice: they filter
+    SIs down to the relevant ones (760 SIs were made in 2024, 19 of them touch
+    immigration or data protection) and they become the instrument name in a
+    citation, so a bulk-fetched Act still names itself.
+    """
+    from lxml import html as lhtml
+
+    r = _get(session, job["url"], delays)
+    if r.status_code != 200:
+        print(f"  isb_index {job['year']}/{job['kind']}: HTTP {r.status_code}")
+        return []
+
+    kind, year, inc = job["kind"], job["year"], job["include"]
+    pat = re.compile(rf"{kind}/pub/(\d+)" if kind == "act" else rf"/{kind}/(\d+)\.html")
+    root = lhtml.fromstring(r.content)
+
+    found: dict[int, str] = {}
+    for tr in root.xpath("//tr"):
+        cells = [" ".join(td.itertext()).strip() for td in tr.xpath("./td")]
+        for a in tr.xpath(".//a[@href]"):
+            m = pat.search(a.get("href") or "")
+            if m:
+                found[int(m.group(1))] = max(cells, key=len) if cells else ""
+                break
+
+    keep = {n: t for n, t in found.items()
+            if not inc or any(w in t.lower() for w in inc)}
+    print(f"  isb_index {year}/{kind}: {len(found)} listed -> {len(keep)} kept")
+
+    st = job["meta"]["source_type"]
+    stage = "enacted/en/xml" if kind == "act" else "made/en/html"
+    ext = stage.rsplit("/", 1)[-1]
+    out = []
+    for n, title in sorted(keep.items()):
+        eli = f"{year}/{kind}/{n}"
+        out.append({
+            "url": ELI.format(eli=eli, stage=stage),
+            "path": f"{st}/{_slug(eli)}.{ext}",
+            "meta": {**job["meta"], "eli": eli, "fmt": ext,
+                     "short": re.sub(r"\s+", " ", title).strip() or f"{kind} {n}/{year}"},
+        })
+    return out
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true",
@@ -141,13 +210,25 @@ def main() -> int:
     # so checking each one proves nothing and costs 10s apiece. Check the sitemap itself.
     expanded = []
     for j in jobs:
-        if j.get("expand") != "sitemap":
+        kind = j.get("expand")
+        if not kind:
             expanded.append(j)
         elif args.dry_run:
             expanded.append({"url": j["url"], "path": "-", "meta": j["meta"]})
-        else:
+        elif kind == "sitemap":
             expanded.extend(_expand_sitemap(j, session, delays))
-    jobs = expanded
+        elif kind == "isb_index":
+            expanded.extend(_expand_isb_index(j, session, delays))
+
+    # Dedupe by destination path, first wins. The curated entries in sources.yaml
+    # come before the bulk year sweeps, so their hand-written short name and domain
+    # survive instead of being overwritten by the bulk listing's title.
+    jobs, seen = [], set()
+    for j in expanded:
+        if j["path"] != "-" and j["path"] in seen:
+            continue
+        seen.add(j["path"])
+        jobs.append(j)
 
     index, bad, total_bytes = {}, [], 0
     for i, job in enumerate(jobs, 1):

@@ -43,6 +43,35 @@ eu_law:
        note: "Ireland not bound by the recast."}
     - {celex: 32009L0052, domain: immigration, ireland_bound: false, short: "Employer Sanctions Directive",
        note: "Ireland not bound."}
+    # --- the 2024 Pact on Migration and Asylum ---
+    - {celex: 32024R1351, domain: immigration, ireland_bound: false, short: "Asylum and Migration Management Regulation",
+       note: "Part of the 2024 Pact. Ireland's participation is subject to its Title V opt-in."}
+    - {celex: 32024R1348, domain: immigration, ireland_bound: false, short: "Asylum Procedure Regulation 2024",
+       note: "Part of the 2024 Pact. Ireland's participation is subject to its Title V opt-in."}
+    - {celex: 32024R1347, domain: immigration, ireland_bound: false, short: "Qualification Regulation 2024",
+       note: "Part of the 2024 Pact. Ireland's participation is subject to its Title V opt-in."}
+    - {celex: 32024R1356, domain: immigration, ireland_bound: false, short: "Screening Regulation 2024"}
+    - {celex: 32024R1358, domain: immigration, ireland_bound: false, short: "Eurodac Regulation 2024"}
+    # --- other immigration instruments ---
+    - {celex: 32003L0109, domain: immigration, ireland_bound: false, short: "Long-Term Residents Directive",
+       note: "Ireland not bound - Title V opt-out."}
+    - {celex: 32016L0801, domain: immigration, ireland_bound: false, short: "Students and Researchers Directive",
+       note: "Ireland not bound - Title V opt-out."}
+    - {celex: 32008L0115, domain: immigration, ireland_bound: false, short: "Returns Directive",
+       note: "Ireland not bound - Title V opt-out."}
+    - {celex: 32001L0055, domain: immigration, ireland_bound: true,  short: "Temporary Protection Directive"}
+    - {celex: 32004L0081, domain: immigration, ireland_bound: false, short: "Trafficking Victims Residence Permit Directive"}
+    - {celex: 32009R0810, domain: immigration, ireland_bound: false, short: "EU Visa Code",
+       note: "Schengen instrument. Ireland is not in the Schengen area and issues its own visas."}
+    # --- more tech / data instruments ---
+    - {celex: 32022R0868, domain: tech, ireland_bound: true, short: "Data Governance Act"}
+    - {celex: 32018R1725, domain: tech, ireland_bound: true, short: "EU Data Protection Regulation (institutions)"}
+    - {celex: 32016L0680, domain: tech, ireland_bound: true, short: "Law Enforcement Directive"}
+    - {celex: 32024L2853, domain: tech, ireland_bound: true, short: "Product Liability Directive 2024",
+       note: "Extends product liability to software and AI systems."}
+    - {celex: 32024L2831, domain: tech, ireland_bound: true, short: "Platform Work Directive",
+       note: "Regulates algorithmic management of platform workers."}
+    - {celex: 32024R1183, domain: tech, ireland_bound: true, short: "eIDAS 2 Regulation"}
     # --- constitutional / rights ---
     - {celex: 12012P/TXT, domain: general, ireland_bound: true, short: "Charter of Fundamental Rights"}
     - {celex: 12016M/TXT, domain: general, ireland_bound: true, short: "Treaty on European Union"}
@@ -60,6 +89,30 @@ case_law:
     - {celex: 62014CJ0362, domain: tech, short: "Schrems I (C-362/14)"}
     - {celex: 62018CJ0311, domain: tech, short: "Schrems II (C-311/18)"}
     - {celex: 62012CJ0131, domain: tech, short: "Google Spain (C-131/12)"}
+    # --- free movement / family rights ---
+    - {celex: 62008CJ0578, domain: immigration, short: "Chakroun (C-578/08)"}
+    - {celex: 61999CJ0413, domain: immigration, short: "Baumbast (C-413/99)"}
+    - {celex: 62011CJ0256, domain: immigration, short: "Dereci (C-256/11)"}
+    - {celex: 62012CJ0456, domain: immigration, short: "O and B (C-456/12)"}
+    - {celex: 62009CJ0434, domain: immigration, short: "McCarthy (C-434/09)"}
+    - {celex: 62016CJ0165, domain: immigration, short: "Lounes (C-165/16)"}
+    - {celex: 62014CJ0165, domain: immigration, short: "Rendon Marin (C-165/14)"}
+    - {celex: 62014CJ0304, domain: immigration, short: "CS (C-304/14)"}
+    - {celex: 62016CJ0082, domain: immigration, short: "K.A. (C-82/16)"}
+    - {celex: 62015CJ0115, domain: immigration, short: "NA (C-115/15)"}
+    - {celex: 61990CJ0370, domain: immigration, short: "Surinder Singh (C-370/90)"}
+    # --- data protection / surveillance ---
+    - {celex: 62012CJ0293, domain: tech, short: "Digital Rights Ireland (C-293/12)",
+       note: "Irish reference. Invalidated the Data Retention Directive."}
+    - {celex: 62015CJ0203, domain: tech, short: "Tele2 Sverige and Watson (C-203/15)"}
+    - {celex: 62018CJ0511, domain: tech, short: "La Quadrature du Net (C-511/18)"}
+    - {celex: 62014CJ0582, domain: tech, short: "Breyer (C-582/14)"}
+    - {celex: 62017CJ0040, domain: tech, short: "Fashion ID (C-40/17)"}
+    - {celex: 62017CJ0673, domain: tech, short: "Planet49 (C-673/17)"}
+    - {celex: 62021CJ0252, domain: tech, short: "Meta v Bundeskartellamt (C-252/21)"}
+    - {celex: 62021CJ0634, domain: tech, short: "SCHUFA (C-634/21)",
+       note: "Automated decision-making and credit scoring under GDPR Article 22."}
+    - {celex: 62021CJ0300, domain: tech, short: "Oesterreichische Post (C-300/21)"}
 
 # ------------------------------------------- Irish primary legislation (ELI XML, CC-BY 4.0)
 ie_legislation:
@@ -88,6 +141,30 @@ ie_legislation:
     - {eli: 2003/act/20,  domain: general, short: "European Convention on Human Rights Act 2003"}
     - {eli: 2000/act/8,   domain: general, short: "Equal Status Act 2000"}
     - {eli: 1998/act/21,  domain: general, short: "Employment Equality Act 1998"}
+    # --- the Constitution (its own path, not an ELI act URI) ---
+    - fetcher: url
+      url: https://www.irishstatutebook.ie/eli/cons/en/html
+      domain: general
+      short: "Bunreacht na hEireann (Constitution of Ireland)"
+    # --- bulk: every Act of the Oireachtas from 1996, named from the year listing.
+    #     One request per year returns number + title for all of them.
+    - fetcher: isb_index
+      kind: act
+      years: [1996, 2026]
+      domain: general
+    # --- bulk: statutory instruments, filtered by title. 760 SIs were made in 2024;
+    #     these keywords keep the ~19 that touch immigration, permits or data.
+    #     SI 444/2024 (Employment Permits Regulations) carries the occupation lists
+    #     and salary thresholds, which is where the most useful answers live.
+    - fetcher: isb_index
+      kind: si
+      years: [2000, 2026]
+      domain: immigration
+      include:
+        [employment permit, immigration, international protection, nationality,
+         citizen, data protection, aliens, free movement of persons, refugee,
+         visa, asylum, carrier liability, safe countries, trafficking,
+         habitual residence, atypical, work permit]
 
 # ------------------------------------------------- Irish policy & guidance (HTML, robots-allowed)
 ie_guidance:
@@ -103,6 +180,32 @@ ie_guidance:
          appeal, fees, atypical, eu-treaty, reside]
       exclude: [news, press, gallery, contact-us, privacy, cookie, sitemap, feedback,
                 404, disclaimer, accessibility]
+    # Employment permit eligibility lives with Enterprise, not Justice. These pages
+    # carry the occupation lists that decide who can actually get a permit.
+    - fetcher: url
+      short: "Critical Skills Occupations List"
+      domain: immigration
+      url: https://enterprise.gov.ie/en/what-we-do/workplace-and-skills/employment-permits/employment-permit-eligibility/highly-skilled-eligible-occupations-list/
+    - fetcher: url
+      short: "Ineligible List of Occupations for Employment Permits"
+      domain: immigration
+      url: https://enterprise.gov.ie/en/what-we-do/workplace-and-skills/employment-permits/employment-permit-eligibility/ineligible-categories-of-employment/
+    - fetcher: url
+      short: "Employment Permit Eligibility"
+      domain: immigration
+      url: https://enterprise.gov.ie/en/what-we-do/workplace-and-skills/employment-permits/employment-permit-eligibility/
+    - fetcher: url
+      short: "Critical Skills Employment Permit"
+      domain: immigration
+      url: https://enterprise.gov.ie/en/what-we-do/workplace-and-skills/employment-permits/permit-types/critical-skills-employment-permit/
+    - fetcher: url
+      short: "General Employment Permit"
+      domain: immigration
+      url: https://enterprise.gov.ie/en/what-we-do/workplace-and-skills/employment-permits/permit-types/general-employment-permit/
+    - fetcher: url
+      short: "Employment Permit Types"
+      domain: immigration
+      url: https://enterprise.gov.ie/en/what-we-do/workplace-and-skills/employment-permits/permit-types/
 
 # ------------------------------------------------- public-domain legal/political philosophy
 philosophy:
@@ -117,3 +220,11 @@ philosophy:
     - {id: 6762,  short: "Aristotle — Politics"}
     - {id: 5682,  short: "Kant — Metaphysic of Morals"}
     - {id: 27573, short: "Montesquieu — The Spirit of Laws"}
+    - {id: 46333, short: "Rousseau — The Social Contract"}
+    - {id: 1232,  short: "Machiavelli — The Prince"}
+    - {id: 3742,  short: "Paine — The Rights of Man"}
+    - {id: 2130,  short: "More — Utopia"}
+    - {id: 3300,  short: "Smith — The Wealth of Nations"}
+    - {id: 1404,  short: "The Federalist Papers"}
+    - {id: 5669,  short: "Mill — Representative Government"}
+    - {id: 989,   short: "Spinoza — Theologico-Political Treatise"}
