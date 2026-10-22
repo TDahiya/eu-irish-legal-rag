@@ -1,4 +1,4 @@
-"""Agentic retrieval: let the model search repeatedly, then check its own grounding.
+"""Agentic retrieval: let the model search repeatedly instead of once.
 
 Two things one-shot RAG cannot do:
 
@@ -10,9 +10,15 @@ Two things one-shot RAG cannot do:
   Recovery. If a query returns nothing useful, one-shot RAG answers from nothing. Here
   the model can rephrase and search again.
 
-Then self-correction: the answer's grounding score is computed and, if it is poor, the
-answer is retried once with the accumulated context. The evaluation layer stops being a
-dashboard and becomes a control signal.
+This module used to retry an answer whose grounding score fell below 0.45, on the
+idea that a quality measurement should change the output rather than just be
+displayed. Measuring it killed it. Over 36 evaluated answers grounding ran 0.68 to
+0.96, so the retry never once fired; and splitting those answers at the median,
+the LOWER-grounding half scored 98.2% faithfulness against 91.7% for the upper
+half. The signal is inversely related to the thing it was gating on, because an
+answer that paraphrases a statute in plain English scores lower on similarity than
+one that copies its wording, while being just as accurate. No threshold fixes
+that, so the retry is gone rather than retuned. See eval/report.md.
 
 Citation numbering is global across every search in a turn: each tool result is
 presented with its index in one growing hit list, so [n] in the final answer still
@@ -20,13 +26,10 @@ maps to hits[n-1] no matter how many searches happened.
 """
 from __future__ import annotations
 
-from rag.generate import (ABSTAIN, MAX_TOKENS, MODEL, REASONING_EFFORT,
-                          SYSTEM, answer)
+from rag.generate import ABSTAIN, MAX_TOKENS, MODEL, REASONING_EFFORT, SYSTEM
 from rag.retrieve import LAW_TYPES, Retriever
-from rag.score import live_scores
 
 MAX_SEARCHES = 5
-GROUNDING_FLOOR = 0.45      # below this, the answer is retried once
 
 def build_tools(source_types: tuple[str, ...]) -> list[dict]:
     """The tool schema, with the enum restricted to the types this turn may search.
@@ -142,19 +145,6 @@ def run(question: str, retriever: Retriever, client, model: str = MODEL,
 
             messages.append({"role": "tool", "tool_call_id": call.id,
                              "content": result})
-
-    # ---- self-correction: the eval signal decides whether to try again
-    if hits and not text.strip().startswith(ABSTAIN[:40]):
-        scores = live_scores(text, hits, retriever.model)
-        if scores["grounding"] is not None and scores["grounding"] < GROUNDING_FLOOR:
-            if trace is not None:
-                trace.append({"retry": "grounding %.2f < %.2f"
-                                       % (scores["grounding"], GROUNDING_FLOOR)})
-            retry = answer(question, hits, model=model, client=client)
-            retry_scores = live_scores(retry, hits, retriever.model)
-            # keep the retry only if it is actually better grounded
-            if (retry_scores["grounding"] or 0) > scores["grounding"]:
-                text = retry
 
     if not hits:
         text = ABSTAIN + " No sources matched the question."

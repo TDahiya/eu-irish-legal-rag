@@ -42,12 +42,26 @@ Directive. A system that answers this confidently is hallucinating, and the only
 to know is to ask it. Every chunk carries an `ireland_bound` flag, and instruments
 that do not bind Ireland are labelled inline in the prompt context.
 
-**3. The evaluation layer is wired into generation, not bolted beside it.**
+**3. A feature was measured, found inert, and deleted.**
 
-After generating, the agent scores its own answer's grounding; if it is poor, it
-retries once with the accumulated context and keeps the retry only if it scores
-better. A faithfulness measurement that changes the output is worth more than one
-that decorates a dashboard.
+The agent used to retry any answer whose grounding score fell below 0.45 — the idea
+being that a quality measurement should change the output rather than just be
+displayed. Measuring it killed it:
+
+- over 36 evaluated answers, grounding ran **0.68 to 0.96**, so the retry **never
+  fired once**;
+- splitting those answers at the median, the **lower**-grounding half scored
+  **98.2%** faithfulness against **91.7%** for the upper half.
+
+The signal is *inversely* related to the thing it was gating on. An answer that
+paraphrases a statute in plain English scores lower on similarity than one that
+copies its wording, while being just as accurate — so "low grounding" often means
+"explained it well". No threshold fixes that, so the retry is gone rather than
+retuned, and nothing replaced it, because there is no evidence yet that a
+replacement would help.
+
+What survives is the part that *is* measured: the multi-search loop, which takes
+multi-hop recall from 80% to 100%.
 
 ---
 
@@ -68,11 +82,8 @@ SQLite FTS5  bm25()               FAISS  bge-small-384
                         │
          ┌──────────────┴──────────────┐
          ▼                             ▼
-  grounded answer              grounding score
-  with [n] citations                   │
-         ▲                             │
-         └──── retry once if poorly ───┘
-                   grounded
+  grounded answer              similarity score + on-demand
+  with [n] citations           claim-by-claim LLM judge
 ```
 
 In agentic mode the model holds `search(query, source_type)` as a tool and calls it
