@@ -129,6 +129,8 @@ def main() -> int:
     ap.add_argument("--retrieval-only", action="store_true")
     ap.add_argument("--limit", type=int, help="first N questions only")
     ap.add_argument("--mode", default="oneshot", choices=("oneshot", "agentic"))
+    ap.add_argument("--fresh", action="store_true",
+                    help="ignore eval/results.json and re-answer every question")
     ap.add_argument("--tpm", type=int, default=TPM_LIMIT,
                     help="token-per-minute budget to pace against (free tier: 8000)")
     args = ap.parse_args()
@@ -169,9 +171,29 @@ def main() -> int:
         client = groq_client()
         search = _agentic_search(retriever, client) if args.mode == "agentic" else None
 
+        # The free tier allows 200,000 tokens a day and a full pass costs more than
+        # that, so a run picks up where the last one stopped instead of repeating
+        # work already paid for.
+        done = {}
+        if RAW_RESULTS.exists() and not args.fresh:
+            try:
+                prev = json.loads(RAW_RESULTS.read_text(encoding="utf-8"))
+                done = {a["q"]: a for a in prev.get("answers", [])}
+            except (json.JSONDecodeError, KeyError):
+                pass
+        if done:
+            print("resuming: %d answers already recorded" % len(done))
+
         errors = []
+        consecutive_limits = 0
         budget = TokenBudget(args.tpm)
         for i, item in enumerate(gold, 1):
+            if item["q"] in done:
+                answers.append(done[item["q"]])
+                continue
+            if consecutive_limits >= 3:
+                errors.append((item["q"][:60], "skipped: daily token quota exhausted"))
+                continue
             try:
                 if search:
                     budget.reserve(estimate_tokens([], 6000))   # agent: several calls
@@ -185,11 +207,19 @@ def main() -> int:
                 budget.reserve(estimate_tokens(hits, 1200 + len(text) // 3))
                 verdict = judge(text, hits, client)
             except Exception as exc:
-                # A rate limit on question 40 must not discard the first 39.
+                # A rate limit on question 40 must not discard the first 39, and a
+                # dead quota must not be re-tested 40 more times.
+                msg = str(exc)
                 errors.append((item["q"][:60], "%s: %s" % (type(exc).__name__,
-                                                           str(exc)[:90])))
+                                                           msg[:110])))
                 print("  ERROR q%d: %s" % (i, type(exc).__name__))
+                consecutive_limits = (consecutive_limits + 1
+                                      if "rate_limit" in msg or "TPD" in msg else 0)
+                if consecutive_limits == 3:
+                    print("  daily token quota exhausted -- stopping and saving. "
+                          "Re-run to resume.")
                 continue
+            consecutive_limits = 0
             answers.append({
                 "q": item["q"], "kind": item.get("kind", "other"),
                 "is_trap": bool(item.get("expect_abstain")),
@@ -204,6 +234,7 @@ def main() -> int:
         print()
 
     results = {"retrieval": retrieval, "answers": answers, "mode": args.mode,
+               "judged": sum(1 for a in answers if a.get("faithfulness") is not None),
                "n_questions": len(gold),
                "n_failed": len(gold) - len(answers) if not args.retrieval_only else 0}
     RAW_RESULTS.write_text(json.dumps(results, indent=1, ensure_ascii=False),

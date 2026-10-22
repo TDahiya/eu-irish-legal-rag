@@ -22,7 +22,11 @@ MODEL = os.environ.get("GROQ_MODEL", "openai/gpt-oss-120b")
 # claim judge: "low" reached the same verdicts as "medium" for a third of the tokens,
 # which also keeps 68 eval questions inside the free tier's per-minute token limit.
 REASONING_EFFORT = os.environ.get("GROQ_REASONING_EFFORT", "low")
-MAX_TOKENS = 2000
+# Reserved completion tokens are charged against the quota whether or not they are
+# used, and the free tier's binding limit is 200,000 tokens per DAY. Grounded answers
+# here run to a few sentences, so 2000 was buying nothing and costing a fifth of a
+# question's budget. 900 leaves room for low-effort reasoning plus the answer.
+MAX_TOKENS = int(os.environ.get("GROQ_MAX_TOKENS", "900"))
 
 # A fixed sentinel, so eval/run_eval.py can detect a refusal without an LLM call.
 ABSTAIN = "The corpus does not contain an answer to this."
