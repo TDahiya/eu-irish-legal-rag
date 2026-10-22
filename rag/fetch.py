@@ -47,6 +47,20 @@ def _host(url: str) -> str:
     return url.split("/", 3)[2]
 
 
+def _matches(text: str, include=(), exclude=()) -> bool:
+    """Keyword filter: keep if it matches any include (or there are none) and no
+    exclude.
+
+    Every keyword goes through str() because YAML reads an unquoted keyword like
+    404 as an int, and `404 in "https://..."` raises TypeError rather than simply
+    not matching -- which took down a whole crawl once.
+    """
+    t = text.lower()
+    inc = [str(w).lower() for w in include]
+    exc = [str(w).lower() for w in exclude]
+    return (not inc or any(w in t for w in inc)) and not any(w in t for w in exc)
+
+
 def _get(session: requests.Session, url: str, delays: dict, headers=None, stream=False):
     """GET with a per-host crawl delay."""
     host = _host(url)
@@ -130,10 +144,7 @@ def _expand_sitemap(job: dict, session, delays) -> list[dict]:
     r.raise_for_status()
     locs = [el.text for el in ElementTree.fromstring(r.content).iter()
             if el.tag.endswith("loc") and el.text]
-    inc, exc = job["include"], job["exclude"]
-    keep = [u for u in locs
-            if (not inc or any(w in u.lower() for w in inc))
-            and not any(w in u.lower() for w in exc)]
+    keep = [u for u in locs if _matches(u, job["include"], job["exclude"])]
     st = job["meta"]["source_type"]
     print(f"  sitemap: {len(locs)} urls -> {len(keep)} kept")
     return [{
@@ -171,8 +182,7 @@ def _expand_isb_index(job: dict, session, delays) -> list[dict]:
                 found[int(m.group(1))] = max(cells, key=len) if cells else ""
                 break
 
-    keep = {n: t for n, t in found.items()
-            if not inc or any(w in t.lower() for w in inc)}
+    keep = {n: t for n, t in found.items() if _matches(t, inc)}
     print(f"  isb_index {year}/{kind}: {len(found)} listed -> {len(keep)} kept")
 
     st = job["meta"]["source_type"]

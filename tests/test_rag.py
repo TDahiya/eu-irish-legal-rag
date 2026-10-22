@@ -206,3 +206,29 @@ def test_abstention_sentinel_round_trips():
 
 def test_cited_indexes_finds_every_marker():
     assert cited_indexes("a [1] b [2][3] c [2]") == {1, 2, 3}
+
+
+# ------------------------------------------------------------- manifest filtering
+from rag.fetch import _matches
+
+
+def test_matches_tolerates_a_numeric_keyword_from_yaml():
+    """YAML reads an unquoted `404` in an exclude list as an int, and
+    `404 in "https://..."` raises TypeError instead of not matching. That crashed a
+    full crawl after the expansion phase had already completed."""
+    assert _matches("https://example.ie/visas", exclude=[404, "disclaimer"])
+    assert not _matches("https://example.ie/404-page", exclude=[404, "disclaimer"])
+
+
+def test_matches_with_no_include_keeps_everything_not_excluded():
+    assert _matches("anything at all")
+    assert not _matches("press release", exclude=["press"])
+
+
+def test_matches_requires_an_include_hit_when_includes_are_given():
+    assert _matches("Employment Permits Regulations 2024", include=["employment permit"])
+    assert not _matches("Finance Act 2024", include=["employment permit"])
+
+
+def test_matches_is_case_insensitive_both_ways():
+    assert _matches("EMPLOYMENT PERMITS", include=["Employment Permit"])

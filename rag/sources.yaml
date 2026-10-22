@@ -179,7 +179,7 @@ ie_guidance:
          family, student, employment, work, stamp, immigration, protection, travel,
          appeal, fees, atypical, eu-treaty, reside]
       exclude: [news, press, gallery, contact-us, privacy, cookie, sitemap, feedback,
-                404, disclaimer, accessibility]
+                "404", disclaimer, accessibility]
     # Employment permit eligibility lives with Enterprise, not Justice. These pages
     # carry the occupation lists that decide who can actually get a permit.
     - fetcher: url
