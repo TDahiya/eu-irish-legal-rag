@@ -3606,5 +3606,8 @@
    "n_claims": 2
   }
  ],
- "mode": "oneshot"
+ "mode": "oneshot",
+ "judged": 36,
+ "n_questions": 70,
+ "n_failed": 31
 }

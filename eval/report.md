@@ -28,6 +28,9 @@ level: a hit counts if it comes from an instrument the question expects.
 
 ## Answer quality (oneshot)
 
+> **Partial run: 31 of 70 questions failed** (rate limits). The figures
+> below cover only the 39 that completed.
+
 | metric | value |
 |---|---|
 | faithfulness (LLM-judged) | 94.9% |
@@ -42,8 +45,18 @@ level: a hit counts if it comes from an instrument the question expects.
 
 Pearson r between the embedding grounding score and LLM-judged
 faithfulness over 36 answers: **0.02**.
-That is what justifies showing the cheap score on every answer in the
-UI and spending a judge call only on demand.
+
+**It is not a usable proxy.** The two measure different things: the
+grounding score asks whether an answer's sentences look like the
+retrieved text, and faithfulness asks whether each claim is actually
+supported. An answer can paraphrase a source closely and still assert
+something the source does not say.
+
+Read it with the caveat that faithfulness barely varies here (mean 0.95, range 0.67 over 36 answers), and a near-constant
+variable cannot correlate with anything. The honest conclusion is
+that this run cannot establish the relationship either way, so the
+UI shows the grounding score as what it is -- a similarity signal --
+and the judge button remains the measurement of record.
 
 ### Trap questions
 

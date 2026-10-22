@@ -216,7 +216,32 @@ On a 512 MB box that decides it. Reproduce with `python -m eval.bench_stores`.
 
 ### Answer quality
 
-_Running; see [`eval/report.md`](eval/report.md)._
+**Partial: 39 of 70 questions.** Groq's free tier allows 200,000 tokens a day and a
+full pass costs ~474,000 — the retrieved context is sent twice, once to answer and
+once to grade each claim against the sources. Runs resume from
+`eval/results.json`, so the remainder completes across quota windows.
+
+| metric | value | n |
+|---|---|---|
+| faithfulness (LLM-judged) | 94.9% | 36 |
+| hallucination rate | 5.1% | 36 |
+| citations pointing at a real source | 100.0% | 39 |
+| cited the best-supporting source | 99.4% | 39 |
+| grounding score (embedding proxy) | 0.840 | 39 |
+| **abstained on a trap question** | **not yet measured** | 0 |
+
+The trap questions are the last 10 in the goldset and have not been reached. Until
+they are, this project's headline claim — that it refuses rather than invents — is
+*unmeasured*, and the table says so rather than implying otherwise.
+
+**The cheap grounding score is not a proxy for faithfulness.** Pearson r between
+them is **0.02**. They measure different things: grounding asks whether an answer's
+sentences resemble the retrieved text, faithfulness asks whether each claim is
+actually supported, and an answer can paraphrase a source closely while asserting
+something it does not say. Read with the caveat that faithfulness barely varies
+across these 36 answers, so this sample cannot settle the relationship either way.
+The UI therefore presents the grounding score as what it is — a similarity signal —
+and the judge remains the measurement of record.
 
 ---
 
