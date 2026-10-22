@@ -279,7 +279,12 @@ LLM, and it is why:
 - generation is an **open-weight model over an API** rather than in-process
 - the index is **built offline and downloaded at build time** rather than written at runtime
 
-Measured peak RSS is in `eval/report.md`. Budget was 450 MB.
+Measured: **376 MB peak RSS** through a full hybrid search plus answer scoring in a
+bare process, and the Streamlit process idles at 315 MB against 298 MB bare, so the
+real peak is roughly **390 MB against the 512 MB limit**. Scoring an answer adds only
+~74 MB, because a query embeds one text and scoring embeds a handful — the
+`batch * heads * seq_len^2` cost that makes bulk indexing expensive barely applies at
+query time.
 
 ## Deliberately not built
 
