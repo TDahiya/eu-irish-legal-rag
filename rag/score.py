@@ -22,7 +22,7 @@ import re
 
 import numpy as np
 
-from rag.generate import ABSTAIN
+from rag.generate import ABSTAIN, MAX_TOKENS, REASONING_EFFORT
 
 JUDGE_MODEL = os.environ.get("GROQ_JUDGE_MODEL", "openai/gpt-oss-120b")
 
@@ -118,6 +118,10 @@ def judge(answer_text: str, hits: list[dict], client, model: str = JUDGE_MODEL) 
     resp = client.chat.completions.create(
         model=model,
         temperature=0,
+        # Without a generous budget and low reasoning effort, JSON mode fails with
+        # "max completion tokens reached before generating a valid document".
+        max_completion_tokens=MAX_TOKENS,
+        reasoning_effort=REASONING_EFFORT,
         response_format={"type": "json_object"},
         messages=[
             {"role": "system", "content": JUDGE_SYSTEM},

@@ -15,6 +15,15 @@ from groq import Groq
 
 MODEL = os.environ.get("GROQ_MODEL", "openai/gpt-oss-120b")
 
+# gpt-oss emits reasoning tokens before its answer, and they are charged against
+# max_completion_tokens. At the default effort a JSON-mode call can exhaust the budget
+# before producing any JSON at all ("max completion tokens reached before generating a
+# valid document"), so the budget is generous and the effort is low. Measured on the
+# claim judge: "low" reached the same verdicts as "medium" for a third of the tokens,
+# which also keeps 68 eval questions inside the free tier's per-minute token limit.
+REASONING_EFFORT = os.environ.get("GROQ_REASONING_EFFORT", "low")
+MAX_TOKENS = 2000
+
 # A fixed sentinel, so eval/run_eval.py can detect a refusal without an LLM call.
 ABSTAIN = "The corpus does not contain an answer to this."
 
@@ -66,7 +75,8 @@ def answer(question: str, hits: list[dict], model: str = MODEL,
                                     % (format_context(hits), question)},
     ]
     kwargs = dict(model=model, messages=messages, temperature=0,
-                  max_completion_tokens=900)
+                  max_completion_tokens=MAX_TOKENS,
+                  reasoning_effort=REASONING_EFFORT)
 
     if stream:
         def tokens():

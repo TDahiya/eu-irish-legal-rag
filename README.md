@@ -126,7 +126,18 @@ from retrieval**, so a question about a visa can never be answered out of Hobbes
 They are in the corpus to stress the chunker at book length and to answer questions
 about justice as an idea.
 
-### One thing worth knowing about EUR-Lex
+### Two gotchas worth knowing
+
+`gpt-oss` emits reasoning tokens before its answer, and they are charged against
+`max_completion_tokens`. A JSON-mode call at the default effort can spend the whole
+budget reasoning and return `max completion tokens reached before generating a valid
+document` — the claim judge failed exactly this way. Fix: `reasoning_effort="low"`
+and a budget of 2000. Measured: `low` reached the same verdicts as `medium` for a
+third of the tokens, which also keeps 68 eval questions inside the free tier's
+per-minute token cap. The reasoning text itself arrives in a separate `.reasoning`
+field, so it never pollutes the answer.
+
+### And one about EUR-Lex
 
 `eur-lex.europa.eu` bot-gates every route with `HTTP 202` and an empty body. The
 working endpoint is Cellar:

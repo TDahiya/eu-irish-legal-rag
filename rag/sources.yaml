@@ -7,7 +7,7 @@
 
 crawl_delay:              # seconds between requests, per host
   publications.europa.eu: 1.0
-  www.irishstatutebook.ie: 1.0
+  www.irishstatutebook.ie: 0.5   # no robots.txt and no stated crawl-delay; 2 req/s on a static site
   www.irishimmigration.ie: 10.0   # their robots.txt asks for this
   enterprise.gov.ie: 2.0
   www.gutenberg.org: 2.0

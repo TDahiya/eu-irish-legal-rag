@@ -138,3 +138,71 @@ def test_agent_flags_instruments_that_do_not_bind_ireland():
 
 def test_agent_tells_the_model_when_a_search_found_nothing():
     assert "No results" in _render([], 0)
+
+
+# --------------------------------------------------------------- answer scoring
+import numpy as np
+
+from rag.generate import ABSTAIN, abstained, cited_indexes
+from rag.score import live_scores, sentences
+
+
+class FakeEmbedder:
+    """Unit vectors chosen by keyword, so every cosine in the test is known exactly.
+
+    Avoids loading a 67 MB ONNX model to check arithmetic and bookkeeping.
+    """
+
+    def embed(self, texts):
+        for t in texts:
+            yield np.array([1.0, 0.0] if "alpha" in t.lower() else [0.0, 1.0],
+                           dtype="float32")
+
+
+def test_sentences_strips_citation_markers_before_scoring():
+    out = sentences("The maximum fine is twenty million euro [1][2]. "
+                    "It is set by the regulation itself [3].")
+    assert len(out) == 2
+    assert "[1]" not in " ".join(out) and "[3]" not in " ".join(out)
+
+
+def test_sentences_drops_fragments_too_short_to_score():
+    assert sentences("Yes. No.") == []
+
+
+def test_live_scores_catches_a_citation_to_a_source_that_does_not_exist():
+    hits = [{"text": "alpha source text"}, {"text": "beta source text"}]
+    answer = ("Alpha is clearly established by the first source [1]. "
+              "Beta is asserted here with a bogus marker [9].")
+    s = live_scores(answer, hits, FakeEmbedder())
+    # two markers, one of which points past the end of the source list
+    assert s["citation_valid"] == 0.5
+    # both sentences match a source exactly, so grounding is perfect
+    assert s["grounding"] == 1.0
+    assert s["abstained"] is False
+
+
+def test_live_scores_rewards_citing_the_best_supporting_source():
+    hits = [{"text": "alpha source text"}, {"text": "beta source text"}]
+    apt = live_scores("Alpha is established beyond any doubt here [1].",
+                      hits, FakeEmbedder())
+    mis = live_scores("Alpha is established beyond any doubt here [2].",
+                      hits, FakeEmbedder())
+    assert apt["citation_apt"] == 1.0      # cited the source that supports it
+    assert mis["citation_apt"] == 0.0      # cited the unrelated one
+
+
+def test_live_scores_reports_abstention_instead_of_a_fake_score():
+    s = live_scores(ABSTAIN + " The sources only cover employment permits.",
+                    [{"text": "alpha"}], FakeEmbedder())
+    assert s["abstained"] is True
+    assert s["grounding"] is None and s["citation_valid"] is None
+
+
+def test_abstention_sentinel_round_trips():
+    assert abstained(ABSTAIN + " Nearest thing is the Free Movement Directive.")
+    assert not abstained("Article 6 sets the high-risk criteria [1].")
+
+
+def test_cited_indexes_finds_every_marker():
+    assert cited_indexes("a [1] b [2][3] c [2]") == {1, 2, 3}

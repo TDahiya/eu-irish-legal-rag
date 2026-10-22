@@ -20,7 +20,8 @@ maps to hits[n-1] no matter how many searches happened.
 """
 from __future__ import annotations
 
-from rag.generate import ABSTAIN, MODEL, SYSTEM, answer
+from rag.generate import (ABSTAIN, MAX_TOKENS, MODEL, REASONING_EFFORT,
+                          SYSTEM, answer)
 from rag.retrieve import LAW_TYPES, Retriever
 from rag.score import live_scores
 
@@ -102,7 +103,7 @@ def run(question: str, retriever: Retriever, client, model: str = MODEL,
     while True:
         resp = client.chat.completions.create(
             model=model, messages=messages, tools=tools, temperature=0,
-            max_completion_tokens=900,
+            max_completion_tokens=MAX_TOKENS, reasoning_effort=REASONING_EFFORT,
         )
         msg = resp.choices[0].message
         calls = msg.tool_calls or []
