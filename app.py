@@ -177,11 +177,8 @@ if go and question.strip():
         if trace:
             st.markdown("### Agent trace")
             for step in trace:
-                if "retry" in step:
-                    st.write("retry: %s" % step["retry"])
-                else:
-                    st.write("search `%s` in **%s** -> %d new sources"
-                             % (step["query"], step["source_type"], step["n_new"]))
+                st.write("search `%s` in **%s** -> %d new sources"
+                         % (step["query"], step["source_type"], step["n_new"]))
 
     st.markdown("### Sources")
     st.caption("`found_by` is the whole argument for hybrid retrieval: bm25 catches "
