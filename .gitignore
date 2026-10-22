@@ -2,11 +2,7 @@
 __pycache__/
 *.py[cod]
 .env
-data/raw/
-data/chunks.jsonl
-# data/index/ is deliberately tracked: at ~25 MB it is well inside GitHub's
-# limits, and committing it means Render just clones the index instead of
-# rebuilding it on 0.1 CPU or pulling it from a release asset with a secret.
+data/
 .pytest_cache/
 .streamlit/secrets.toml
 .fastembed/

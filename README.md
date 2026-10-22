@@ -89,22 +89,23 @@ that difference decides it. `eval/bench_stores.py` indexes the identical vectors
 both and reports build time, query latency, disk and recall, so the choice is
 measured rather than asserted. Results in `eval/report.md`.
 
-### Why no hosted vector database
+### Why no hosted vector database, and why the index is a release asset
 
 Qdrant Cloud's free cluster is the best of the free tiers, but it is **suspended after
 one week idle and deleted after four**. A portfolio demo opened six weeks later would
-be dead.
+be dead. So there is no vector service: the index is two files, built locally.
 
-So there is no vector service at all. The corpus turned out to be ~10k chunks, which
-makes the FAISS index about 15 MB and the SQLite database about 10 MB — small enough
-that `data/index/` is simply **committed to the repository**. Render clones it. No
-build-time download, no release asset, no second secret, no network hop per query,
-and nothing that can expire or go stale.
+Where they live changed once, on measurement. At an estimated 10k chunks and ~25 MB
+they went in the repository, which made the Render build a plain `git clone`. The real
+corpus is 36k chunks — ~56 MB of FAISS and ~75 MB of SQLite — and *every rebuild would
+add that again to git history permanently*. A portfolio repository nobody can clone
+cheaply is worse than one extra build step, so they are published as a **GitHub
+Release asset** instead, which doesn't count against clone size and allows 2 GB.
 
-That is a deliberate trade: generated artifacts in git cost repository history on
-every rebuild. At 25 MB and a handful of rebuilds it is the cheaper side of the
-trade. Past roughly 500k chunks it stops being, and the index should move to a
-GitHub Release asset downloaded in the build command, or to Qdrant.
+Because the repository is public the asset URL is public too, so this costs no second
+secret: `GROQ_API_KEY` is still the only one. Rebuilding on Render is not an
+alternative — embedding runs at ~10 chunks/s on a normal CPU, so an hour locally would
+be many hours on 0.1 CPU.
 
 ---
 
@@ -203,8 +204,16 @@ python -m pytest tests/
 ### Deploy
 
 [`render.yaml`](render.yaml) describes the service. Set `GROQ_API_KEY` in the Render
-dashboard; that is the only secret. The index is in the repository, so the build only
-installs dependencies and warms the ONNX model so the first request isn't slow.
+dashboard; that is the only secret. The build installs dependencies, downloads the
+index from the latest GitHub Release, and warms the ONNX model so the first request
+isn't slow.
+
+To publish a rebuilt index:
+
+```bash
+tar -czf index.tar.gz -C data/index chunks.db dense.faiss
+gh release create index-v1 index.tar.gz --title "Prebuilt index"
+```
 
 ---
 
@@ -217,7 +226,7 @@ LLM, and it is why:
 - embeddings run through **fastembed** (ONNX, 67 MB, no torch)
 - lexical search is **SQLite FTS5** rather than an in-memory BM25 library
 - generation is an **open-weight model over an API** rather than in-process
-- the index is **built offline and committed** rather than written at runtime
+- the index is **built offline and downloaded at build time** rather than written at runtime
 
 Measured peak RSS is in `eval/report.md`. Budget was 450 MB.
 
