@@ -19,7 +19,7 @@ from pathlib import Path
 
 import yaml
 
-from rag.generate import ABSTAIN, abstained, answer
+from rag.generate import ABSTAIN, abstained, answer, client as groq_client
 from rag.retrieve import LAW_TYPES, Retriever
 from rag.score import judge, live_scores
 
@@ -87,8 +87,10 @@ def main() -> int:
     ap.add_argument("--retrieval-only", action="store_true")
     ap.add_argument("--limit", type=int, help="first N questions only")
     ap.add_argument("--mode", default="oneshot", choices=("oneshot", "agentic"))
-    ap.add_argument("--sleep", type=float, default=2.0,
-                    help="seconds between API calls (Groq free tier is ~30/min)")
+    ap.add_argument("--sleep", type=float, default=20.0,
+                    help="seconds between API calls. The free tier's binding limit is "
+                         "8,000 tokens/min, not requests/min, and a question costs "
+                         "~5,600 tokens, so this paces to roughly 1.4 questions/min.")
     args = ap.parse_args()
 
     gold = yaml.safe_load(GOLDSET.read_text(encoding="utf-8"))
@@ -124,20 +126,27 @@ def main() -> int:
     # ---------------- answers: generation, live scores, LLM judge
     answers = []
     if not args.retrieval_only:
-        from groq import Groq
-        client = Groq()
+        client = groq_client()
         search = _agentic_search(retriever, client) if args.mode == "agentic" else None
 
+        errors = []
         for i, item in enumerate(gold, 1):
-            if search:
-                text, hits = search(item["q"])
-            else:
-                hits = retriever.search(item["q"], k=8)
-                text = answer(item["q"], hits, client=client)
-            live = live_scores(text, hits, retriever.model)
-            time.sleep(args.sleep)
-            verdict = judge(text, hits, client)
-            time.sleep(args.sleep)
+            try:
+                if search:
+                    text, hits = search(item["q"])
+                else:
+                    hits = retriever.search(item["q"], k=8)
+                    text = answer(item["q"], hits, client=client)
+                live = live_scores(text, hits, retriever.model)
+                time.sleep(args.sleep)
+                verdict = judge(text, hits, client)
+                time.sleep(args.sleep)
+            except Exception as exc:
+                # A rate limit on question 40 must not discard the first 39.
+                errors.append((item["q"][:60], "%s: %s" % (type(exc).__name__,
+                                                           str(exc)[:90])))
+                print("  ERROR q%d: %s" % (i, type(exc).__name__))
+                continue
             answers.append({
                 "q": item["q"], "kind": item.get("kind", "other"),
                 "is_trap": bool(item.get("expect_abstain")),

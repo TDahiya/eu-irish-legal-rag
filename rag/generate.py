@@ -48,6 +48,17 @@ Rules, in order of importance:
    your own reasoning, no restating the question.""" % ABSTAIN
 
 
+def client() -> Groq:
+    """A client that waits out rate limits instead of failing the caller.
+
+    The free tier caps tokens per minute (8,000), not just requests, and one
+    question here costs ~5,600 tokens because the retrieved context is sent twice:
+    once to generate and once to grade. The SDK honours the server's Retry-After,
+    so the fix is simply to let it retry more than twice.
+    """
+    return Groq(max_retries=8)
+
+
 def format_context(hits: list[dict]) -> str:
     """Numbered source blocks. The note field is what defends against trap questions:
     it tells the model, inline, that an instrument does not bind Ireland."""

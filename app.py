@@ -51,8 +51,8 @@ def get_retriever() -> Retriever:
 
 @st.cache_resource
 def get_client():
-    from groq import Groq
-    return Groq()
+    from rag.generate import client
+    return client()
 
 
 def grounding_badge(score: float | None) -> str:
