@@ -1,0 +1,20 @@
+{
+ "n_chunks": 10000,
+ "embed_seconds": 1138.7,
+ "stores": {
+  "faiss": {
+   "build_s": 0.36,
+   "p50_ms": 0.8,
+   "p95_ms": 10.22,
+   "disk_mb": 15.4,
+   "recall_at_k": 1.0
+  },
+  "chroma": {
+   "build_s": 9.38,
+   "p50_ms": 1.88,
+   "p95_ms": 50.76,
+   "disk_mb": 121.7,
+   "recall_at_k": 1.0
+  }
+ }
+}

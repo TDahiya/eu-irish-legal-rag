@@ -165,7 +165,58 @@ a human can check.
 
 ## Results
 
-_Filled in by `python -m eval.run_eval`; see [`eval/report.md`](eval/report.md)._
+Corpus: **868 documents, 36,165 chunks**. Goldset: **70 questions**, 10 of them
+unanswerable traps. Full output in [`eval/report.md`](eval/report.md).
+
+### Retrieval
+
+| | recall@5 | recall@10 | MRR | nDCG@10 |
+|---|---|---|---|---|
+| BM25 only | 88.3% | 91.7% | **0.850** | **0.853** |
+| Dense only | 85.0% | 86.7% | 0.711 | 0.729 |
+| **Hybrid (RRF)** | **90.0%** | **93.3%** | 0.843 | 0.838 |
+
+recall@10 by question type:
+
+| type | n | BM25 | dense | hybrid |
+|---|---|---|---|---|
+| citation lookup | 16 | 100% | 81.2% | 100% |
+| conceptual | 31 | 87.1% | 87.1% | 87.1% |
+| multi-hop | 5 | 80% | 80% | **100%** |
+| numeric | 8 | 100% | 100% | 100% |
+
+**Hybrid's win is recall, and it is concentrated in multi-hop** — 80% for either
+retriever alone, 100% fused. Two results cut against the usual story: dense adds
+nothing on conceptual questions here, and dense alone is the weakest retriever on
+every measure. On legal text the lexical side carries more than "embeddings beat
+keywords" suggests.
+
+**And fusion costs ranking precision.** BM25 alone has the better MRR (0.850 vs
+0.843). It hurts 5 questions and helps 4, with the harm on citation lookups: *"What
+right does Article 17 of the GDPR create?"* falls from MRR 1.00 to 0.20, because with
+equal weights a document both retrievers rank mid-pack outscores one BM25 ranks first
+(`1/76 + 1/61 > 1/61`). Weighting the lexical list higher is the obvious fix and
+[the sweep](eval/rrf_sweep.md) says it does not work: 3:1 lifts MRR to 0.861 but drops
+recall@10 to 91.7%. All eight top chunks are given to the generator, so a relevant
+chunk being in the window beats its position inside it. Equal weights stay.
+
+### FAISS vs ChromaDB
+
+Same 10,000 vectors, embedded once, indexed into both:
+
+| store | build | query p50 | query p95 | disk | recall@10 |
+|---|---|---|---|---|---|
+| **FAISS** | **0.36 s** | **0.80 ms** | **10.2 ms** | **15.4 MB** | 1.000 |
+| ChromaDB | 9.38 s | 1.88 ms | 50.8 ms | 121.7 MB | 1.000 |
+
+Recall is identical — Chroma's HNSW returned the same top-10 as exact search at this
+scale — so the difference is pure overhead: **7.9x the disk** for the same vectors,
+because Chroma also stores documents, metadata and its own SQLite alongside the graph.
+On a 512 MB box that decides it. Reproduce with `python -m eval.bench_stores`.
+
+### Answer quality
+
+_Running; see [`eval/report.md`](eval/report.md)._
 
 ---
 
