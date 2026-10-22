@@ -2,8 +2,8 @@
 
 A retrieval-augmented generation pipeline over **EU technology regulation** and
 **Irish/EU immigration law**, with an evaluation layer that measures retrieval
-accuracy, answer faithfulness and hallucination rate — and feeds that measurement
-back into generation as a control signal.
+accuracy, answer faithfulness and hallucination rate — and that has already been
+used to delete one of this project's own features for not working.
 
 **Live demo:** _(URL after deploy)_ · Render's free tier sleeps after 15 minutes
 idle, so the first request takes about a minute to wake.
