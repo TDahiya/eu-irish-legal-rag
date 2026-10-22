@@ -31,6 +31,48 @@ RAW_RESULTS = Path(__file__).with_name("results.json")
 MODES = ("bm25", "dense", "hybrid")
 K = 10
 
+# Groq's free tier caps tokens per minute, not requests per minute, and that is the
+# limit this eval actually hits: a fixed 20s sleep still averaged ~8,400 TPM against
+# an 8,000 cap, drifted into violation around question 40 and never recovered -- 31
+# questions lost, including every trap, because they sit at the end of the goldset.
+TPM_LIMIT = 7000          # headroom under the 8,000 cap
+TPM_WINDOW = 60.0
+
+
+class TokenBudget:
+    """Sliding-window token pacer: sleeps only as long as the limit requires.
+
+    Pacing on tokens rather than a conservative fixed sleep keeps the run as fast as
+    the quota allows instead of as slow as the worst case.
+    """
+
+    def __init__(self, limit: int = TPM_LIMIT, window: float = TPM_WINDOW):
+        self.limit, self.window = limit, window
+        self.spent: list[tuple[float, int]] = []
+
+    def _drop_old(self) -> int:
+        cutoff = time.monotonic() - self.window
+        self.spent = [(t, n) for t, n in self.spent if t > cutoff]
+        return sum(n for _, n in self.spent)
+
+    def reserve(self, tokens: int) -> None:
+        while True:
+            used = self._drop_old()
+            if used + tokens <= self.limit or not self.spent:
+                break
+            # wait until the oldest entry leaves the window
+            sleep_for = self.spent[0][0] + self.window - time.monotonic() + 0.5
+            if sleep_for <= 0:
+                break
+            time.sleep(min(sleep_for, self.window))
+        self.spent.append((time.monotonic(), tokens))
+
+
+def estimate_tokens(hits: list[dict], extra: int = 1200) -> int:
+    """Rough prompt cost. Legal English runs ~3.5 chars/token; `extra` covers the
+    system prompt and the generated output."""
+    return sum(len(h["text"]) for h in hits) // 3 + extra
+
 
 # ------------------------------------------------------------------ retrieval metrics
 def _relevant_ranks(hits: list[dict], expected: list[str]) -> list[int]:
@@ -87,10 +129,8 @@ def main() -> int:
     ap.add_argument("--retrieval-only", action="store_true")
     ap.add_argument("--limit", type=int, help="first N questions only")
     ap.add_argument("--mode", default="oneshot", choices=("oneshot", "agentic"))
-    ap.add_argument("--sleep", type=float, default=20.0,
-                    help="seconds between API calls. The free tier's binding limit is "
-                         "8,000 tokens/min, not requests/min, and a question costs "
-                         "~5,600 tokens, so this paces to roughly 1.4 questions/min.")
+    ap.add_argument("--tpm", type=int, default=TPM_LIMIT,
+                    help="token-per-minute budget to pace against (free tier: 8000)")
     args = ap.parse_args()
 
     gold = yaml.safe_load(GOLDSET.read_text(encoding="utf-8"))
@@ -130,17 +170,20 @@ def main() -> int:
         search = _agentic_search(retriever, client) if args.mode == "agentic" else None
 
         errors = []
+        budget = TokenBudget(args.tpm)
         for i, item in enumerate(gold, 1):
             try:
                 if search:
+                    budget.reserve(estimate_tokens([], 6000))   # agent: several calls
                     text, hits = search(item["q"])
                 else:
                     hits = retriever.search(item["q"], k=8)
+                    budget.reserve(estimate_tokens(hits))
                     text = answer(item["q"], hits, client=client)
                 live = live_scores(text, hits, retriever.model)
-                time.sleep(args.sleep)
+                # the judge re-sends the same context plus the answer
+                budget.reserve(estimate_tokens(hits, 1200 + len(text) // 3))
                 verdict = judge(text, hits, client)
-                time.sleep(args.sleep)
             except Exception as exc:
                 # A rate limit on question 40 must not discard the first 39.
                 errors.append((item["q"][:60], "%s: %s" % (type(exc).__name__,
@@ -160,7 +203,9 @@ def main() -> int:
             print("  answered %d/%d" % (i, len(gold)), end="\r", flush=True)
         print()
 
-    results = {"retrieval": retrieval, "answers": answers, "mode": args.mode}
+    results = {"retrieval": retrieval, "answers": answers, "mode": args.mode,
+               "n_questions": len(gold),
+               "n_failed": len(gold) - len(answers) if not args.retrieval_only else 0}
     RAW_RESULTS.write_text(json.dumps(results, indent=1, ensure_ascii=False),
                            encoding="utf-8")
     REPORT.write_text(render(results, gold), encoding="utf-8")
@@ -232,7 +277,12 @@ def render(results: dict, gold: list[dict]) -> str:
     # --- answer quality
     real = [a for a in answers if not a["is_trap"]]
     traps = [a for a in answers if a["is_trap"]]
-    L += ["", "## Answer quality (%s)" % results["mode"], "",
+    L += ["", "## Answer quality (%s)" % results["mode"], ""]
+    if results.get("n_failed"):
+        L += ["> **Partial run: %d of %d questions failed** (rate limits). The figures"
+              % (results["n_failed"], results["n_questions"]),
+              "> below cover only the %d that completed." % len(answers), ""]
+    L += [
           "| metric | value |", "|---|---|",
           "| faithfulness (LLM-judged) | %s |"
           % _fmt(_mean([a["faithfulness"] for a in real])),
@@ -261,11 +311,28 @@ def render(results: dict, gold: list[dict]) -> str:
         sg = math.sqrt(sum((g - mg) ** 2 for g in gs))
         sf = math.sqrt(sum((f - mf) ** 2 for f in fs))
         r = cov / (sg * sf) if sg and sf else 0.0
+        spread = max(fs) - min(fs)
         L += ["", "### Is the free grounding score a usable proxy?", "",
               "Pearson r between the embedding grounding score and LLM-judged",
-              "faithfulness over %d answers: **%.2f**." % (len(pairs), r),
-              "That is what justifies showing the cheap score on every answer in the",
-              "UI and spending a judge call only on demand."]
+              "faithfulness over %d answers: **%.2f**." % (len(pairs), r)]
+        if abs(r) >= 0.5:
+            L += ["", "Strong enough to use as a live stand-in: the cheap score can be",
+                  "shown on every answer and a judge call spent only on demand."]
+        else:
+            L += ["",
+                  "**It is not a usable proxy.** The two measure different things: the",
+                  "grounding score asks whether an answer's sentences look like the",
+                  "retrieved text, and faithfulness asks whether each claim is actually",
+                  "supported. An answer can paraphrase a source closely and still assert",
+                  "something the source does not say.",
+                  "",
+                  "Read it with the caveat that faithfulness barely varies here "
+                  "(mean %.2f, range %.2f over %d answers), and a near-constant"
+                  % (_mean(fs), spread, len(pairs)),
+                  "variable cannot correlate with anything. The honest conclusion is",
+                  "that this run cannot establish the relationship either way, so the",
+                  "UI shows the grounding score as what it is -- a similarity signal --",
+                  "and the judge button remains the measurement of record."]
 
     # --- the trap questions, individually, because this is the headline
     L += ["", "### Trap questions", "",

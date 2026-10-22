@@ -26,5 +26,28 @@ level: a hit counts if it comes from an instrument the question expects.
 - **dense**: 4%
 - **both**: 92%
 
-_Answer quality not measured in this run (`--retrieval-only`)._
+## Answer quality (oneshot)
 
+| metric | value |
+|---|---|
+| faithfulness (LLM-judged) | 94.9% |
+| hallucination rate | 5.1% |
+| grounding score (free proxy) | 0.840 |
+| citations pointing at a real source | 100.0% |
+| cited the best-supporting source | 99.4% |
+| abstained on a trap question | n/a (0/0) |
+| abstained on an answerable question | 7.7% |
+
+### Is the free grounding score a usable proxy?
+
+Pearson r between the embedding grounding score and LLM-judged
+faithfulness over 36 answers: **0.02**.
+That is what justifies showing the cheap score on every answer in the
+UI and spending a judge call only on demand.
+
+### Trap questions
+
+Questions with no answer in the corpus. Abstaining is the correct behaviour.
+
+| question | abstained | why it is a trap |
+|---|---|---|
