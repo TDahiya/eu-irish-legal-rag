@@ -18,6 +18,8 @@ from xml.etree import ElementTree
 
 import requests
 import yaml
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 ROOT = Path(__file__).resolve().parent.parent
 RAW = ROOT / "data" / "raw"
@@ -59,6 +61,23 @@ def _matches(text: str, include=(), exclude=()) -> bool:
     inc = [str(w).lower() for w in include]
     exc = [str(w).lower() for w in exclude]
     return (not inc or any(w in t for w in inc)) and not any(w in t for w in exc)
+
+
+def _session() -> requests.Session:
+    """A session that retries transient failures.
+
+    A crawl of this size will hit dropped connections and 5xx responses; one of them
+    killing the run after 58 index pages had already been fetched is not acceptable.
+    urllib3's Retry covers connection errors as well as status codes, with backoff.
+    """
+    s = requests.Session()
+    s.headers["User-Agent"] = UA
+    retry = Retry(total=4, connect=4, read=3, backoff_factor=1.5,
+                  status_forcelist=(429, 500, 502, 503, 504),
+                  allowed_methods=frozenset(["GET"]))
+    s.mount("https://", HTTPAdapter(max_retries=retry))
+    s.mount("http://", HTTPAdapter(max_retries=retry))
+    return s
 
 
 def _get(session: requests.Session, url: str, delays: dict, headers=None, stream=False):
@@ -209,8 +228,7 @@ def main() -> int:
 
     manifest = yaml.safe_load(MANIFEST.read_text(encoding="utf-8"))
     delays = manifest["crawl_delay"]
-    session = requests.Session()
-    session.headers["User-Agent"] = UA
+    session = _session()
 
     jobs = _jobs(manifest)
     if args.only:
@@ -225,10 +243,14 @@ def main() -> int:
             expanded.append(j)
         elif args.dry_run:
             expanded.append({"url": j["url"], "path": "-", "meta": j["meta"]})
-        elif kind == "sitemap":
-            expanded.extend(_expand_sitemap(j, session, delays))
-        elif kind == "isb_index":
-            expanded.extend(_expand_isb_index(j, session, delays))
+        else:
+            # An expander that dies takes every queued download with it, so a bad
+            # index page costs only its own items.
+            fn = _expand_sitemap if kind == "sitemap" else _expand_isb_index
+            try:
+                expanded.extend(fn(j, session, delays))
+            except Exception as exc:
+                print(f"  {kind} {j['url']}: {type(exc).__name__}: {str(exc)[:70]}")
 
     # Dedupe by destination path, first wins. The curated entries in sources.yaml
     # come before the bulk year sweeps, so their hand-written short name and domain
@@ -278,8 +300,15 @@ def main() -> int:
             print(f"[{i:3}/{len(jobs)}] ERR  {type(exc).__name__} {label}")
 
     if not args.dry_run:
-        (RAW / "index.json").write_text(json.dumps(index, indent=1, ensure_ascii=False),
-                                        encoding="utf-8")
+        # Merge rather than replace: a --only run must not drop the other source
+        # types from the manifest. Entries whose file has gone are pruned.
+        out = RAW / "index.json"
+        merged = json.loads(out.read_text(encoding="utf-8")) if out.exists() else {}
+        merged.update(index)
+        merged = {k: v for k, v in merged.items() if (RAW / k).exists()}
+        out.write_text(json.dumps(merged, indent=1, ensure_ascii=False),
+                       encoding="utf-8")
+        print(f"index.json: {len(merged)} documents")
 
     print(f"\n{len(jobs) - len(bad)}/{len(jobs)} ok, {total_bytes:,} bytes")
     if bad:

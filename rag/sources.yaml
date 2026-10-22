@@ -7,7 +7,7 @@
 
 crawl_delay:              # seconds between requests, per host
   publications.europa.eu: 1.0
-  www.irishstatutebook.ie: 0.5   # no robots.txt and no stated crawl-delay; 2 req/s on a static site
+  www.irishstatutebook.ie: 1.5   # 0.5s earned 397 HTTP 403s on a ~1900-item sweep; they throttle with 403, not 429
   www.irishimmigration.ie: 10.0   # their robots.txt asks for this
   enterprise.gov.ie: 2.0
   www.gutenberg.org: 2.0
@@ -146,12 +146,25 @@ ie_legislation:
       url: https://www.irishstatutebook.ie/eli/cons/en/html
       domain: general
       short: "Bunreacht na hEireann (Constitution of Ireland)"
-    # --- bulk: every Act of the Oireachtas from 1996, named from the year listing.
-    #     One request per year returns number + title for all of them.
+    # --- bulk: Acts of the Oireachtas from 1996, filtered by subject.
+    #     One request per year returns number + title for every Act of that year.
+    #     Unfiltered this is 1,225 Acts and 67,501 chunks, 77% of the whole corpus,
+    #     and the bulk of it is tax, company and planning law: Taxes Consolidation
+    #     Act alone is 3,373 chunks. Those can only add noise to a question about a
+    #     work permit or the AI Act. These keywords keep 442 instruments covering
+    #     immigration, permits, data, equality and the justice system.
     - fetcher: isb_index
       kind: act
       years: [1996, 2026]
       domain: general
+      include:
+        ["immigration", "protection", "nationality", "citizen", "aliens", "refugee",
+         "asylum", "visa", "employment permit", "work permit", "data protection",
+         "communications", "information system", "equality", "equal status",
+         "human rights", "criminal justice", "garda", "courts", "police", "judicial",
+         "civil law", "free movement", "trafficking", "residence", "privacy",
+         "electronic", "digital", "online", "artificial intelligence", "cyber",
+         "broadcasting"]
     # --- bulk: statutory instruments, filtered by title. 760 SIs were made in 2024;
     #     these keywords keep the ~19 that touch immigration, permits or data.
     #     SI 444/2024 (Employment Permits Regulations) carries the occupation lists
