@@ -1,0 +1,2712 @@
+{
+ "retrieval": {
+  "bm25": [
+   {
+    "q": "What does Article 5 of the AI Act prohibit?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "Under Article 6 of the AI Act, when is an AI system classified as high-risk?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "What transparency obligations does Article 50 of the AI Act impose?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.9971876401972103,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "What right does Article 17 of the GDPR create?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "What lawful bases for processing are listed in Article 6 of the GDPR?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.9770153702993121,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "What does Article 33 of the GDPR require after a personal data breach?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.9937947856332163,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "What does section 4 of the Immigration Act 2004 say about permission to land?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.9613085758737654,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "What does section 3 of the Immigration Act 1999 provide about deportation orders?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.9667147927059906,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "What does Article 7 of the Free Movement Directive say about the right of residence for more than three months?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "What does Article 35 of the Free Movement Directive say about abuse of rights and marriages of convenience?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.8385465274895063,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "What does Article 8 of the Charter of Fundamental Rights protect?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.9132861715058802,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "What does Article 15 of the ePrivacy Directive allow Member States to do?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "What does Article 4 of the DSM Copyright Directive provide about text and data mining?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "What conditions does the Irish Nationality and Citizenship Act 1956 set for a certificate of naturalisation?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.9072291563948641,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "What does section 2 of the Data Protection Act 2018 define?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "How long does a controller have to notify a personal data breach to the supervisory authority?",
+    "kind": "numeric",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.8332128630752801,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "What is the maximum administrative fine under the GDPR?",
+    "kind": "numeric",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.9888026041880242,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "What are the maximum penalties under the AI Act for engaging in a prohibited AI practice?",
+    "kind": "numeric",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "How long may an EU citizen reside in another Member State without any conditions or formalities?",
+    "kind": "numeric",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.8175295903539445,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "What is the maximum fine a very large online platform can face under the Digital Services Act?",
+    "kind": "numeric",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "What are the time limits for a transfer under the Dublin III Regulation?",
+    "kind": "numeric",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "How many years of reckonable residence are needed to apply for Irish naturalisation?",
+    "kind": "numeric",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "What turnover and user thresholds make an undertaking a gatekeeper under the Digital Markets Act?",
+    "kind": "numeric",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "Can the non-EEA spouse of an EU citizen working in Ireland be refused residence because they never lawfully lived in the EU before?",
+    "kind": "conceptual",
+    "recall@5": 0.0,
+    "recall@10": 0.0,
+    "mrr": 0.0,
+    "ndcg@10": 0.0,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "Does a third-country national parent of a dependent EU-citizen child have a right to reside in the EU?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 0.25,
+    "ndcg@10": 0.5508095940041026,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "Is a same-sex spouse a spouse for the purposes of EU free movement rights?",
+    "kind": "conceptual",
+    "recall@5": 0.0,
+    "recall@10": 1.0,
+    "mrr": 0.1,
+    "ndcg@10": 0.2890648263178879,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "Why did the Court of Justice invalidate the Safe Harbour decision on transfers to the United States?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "Why was the EU-US Privacy Shield held invalid?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "Must a search engine remove links to personal data when the person asks?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "What must a provider of a high-risk AI system do before placing it on the market?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "When is a general-purpose AI model considered to carry systemic risk?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "How does the law treat AI used to infer emotions of employees at work?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "What happens to a family member's right of residence if the EU citizen they depend on dies or leaves?",
+    "kind": "conceptual",
+    "recall@5": 0.0,
+    "recall@10": 0.0,
+    "mrr": 0.0,
+    "ndcg@10": 0.0,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "What is subsidiary protection and who qualifies for it?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 0.25,
+    "ndcg@10": 0.5953592473115411,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "What protections does an applicant for international protection have while their claim is being decided in Ireland?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.9093183643170807,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "What powers does the Data Protection Commission have?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.9851514063429596,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "On what grounds does the Equal Status Act prohibit discrimination?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.9643632283499571,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "Can an employer in Ireland refuse to hire someone because of their nationality or race?",
+    "kind": "conceptual",
+    "recall@5": 0.0,
+    "recall@10": 0.0,
+    "mrr": 0.0,
+    "ndcg@10": 0.0,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "How must Irish courts interpret legislation in light of the European Convention on Human Rights?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.9134015924715543,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "What extra obligations apply to very large online platforms under the Digital Services Act?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "What incident reporting does NIS2 require of essential entities?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "What cybersecurity requirements apply to products with digital elements before they are sold?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.9842184869190973,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "What rights does the Data Act give users of connected products to the data they generate?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "What is the Common Travel Area and how does it affect entry to Ireland?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.9770153702993121,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "What are the options for a non-EEA national who wants to come and work in Ireland?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "What do I need to do before arriving in Ireland to study?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "How does a non-EEA national join a family member already living in Ireland?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "Do EU, EEA and Swiss citizens need permission to enter Ireland at the border?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "What is required to apply for Irish citizenship by naturalisation?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.9937947856332163,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "What kinds of employment permit exist under Irish employment permits legislation?",
+    "kind": "conceptual",
+    "recall@5": 0.0,
+    "recall@10": 1.0,
+    "mrr": 0.125,
+    "ndcg@10": 0.31546487678572877,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "What offences relate to unauthorised access to information systems in Ireland?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.9818483242455301,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "When can Irish authorities require the retention of communications data?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 0.25,
+    "ndcg@10": 0.5508095940041026,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "What does the Aliens Act 1935 empower the Minister to do?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "How does Ireland implement the EU AI Act in national law?",
+    "kind": "conceptual",
+    "recall@5": 0.0,
+    "recall@10": 0.0,
+    "mrr": 0.0,
+    "ndcg@10": 0.0,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "Who is an adjudicator under the Regulation of Artificial Intelligence Act 2026?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "I am a non-EEA machine learning engineer moving to Ireland. What permission do I need to work, and would the AI Act apply to a recruitment model I build?",
+    "kind": "multihop",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "Does the GDPR apply to personal data processed in Irish immigration applications, and which Irish body enforces it?",
+    "kind": "multihop",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "If an AI system were used to decide visa applications, what would the AI Act and the Charter require?",
+    "kind": "multihop",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "How do EU free movement rights interact with Irish immigration permission for a non-EEA family member?",
+    "kind": "multihop",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   },
+   {
+    "q": "What does EU law say about penalising employers of irregular migrants, and does it bind Ireland?",
+    "kind": "multihop",
+    "recall@5": 0.0,
+    "recall@10": 0.0,
+    "mrr": 0.0,
+    "ndcg@10": 0.0,
+    "found_by": [
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25",
+     "bm25"
+    ]
+   }
+  ],
+  "dense": [
+   {
+    "q": "What does Article 5 of the AI Act prohibit?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.8807346094186411,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "Under Article 6 of the AI Act, when is an AI system classified as high-risk?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "What transparency obligations does Article 50 of the AI Act impose?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "What right does Article 17 of the GDPR create?",
+    "kind": "citation",
+    "recall@5": 0.0,
+    "recall@10": 0.0,
+    "mrr": 0.0,
+    "ndcg@10": 0.0,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "What lawful bases for processing are listed in Article 6 of the GDPR?",
+    "kind": "citation",
+    "recall@5": 0.0,
+    "recall@10": 0.0,
+    "mrr": 0.0,
+    "ndcg@10": 0.0,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "What does Article 33 of the GDPR require after a personal data breach?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 0.2,
+    "ndcg@10": 0.38685280723454163,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "What does section 4 of the Immigration Act 2004 say about permission to land?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.8175295903539445,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "What does section 3 of the Immigration Act 1999 provide about deportation orders?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 0.2,
+    "ndcg@10": 0.38685280723454163,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "What does Article 7 of the Free Movement Directive say about the right of residence for more than three months?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 0.5,
+    "ndcg@10": 0.6546154994739983,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "What does Article 35 of the Free Movement Directive say about abuse of rights and marriages of convenience?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 0.5,
+    "ndcg@10": 0.6797310500037655,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "What does Article 8 of the Charter of Fundamental Rights protect?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.8175295903539445,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "What does Article 15 of the ePrivacy Directive allow Member States to do?",
+    "kind": "citation",
+    "recall@5": 0.0,
+    "recall@10": 0.0,
+    "mrr": 0.0,
+    "ndcg@10": 0.0,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "What does Article 4 of the DSM Copyright Directive provide about text and data mining?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.9670943502702474,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "What conditions does the Irish Nationality and Citizenship Act 1956 set for a certificate of naturalisation?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 0.2,
+    "ndcg@10": 0.4415801103577823,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "What does section 2 of the Data Protection Act 2018 define?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.8663365527202843,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "How long does a controller have to notify a personal data breach to the supervisory authority?",
+    "kind": "numeric",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.812653045383133,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "What is the maximum administrative fine under the GDPR?",
+    "kind": "numeric",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 0.3333333333333333,
+    "ndcg@10": 0.5437713091520254,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "What are the maximum penalties under the AI Act for engaging in a prohibited AI practice?",
+    "kind": "numeric",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.8653082042236201,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "How long may an EU citizen reside in another Member State without any conditions or formalities?",
+    "kind": "numeric",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 0.5,
+    "ndcg@10": 0.6112833214150002,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "What is the maximum fine a very large online platform can face under the Digital Services Act?",
+    "kind": "numeric",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.9830168297915423,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "What are the time limits for a transfer under the Dublin III Regulation?",
+    "kind": "numeric",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.7864724919925569,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "How many years of reckonable residence are needed to apply for Irish naturalisation?",
+    "kind": "numeric",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "What turnover and user thresholds make an undertaking a gatekeeper under the Digital Markets Act?",
+    "kind": "numeric",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "Can the non-EEA spouse of an EU citizen working in Ireland be refused residence because they never lawfully lived in the EU before?",
+    "kind": "conceptual",
+    "recall@5": 0.0,
+    "recall@10": 0.0,
+    "mrr": 0.0,
+    "ndcg@10": 0.0,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "Does a third-country national parent of a dependent EU-citizen child have a right to reside in the EU?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.8789901909062586,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "Is a same-sex spouse a spouse for the purposes of EU free movement rights?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.9860433320650158,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "Why did the Court of Justice invalidate the Safe Harbour decision on transfers to the United States?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.9963488021549354,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "Why was the EU-US Privacy Shield held invalid?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "Must a search engine remove links to personal data when the person asks?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.9842184869190973,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "What must a provider of a high-risk AI system do before placing it on the market?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "When is a general-purpose AI model considered to carry systemic risk?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "How does the law treat AI used to infer emotions of employees at work?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.9842184869190973,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "What happens to a family member's right of residence if the EU citizen they depend on dies or leaves?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 0.2,
+    "ndcg@10": 0.38685280723454163,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "What is subsidiary protection and who qualifies for it?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 0.3333333333333333,
+    "ndcg@10": 0.6942762582994471,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "What protections does an applicant for international protection have while their claim is being decided in Ireland?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.9197207891481876,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "What powers does the Data Protection Commission have?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 0.5,
+    "ndcg@10": 0.7003502195797513,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "On what grounds does the Equal Status Act prohibit discrimination?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 0.25,
+    "ndcg@10": 0.5249161118977291,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "Can an employer in Ireland refuse to hire someone because of their nationality or race?",
+    "kind": "conceptual",
+    "recall@5": 0.0,
+    "recall@10": 0.0,
+    "mrr": 0.0,
+    "ndcg@10": 0.0,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "How must Irish courts interpret legislation in light of the European Convention on Human Rights?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 0.3333333333333333,
+    "ndcg@10": 0.5,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "What extra obligations apply to very large online platforms under the Digital Services Act?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.9971876401972103,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "What incident reporting does NIS2 require of essential entities?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "What cybersecurity requirements apply to products with digital elements before they are sold?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "What rights does the Data Act give users of connected products to the data they generate?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "What is the Common Travel Area and how does it affect entry to Ireland?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.9530418785472459,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "What are the options for a non-EEA national who wants to come and work in Ireland?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "What do I need to do before arriving in Ireland to study?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "How does a non-EEA national join a family member already living in Ireland?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "Do EU, EEA and Swiss citizens need permission to enter Ireland at the border?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "What is required to apply for Irish citizenship by naturalisation?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "What kinds of employment permit exist under Irish employment permits legislation?",
+    "kind": "conceptual",
+    "recall@5": 0.0,
+    "recall@10": 1.0,
+    "mrr": 0.125,
+    "ndcg@10": 0.3706656904013186,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "What offences relate to unauthorised access to information systems in Ireland?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "When can Irish authorities require the retention of communications data?",
+    "kind": "conceptual",
+    "recall@5": 0.0,
+    "recall@10": 0.0,
+    "mrr": 0.0,
+    "ndcg@10": 0.0,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "What does the Aliens Act 1935 empower the Minister to do?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 0.5,
+    "ndcg@10": 0.5912352048230277,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "How does Ireland implement the EU AI Act in national law?",
+    "kind": "conceptual",
+    "recall@5": 0.0,
+    "recall@10": 0.0,
+    "mrr": 0.0,
+    "ndcg@10": 0.0,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "Who is an adjudicator under the Regulation of Artificial Intelligence Act 2026?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.9325172924861036,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "I am a non-EEA machine learning engineer moving to Ireland. What permission do I need to work, and would the AI Act apply to a recruitment model I build?",
+    "kind": "multihop",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "Does the GDPR apply to personal data processed in Irish immigration applications, and which Irish body enforces it?",
+    "kind": "multihop",
+    "recall@5": 0.0,
+    "recall@10": 0.0,
+    "mrr": 0.0,
+    "ndcg@10": 0.0,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "If an AI system were used to decide visa applications, what would the AI Act and the Charter require?",
+    "kind": "multihop",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "How do EU free movement rights interact with Irish immigration permission for a non-EEA family member?",
+    "kind": "multihop",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   },
+   {
+    "q": "What does EU law say about penalising employers of irregular migrants, and does it bind Ireland?",
+    "kind": "multihop",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.8315546295836225,
+    "found_by": [
+     "dense",
+     "dense",
+     "dense",
+     "dense",
+     "dense"
+    ]
+   }
+  ],
+  "hybrid": [
+   {
+    "q": "What does Article 5 of the AI Act prohibit?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.913852335159709,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "Under Article 6 of the AI Act, when is an AI system classified as high-risk?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "What transparency obligations does Article 50 of the AI Act impose?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "What right does Article 17 of the GDPR create?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 0.2,
+    "ndcg@10": 0.4899692203633839,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "dense",
+     "bm25"
+    ]
+   },
+   {
+    "q": "What lawful bases for processing are listed in Article 6 of the GDPR?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 0.3333333333333333,
+    "ndcg@10": 0.6948159055899312,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "What does Article 33 of the GDPR require after a personal data breach?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.9338192602341809,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "What does section 4 of the Immigration Act 2004 say about permission to land?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "What does section 3 of the Immigration Act 1999 provide about deportation orders?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.8883444449388402,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "What does Article 7 of the Free Movement Directive say about the right of residence for more than three months?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.9228632535992205,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "What does Article 35 of the Free Movement Directive say about abuse of rights and marriages of convenience?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.8932547230000344,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "What does Article 8 of the Charter of Fundamental Rights protect?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.8072467605676945,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "What does Article 15 of the ePrivacy Directive allow Member States to do?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.8995023444012692,
+    "found_by": [
+     "both",
+     "bm25",
+     "dense",
+     "dense",
+     "bm25"
+    ]
+   },
+   {
+    "q": "What does Article 4 of the DSM Copyright Directive provide about text and data mining?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "What conditions does the Irish Nationality and Citizenship Act 1956 set for a certificate of naturalisation?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.942018912975622,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "What does section 2 of the Data Protection Act 2018 define?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.9830168297915423,
+    "found_by": [
+     "both",
+     "bm25",
+     "dense",
+     "dense",
+     "bm25"
+    ]
+   },
+   {
+    "q": "How long does a controller have to notify a personal data breach to the supervisory authority?",
+    "kind": "numeric",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.8395700624665824,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "What is the maximum administrative fine under the GDPR?",
+    "kind": "numeric",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.8726787744521319,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "What are the maximum penalties under the AI Act for engaging in a prohibited AI practice?",
+    "kind": "numeric",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "How long may an EU citizen reside in another Member State without any conditions or formalities?",
+    "kind": "numeric",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.8503449055347546,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "What is the maximum fine a very large online platform can face under the Digital Services Act?",
+    "kind": "numeric",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "What are the time limits for a transfer under the Dublin III Regulation?",
+    "kind": "numeric",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.9888026041880242,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "How many years of reckonable residence are needed to apply for Irish naturalisation?",
+    "kind": "numeric",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "What turnover and user thresholds make an undertaking a gatekeeper under the Digital Markets Act?",
+    "kind": "numeric",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "Can the non-EEA spouse of an EU citizen working in Ireland be refused residence because they never lawfully lived in the EU before?",
+    "kind": "conceptual",
+    "recall@5": 0.0,
+    "recall@10": 0.0,
+    "mrr": 0.0,
+    "ndcg@10": 0.0,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "Does a third-country national parent of a dependent EU-citizen child have a right to reside in the EU?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 0.5,
+    "ndcg@10": 0.6276832530738976,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "Is a same-sex spouse a spouse for the purposes of EU free movement rights?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.9766325382721557,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "Why did the Court of Justice invalidate the Safe Harbour decision on transfers to the United States?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "Why was the EU-US Privacy Shield held invalid?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "Must a search engine remove links to personal data when the person asks?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "What must a provider of a high-risk AI system do before placing it on the market?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "When is a general-purpose AI model considered to carry systemic risk?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "How does the law treat AI used to infer emotions of employees at work?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.9971876401972103,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "What happens to a family member's right of residence if the EU citizen they depend on dies or leaves?",
+    "kind": "conceptual",
+    "recall@5": 0.0,
+    "recall@10": 0.0,
+    "mrr": 0.0,
+    "ndcg@10": 0.0,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "What is subsidiary protection and who qualifies for it?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 0.5,
+    "ndcg@10": 0.6811534418271473,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "What protections does an applicant for international protection have while their claim is being decided in Ireland?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.8839764150728311,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "What powers does the Data Protection Commission have?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.913852335159709,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "dense",
+     "bm25"
+    ]
+   },
+   {
+    "q": "On what grounds does the Equal Status Act prohibit discrimination?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.9349366583346496,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "Can an employer in Ireland refuse to hire someone because of their nationality or race?",
+    "kind": "conceptual",
+    "recall@5": 0.0,
+    "recall@10": 0.0,
+    "mrr": 0.0,
+    "ndcg@10": 0.0,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "How must Irish courts interpret legislation in light of the European Convention on Human Rights?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.8503449055347546,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "What extra obligations apply to very large online platforms under the Digital Services Act?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "What incident reporting does NIS2 require of essential entities?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "What cybersecurity requirements apply to products with digital elements before they are sold?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "What rights does the Data Act give users of connected products to the data they generate?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "What is the Common Travel Area and how does it affect entry to Ireland?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.895183044469731,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "What are the options for a non-EEA national who wants to come and work in Ireland?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "What do I need to do before arriving in Ireland to study?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "How does a non-EEA national join a family member already living in Ireland?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "Do EU, EEA and Swiss citizens need permission to enter Ireland at the border?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "What is required to apply for Irish citizenship by naturalisation?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "What kinds of employment permit exist under Irish employment permits legislation?",
+    "kind": "conceptual",
+    "recall@5": 0.0,
+    "recall@10": 1.0,
+    "mrr": 0.1111111111111111,
+    "ndcg@10": 0.3010299956639812,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "What offences relate to unauthorised access to information systems in Ireland?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.838847952689218,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "When can Irish authorities require the retention of communications data?",
+    "kind": "conceptual",
+    "recall@5": 0.0,
+    "recall@10": 1.0,
+    "mrr": 0.125,
+    "ndcg@10": 0.3706656904013186,
+    "found_by": [
+     "dense",
+     "bm25",
+     "dense",
+     "bm25",
+     "dense"
+    ]
+   },
+   {
+    "q": "What does the Aliens Act 1935 empower the Minister to do?",
+    "kind": "conceptual",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.9199753853803092,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "How does Ireland implement the EU AI Act in national law?",
+    "kind": "conceptual",
+    "recall@5": 0.0,
+    "recall@10": 0.0,
+    "mrr": 0.0,
+    "ndcg@10": 0.0,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "Who is an adjudicator under the Regulation of Artificial Intelligence Act 2026?",
+    "kind": "citation",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "I am a non-EEA machine learning engineer moving to Ireland. What permission do I need to work, and would the AI Act apply to a recruitment model I build?",
+    "kind": "multihop",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "Does the GDPR apply to personal data processed in Irish immigration applications, and which Irish body enforces it?",
+    "kind": "multihop",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 0.5,
+    "ndcg@10": 0.6653497124326151,
+    "found_by": [
+     "dense",
+     "bm25",
+     "dense",
+     "bm25",
+     "dense"
+    ]
+   },
+   {
+    "q": "If an AI system were used to decide visa applications, what would the AI Act and the Charter require?",
+    "kind": "multihop",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "How do EU free movement rights interact with Irish immigration permission for a non-EEA family member?",
+    "kind": "multihop",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "found_by": [
+     "both",
+     "both",
+     "both",
+     "both",
+     "both"
+    ]
+   },
+   {
+    "q": "What does EU law say about penalising employers of irregular migrants, and does it bind Ireland?",
+    "kind": "multihop",
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 0.3333333333333333,
+    "ndcg@10": 0.5,
+    "found_by": [
+     "both",
+     "both",
+     "dense",
+     "bm25",
+     "bm25"
+    ]
+   }
+  ]
+ },
+ "answers": [],
+ "mode": "oneshot"
+}

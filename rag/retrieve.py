@@ -32,6 +32,16 @@ LAW_TYPES = ("eu_law", "ie_legislation", "ie_guidance", "case_law")
 RRF_K = 60          # standard constant; damps the top-rank dominance
 POOL = 50           # candidates per retriever before fusion
 
+# Equal, and that is a measured result rather than the default left untouched.
+# Up-weighting lexical looked obviously right -- fusion demonstrably cost BM25 its
+# best citation answers -- but the sweep in eval/sweep_rrf.py says it trades recall
+# for rank: 3:1 lifts MRR 0.843 -> 0.861 and drops recall@10 93.3% -> 91.7%. Every
+# one of the top-8 chunks is put in front of the generator, so a relevant chunk
+# existing in the window is worth more than its position inside it, and recall wins.
+# Up-weighting dense is worse on every measure, which is the real finding: on legal
+# text the lexical side is carrying more than the usual story suggests.
+RRF_WEIGHTS = {"bm25": 1.0, "dense": 1.0}
+
 
 def _fts_query(question: str) -> str:
     """Make an FTS5 MATCH expression that cannot be a syntax error.
@@ -101,7 +111,7 @@ class Retriever:
         lex = self.bm25(question, POOL, source_types) if mode in ("hybrid", "bm25") else []
         den = self.dense(question, POOL, source_types) if mode in ("hybrid", "dense") else []
 
-        fused = rrf({"bm25": lex, "dense": den})[:k]
+        fused = rrf({"bm25": lex, "dense": den}, weights=RRF_WEIGHTS)[:k]
         if not fused:
             return []
 
@@ -122,13 +132,26 @@ class Retriever:
         return hits
 
 
-def rrf(ranked_lists: dict[str, list[int]], k: int = RRF_K) -> list[tuple[int, float]]:
-    """Reciprocal Rank Fusion: score(d) = sum over lists of 1 / (k + rank(d)).
+def rrf(ranked_lists: dict[str, list[int]], k: int = RRF_K,
+        weights: dict[str, float] | None = None) -> list[tuple[int, float]]:
+    """Weighted Reciprocal Rank Fusion:
 
-    Uses ranks only, so the retrievers' incompatible score scales never meet.
+        score(d) = sum over lists of  w_list / (k + rank_of_d_in_list)
+
+    Uses ranks only, so the retrievers' incompatible score scales (negative BM25,
+    cosine) never have to be reconciled.
+
+    The weights are not decoration. With equal weights a document both retrievers
+    rank mid-pack outscores one that BM25 ranks first, because 1/76 + 1/61 beats
+    1/61 alone. On this corpus that cost real accuracy on exactly the queries BM25
+    is best at: "What right does Article 17 of the GDPR create?" went from MRR 1.00
+    under BM25 alone to 0.20 once fused. See eval/report.md for the sweep that
+    chose the default.
     """
+    weights = weights or {}
     scores: dict[int, float] = {}
-    for ids in ranked_lists.values():
+    for name, ids in ranked_lists.items():
+        w = weights.get(name, 1.0)
         for rank, cid in enumerate(ids, 1):
-            scores[cid] = scores.get(cid, 0.0) + 1.0 / (k + rank)
+            scores[cid] = scores.get(cid, 0.0) + w / (k + rank)
     return sorted(scores.items(), key=lambda kv: (-kv[1], kv[0]))

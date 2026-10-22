@@ -232,3 +232,18 @@ def test_matches_requires_an_include_hit_when_includes_are_given():
 
 def test_matches_is_case_insensitive_both_ways():
     assert _matches("EMPLOYMENT PERMITS", include=["Employment Permit"])
+
+
+def test_rrf_weights_scale_each_retriever_contribution():
+    """The weights are what let the fusion be tuned at all; eval/sweep_rrf.py
+    depends on them actually changing the ordering."""
+    lists = {"bm25": [7, 1], "dense": [1, 7]}
+    even = dict(rrf(lists))
+    assert even[7] == even[1]                      # symmetric input, equal weights
+    lex = dict(rrf(lists, weights={"bm25": 3.0, "dense": 1.0}))
+    assert lex[7] > lex[1]                         # bm25's first pick now wins
+    assert lex[7] == 3.0 / (RRF_K + 1) + 1.0 / (RRF_K + 2)
+
+
+def test_rrf_default_weight_is_one_for_unnamed_lists():
+    assert dict(rrf({"other": [5]}, weights={"bm25": 9.0}))[5] == 1.0 / (RRF_K + 1)
