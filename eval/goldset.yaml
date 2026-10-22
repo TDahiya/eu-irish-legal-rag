@@ -174,6 +174,12 @@
 - q: What does the Aliens Act 1935 empower the Minister to do?
   expect_instrument: [Aliens Act 1935]
   kind: conceptual
+- q: How does Ireland implement the EU AI Act in national law?
+  expect_instrument: ["Regulation of Artificial Intelligence Act 2026"]
+  kind: conceptual
+- q: Who is an adjudicator under the Regulation of Artificial Intelligence Act 2026?
+  expect_instrument: ["Regulation of Artificial Intelligence Act 2026"]
+  kind: citation
 
 # ----------------------------------------- multi-hop: two domains in one question
 - q: I am a non-EEA machine learning engineer moving to Ireland. What permission do I need to work, and would the AI Act apply to a recruitment model I build?
@@ -214,10 +220,10 @@
   expect_abstain: true
   kind: trap
   why: A fabricated citation. The corpus contains no Irish High Court judgments.
-- q: What is the penalty regime under the Irish Artificial Intelligence Act 2025?
+- q: What does Article 150 of the EU AI Act provide?
   expect_abstain: true
   kind: trap
-  why: No such Act exists. Ireland implements the EU AI Act; there is no standalone Irish AI Act.
+  why: The AI Act ends at Article 113. Article 150 does not exist.
 - q: What does Article 99 of the AI Act say about Irish employment permits?
   expect_abstain: true
   kind: trap

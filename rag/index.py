@@ -11,6 +11,7 @@ by id without a lookup table, so it is asserted rather than assumed.
 """
 from __future__ import annotations
 
+import argparse
 import json
 import sqlite3
 import sys
@@ -50,8 +51,14 @@ CREATE TABLE chunks (
 );
 -- content='chunks' makes this a contentless FTS index: it stores the inverted index
 -- only and reads the text back from `chunks`, instead of keeping a second copy.
+--
+-- citation is indexed as well as text, and it is the whole reason BM25 can answer a
+-- citation lookup. Article and section numbers live in the citation ("AI Act,
+-- Article 5"), not usually in the body, so with text alone a search for "Article 5
+-- of the AI Act" returned Articles 60 and 79 -- the bare "5" is too common a token
+-- in the body to rank. retrieve.py weights this column heavily.
 CREATE VIRTUAL TABLE chunks_fts USING fts5(
-    text, content='chunks', content_rowid='id', tokenize='porter unicode61'
+    citation, text, content='chunks', content_rowid='id', tokenize='porter unicode61'
 );
 CREATE INDEX idx_source_type ON chunks(source_type);
 CREATE INDEX idx_domain ON chunks(domain);
@@ -78,7 +85,8 @@ def build_sqlite(rows: list[dict]) -> None:
           None if r["ireland_bound"] is None else int(r["ireland_bound"]),
           r["note"], r["url"]) for r in rows],
     )
-    con.execute("INSERT INTO chunks_fts (rowid, text) SELECT id, text FROM chunks")
+    con.execute("INSERT INTO chunks_fts (rowid, citation, text) "
+                "SELECT id, citation, text FROM chunks")
     con.commit()
     con.execute("VACUUM")
     con.close()
@@ -106,12 +114,23 @@ def build_faiss(rows: list[dict]) -> faiss.Index:
 
 
 def main() -> int:
+    # Embedding costs ~an hour; the SQLite build costs a minute. They share nothing
+    # but the chunk ids, so either can be rebuilt alone.
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--skip-faiss", action="store_true", help="rebuild SQLite only")
+    ap.add_argument("--skip-sqlite", action="store_true", help="rebuild FAISS only")
+    args = ap.parse_args()
+
     INDEX_DIR.mkdir(parents=True, exist_ok=True)
     rows = load_chunks()
     print("{:,} chunks".format(len(rows)))
 
-    build_sqlite(rows)
-    print("  sqlite  {:>8.1f} MB  {}".format(DB.stat().st_size / 1e6, DB.name))
+    if not args.skip_sqlite:
+        build_sqlite(rows)
+        print("  sqlite  {:>8.1f} MB  {}".format(DB.stat().st_size / 1e6, DB.name))
+
+    if args.skip_faiss:
+        return 0
 
     build_faiss(rows)
     size = FAISS_PATH.stat().st_size / 1e6

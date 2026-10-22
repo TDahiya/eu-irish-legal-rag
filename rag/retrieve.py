@@ -62,11 +62,14 @@ class Retriever:
             return []
         placeholders = ",".join("?" * len(source_types))
         # FTS5's bm25() returns a NEGATIVE score where more negative is a better
-        # match, so this orders ASC, not DESC.
+        # match, so this orders ASC, not DESC. The weights are per column
+        # (citation, text): a hit on the citation is what makes "Article 5 of the
+        # AI Act" land on Article 5 rather than on whichever body text happens to
+        # contain the token "5".
         sql = (
             "SELECT f.rowid FROM chunks_fts f JOIN chunks c ON c.id = f.rowid "
             "WHERE chunks_fts MATCH ? AND c.source_type IN (%s) "
-            "ORDER BY bm25(chunks_fts) ASC LIMIT ?" % placeholders
+            "ORDER BY bm25(chunks_fts, 10.0, 1.0) ASC LIMIT ?" % placeholders
         )
         rows = self.con.execute(sql, (match, *source_types, pool)).fetchall()
         return [r["rowid"] for r in rows]
