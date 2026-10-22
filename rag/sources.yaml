@@ -1,0 +1,119 @@
+# The corpus. Every source lives here; no module hardcodes a URL.
+#
+# ireland_bound matters: Ireland has a Title V (JHA) opt-out, so several EU immigration
+# instruments do NOT apply here. Those become trap questions in eval/goldset.yaml —
+# a system that quotes the Blue Card salary threshold "for Ireland" is hallucinating.
+# Verify these flags with `python -m rag.fetch --dry-run` plus a human read.
+
+crawl_delay:              # seconds between requests, per host
+  publications.europa.eu: 1.0
+  www.irishstatutebook.ie: 1.0
+  www.irishimmigration.ie: 10.0   # their robots.txt asks for this
+  enterprise.gov.ie: 2.0
+  www.gutenberg.org: 2.0
+
+# ---------------------------------------------------------------- EU law (Cellar XHTML)
+eu_law:
+  fetcher: cellar
+  items:
+    # --- tech / AI / data ---
+    - {celex: 32024R1689, domain: tech, ireland_bound: true,  short: "AI Act"}
+    - {celex: 32016R0679, domain: tech, ireland_bound: true,  short: "GDPR"}
+    - {celex: 32022R2065, domain: tech, ireland_bound: true,  short: "Digital Services Act"}
+    - {celex: 32022R1925, domain: tech, ireland_bound: true,  short: "Digital Markets Act"}
+    - {celex: 32023R2854, domain: tech, ireland_bound: true,  short: "Data Act"}
+    - {celex: 32022L2555, domain: tech, ireland_bound: true,  short: "NIS2 Directive"}
+    - {celex: 32024R2847, domain: tech, ireland_bound: true,  short: "Cyber Resilience Act"}
+    - {celex: 32002L0058, domain: tech, ireland_bound: true,  short: "ePrivacy Directive"}
+    - {celex: 32019L0790, domain: tech, ireland_bound: true,  short: "DSM Copyright Directive"}
+    # --- immigration / free movement ---
+    - {celex: 32004L0038, domain: immigration, ireland_bound: true,  short: "Free Movement Directive"}
+    - {celex: 32013R0604, domain: immigration, ireland_bound: true,  short: "Dublin III Regulation"}
+    - {celex: 32021L1883, domain: immigration, ireland_bound: false, short: "Blue Card Directive",
+       note: "Ireland not bound — Title V opt-out. There is no Irish Blue Card."}
+    - {celex: 32011L0098, domain: immigration, ireland_bound: false, short: "Single Permit Directive",
+       note: "Ireland not bound — Title V opt-out."}
+    - {celex: 32003L0086, domain: immigration, ireland_bound: false, short: "Family Reunification Directive",
+       note: "Ireland not bound. Irish family reunification runs on national policy + INIS guidance."}
+    - {celex: 32016R0399, domain: immigration, ireland_bound: false, short: "Schengen Borders Code",
+       note: "Ireland is not in the Schengen area."}
+    - {celex: 32011L0095, domain: immigration, ireland_bound: false, short: "Qualification Directive (recast)",
+       note: "Ireland not bound by the recast."}
+    - {celex: 32013L0032, domain: immigration, ireland_bound: false, short: "Asylum Procedures Directive (recast)",
+       note: "Ireland not bound by the recast."}
+    - {celex: 32009L0052, domain: immigration, ireland_bound: false, short: "Employer Sanctions Directive",
+       note: "Ireland not bound."}
+    # --- constitutional / rights ---
+    - {celex: 12012P/TXT, domain: general, ireland_bound: true, short: "Charter of Fundamental Rights"}
+    - {celex: 12016M/TXT, domain: general, ireland_bound: true, short: "Treaty on European Union"}
+    - {celex: 12016E/TXT, domain: general, ireland_bound: true, short: "TFEU"}
+
+# ------------------------------------------------------------------- CJEU case law
+case_law:
+  fetcher: cellar
+  items:
+    - {celex: 62008CJ0127, domain: immigration, short: "Metock (C-127/08)",
+       note: "Irish case. Non-EEA spouse of an EU worker; prior lawful residence not required."}
+    - {celex: 62009CJ0034, domain: immigration, short: "Ruiz Zambrano (C-34/09)"}
+    - {celex: 62015CJ0133, domain: immigration, short: "Chavez-Vilchez (C-133/15)"}
+    - {celex: 62016CJ0673, domain: immigration, short: "Coman (C-673/16)"}
+    - {celex: 62014CJ0362, domain: tech, short: "Schrems I (C-362/14)"}
+    - {celex: 62018CJ0311, domain: tech, short: "Schrems II (C-311/18)"}
+    - {celex: 62012CJ0131, domain: tech, short: "Google Spain (C-131/12)"}
+
+# ------------------------------------------- Irish primary legislation (ELI XML, CC-BY 4.0)
+ie_legislation:
+  fetcher: eli
+  items:
+    # --- immigration ---
+    - {eli: 2004/act/1,   domain: immigration, short: "Immigration Act 2004"}
+    - {eli: 1999/act/22,  domain: immigration, short: "Immigration Act 1999"}
+    - {eli: 2003/act/26,  domain: immigration, short: "Immigration Act 2003"}
+    - {eli: 2015/act/66,  domain: immigration, short: "International Protection Act 2015"}
+    - {eli: 1956/act/26,  domain: immigration, short: "Irish Nationality and Citizenship Act 1956"}
+    - {eli: 1986/act/23,  domain: immigration, short: "Irish Nationality and Citizenship Act 1986"}
+    - {eli: 2001/act/15,  domain: immigration, short: "Irish Nationality and Citizenship Act 2001"}
+    - {eli: 2004/act/38,  domain: immigration, short: "Irish Nationality and Citizenship Act 2004"}
+    - {eli: 1935/act/14,  domain: immigration, short: "Aliens Act 1935"}
+    # --- employment permits ---
+    - {eli: 2024/act/17,  domain: immigration, short: "Employment Permits Act 2024"}
+    - {eli: 2006/act/16,  domain: immigration, short: "Employment Permits Act 2006"}
+    - {eli: 2014/act/26,  domain: immigration, short: "Employment Permits (Amendment) Act 2014"}
+    - {eli: 2015/si/548,  domain: immigration, short: "EC (Free Movement of Persons) Regulations 2015"}
+    # --- tech / data ---
+    - {eli: 2018/act/7,   domain: tech, short: "Data Protection Act 2018"}
+    - {eli: 2011/act/3,   domain: tech, short: "Communications (Retention of Data) Act 2011"}
+    - {eli: 2017/act/11,  domain: tech, short: "Criminal Justice (Offences Relating to Information Systems) Act 2017"}
+    # --- general / rights ---
+    - {eli: 2003/act/20,  domain: general, short: "European Convention on Human Rights Act 2003"}
+    - {eli: 2000/act/8,   domain: general, short: "Equal Status Act 2000"}
+    - {eli: 1998/act/21,  domain: general, short: "Employment Equality Act 1998"}
+
+# ------------------------------------------------- Irish policy & guidance (HTML, robots-allowed)
+ie_guidance:
+  fetcher: sitemap
+  items:
+    - sitemap: https://www.irishimmigration.ie/page-sitemap.xml
+      domain: immigration
+      short: "Immigration Service Delivery guidance"
+      # keep pages whose path contains any of these; drops press releases and site furniture
+      include:
+        [visa, permission, permit, residence, registration, citizenship, naturalisation,
+         family, student, employment, work, stamp, immigration, protection, travel,
+         appeal, fees, atypical, eu-treaty, reside]
+      exclude: [news, press, gallery, contact-us, privacy, cookie, sitemap, feedback,
+                404, disclaimer, accessibility]
+
+# ------------------------------------------------- public-domain legal/political philosophy
+philosophy:
+  fetcher: gutenberg
+  # Never retrieved for questions about current law — see retrieve.py source filter.
+  items:
+    - {id: 34901, short: "Mill — On Liberty"}
+    - {id: 11224, short: "Mill — Utilitarianism"}
+    - {id: 7370,  short: "Locke — Second Treatise of Government"}
+    - {id: 3207,  short: "Hobbes — Leviathan"}
+    - {id: 1497,  short: "Plato — The Republic"}
+    - {id: 6762,  short: "Aristotle — Politics"}
+    - {id: 5682,  short: "Kant — Metaphysic of Morals"}
+    - {id: 27573, short: "Montesquieu — The Spirit of Laws"}

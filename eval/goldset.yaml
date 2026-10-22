@@ -1,0 +1,236 @@
+# Evaluation questions.
+#
+# expect_instrument  substrings matched against a chunk's `instrument`. Relevance is
+#                    judged at this level, not by chunk id, because chunk ids move
+#                    whenever the chunker changes and the instrument does not.
+# kind               citation | numeric | conceptual | multihop | trap
+#                    The per-kind breakdown is the point: BM25 should win on
+#                    `citation` and `numeric`, dense should win on `conceptual`.
+# expect_abstain     true for questions the corpus cannot answer. Abstaining is the
+#                    correct behaviour; inventing an answer is the failure being
+#                    measured.
+
+# ------------------------------------------------- citation lookup (exact reference)
+- q: What does Article 5 of the AI Act prohibit?
+  expect_instrument: [AI Act]
+  kind: citation
+- q: Under Article 6 of the AI Act, when is an AI system classified as high-risk?
+  expect_instrument: [AI Act]
+  kind: citation
+- q: What transparency obligations does Article 50 of the AI Act impose?
+  expect_instrument: [AI Act]
+  kind: citation
+- q: What right does Article 17 of the GDPR create?
+  expect_instrument: [GDPR]
+  kind: citation
+- q: What lawful bases for processing are listed in Article 6 of the GDPR?
+  expect_instrument: [GDPR]
+  kind: citation
+- q: What does Article 33 of the GDPR require after a personal data breach?
+  expect_instrument: [GDPR]
+  kind: citation
+- q: What does section 4 of the Immigration Act 2004 say about permission to land?
+  expect_instrument: [Immigration Act 2004]
+  kind: citation
+- q: What does section 3 of the Immigration Act 1999 provide about deportation orders?
+  expect_instrument: [Immigration Act 1999]
+  kind: citation
+- q: What does Article 7 of the Free Movement Directive say about the right of residence for more than three months?
+  expect_instrument: [Free Movement Directive]
+  kind: citation
+- q: What does Article 35 of the Free Movement Directive say about abuse of rights and marriages of convenience?
+  expect_instrument: [Free Movement Directive]
+  kind: citation
+- q: What does Article 8 of the Charter of Fundamental Rights protect?
+  expect_instrument: [Charter of Fundamental Rights]
+  kind: citation
+- q: What does Article 15 of the ePrivacy Directive allow Member States to do?
+  expect_instrument: [ePrivacy Directive]
+  kind: citation
+- q: What does Article 4 of the DSM Copyright Directive provide about text and data mining?
+  expect_instrument: [DSM Copyright Directive]
+  kind: citation
+- q: What conditions does the Irish Nationality and Citizenship Act 1956 set for a certificate of naturalisation?
+  expect_instrument: [Irish Nationality and Citizenship Act 1956]
+  kind: citation
+- q: What does section 2 of the Data Protection Act 2018 define?
+  expect_instrument: [Data Protection Act 2018]
+  kind: citation
+
+# ----------------------------------------------------- numeric thresholds and limits
+- q: How long does a controller have to notify a personal data breach to the supervisory authority?
+  expect_instrument: [GDPR]
+  kind: numeric
+- q: What is the maximum administrative fine under the GDPR?
+  expect_instrument: [GDPR]
+  kind: numeric
+- q: What are the maximum penalties under the AI Act for engaging in a prohibited AI practice?
+  expect_instrument: [AI Act]
+  kind: numeric
+- q: How long may an EU citizen reside in another Member State without any conditions or formalities?
+  expect_instrument: [Free Movement Directive]
+  kind: numeric
+- q: What is the maximum fine a very large online platform can face under the Digital Services Act?
+  expect_instrument: [Digital Services Act]
+  kind: numeric
+- q: What are the time limits for a transfer under the Dublin III Regulation?
+  expect_instrument: [Dublin III Regulation]
+  kind: numeric
+- q: How many years of reckonable residence are needed to apply for Irish naturalisation?
+  expect_instrument: [Irish Nationality and Citizenship Act 1956, Immigration Service Delivery guidance]
+  kind: numeric
+- q: What turnover and user thresholds make an undertaking a gatekeeper under the Digital Markets Act?
+  expect_instrument: [Digital Markets Act]
+  kind: numeric
+
+# --------------------------------------------------------------- conceptual / paraphrase
+- q: Can the non-EEA spouse of an EU citizen working in Ireland be refused residence because they never lawfully lived in the EU before?
+  expect_instrument: ["Metock", Free Movement Directive]
+  kind: conceptual
+- q: Does a third-country national parent of a dependent EU-citizen child have a right to reside in the EU?
+  expect_instrument: ["Zambrano", "Chavez-Vilchez"]
+  kind: conceptual
+- q: Is a same-sex spouse a spouse for the purposes of EU free movement rights?
+  expect_instrument: ["Coman"]
+  kind: conceptual
+- q: Why did the Court of Justice invalidate the Safe Harbour decision on transfers to the United States?
+  expect_instrument: ["Schrems I"]
+  kind: conceptual
+- q: Why was the EU-US Privacy Shield held invalid?
+  expect_instrument: ["Schrems II"]
+  kind: conceptual
+- q: Must a search engine remove links to personal data when the person asks?
+  expect_instrument: ["Google Spain"]
+  kind: conceptual
+- q: What must a provider of a high-risk AI system do before placing it on the market?
+  expect_instrument: [AI Act]
+  kind: conceptual
+- q: When is a general-purpose AI model considered to carry systemic risk?
+  expect_instrument: [AI Act]
+  kind: conceptual
+- q: How does the law treat AI used to infer emotions of employees at work?
+  expect_instrument: [AI Act]
+  kind: conceptual
+- q: What happens to a family member's right of residence if the EU citizen they depend on dies or leaves?
+  expect_instrument: [Free Movement Directive]
+  kind: conceptual
+- q: What is subsidiary protection and who qualifies for it?
+  expect_instrument: [International Protection Act 2015, Qualification Directive]
+  kind: conceptual
+- q: What protections does an applicant for international protection have while their claim is being decided in Ireland?
+  expect_instrument: [International Protection Act 2015]
+  kind: conceptual
+- q: What powers does the Data Protection Commission have?
+  expect_instrument: [Data Protection Act 2018]
+  kind: conceptual
+- q: On what grounds does the Equal Status Act prohibit discrimination?
+  expect_instrument: [Equal Status Act 2000]
+  kind: conceptual
+- q: Can an employer in Ireland refuse to hire someone because of their nationality or race?
+  expect_instrument: [Employment Equality Act 1998, Equal Status Act 2000]
+  kind: conceptual
+- q: How must Irish courts interpret legislation in light of the European Convention on Human Rights?
+  expect_instrument: [European Convention on Human Rights Act 2003]
+  kind: conceptual
+- q: What extra obligations apply to very large online platforms under the Digital Services Act?
+  expect_instrument: [Digital Services Act]
+  kind: conceptual
+- q: What incident reporting does NIS2 require of essential entities?
+  expect_instrument: [NIS2 Directive]
+  kind: conceptual
+- q: What cybersecurity requirements apply to products with digital elements before they are sold?
+  expect_instrument: [Cyber Resilience Act]
+  kind: conceptual
+- q: What rights does the Data Act give users of connected products to the data they generate?
+  expect_instrument: [Data Act]
+  kind: conceptual
+- q: What is the Common Travel Area and how does it affect entry to Ireland?
+  expect_instrument: [Immigration Service Delivery guidance]
+  kind: conceptual
+- q: What are the options for a non-EEA national who wants to come and work in Ireland?
+  expect_instrument: [Immigration Service Delivery guidance, Employment Permits Act 2024]
+  kind: conceptual
+- q: What do I need to do before arriving in Ireland to study?
+  expect_instrument: [Immigration Service Delivery guidance]
+  kind: conceptual
+- q: How does a non-EEA national join a family member already living in Ireland?
+  expect_instrument: [Immigration Service Delivery guidance]
+  kind: conceptual
+- q: Do EU, EEA and Swiss citizens need permission to enter Ireland at the border?
+  expect_instrument: [Immigration Service Delivery guidance]
+  kind: conceptual
+- q: What is required to apply for Irish citizenship by naturalisation?
+  expect_instrument: [Immigration Service Delivery guidance, Irish Nationality and Citizenship Act 1956]
+  kind: conceptual
+- q: What kinds of employment permit exist under Irish employment permits legislation?
+  expect_instrument: [Employment Permits Act 2024, Employment Permits Act 2006]
+  kind: conceptual
+- q: What offences relate to unauthorised access to information systems in Ireland?
+  expect_instrument: ["Criminal Justice (Offences Relating to Information Systems) Act 2017"]
+  kind: conceptual
+- q: When can Irish authorities require the retention of communications data?
+  expect_instrument: ["Communications (Retention of Data) Act 2011"]
+  kind: conceptual
+- q: What does the Aliens Act 1935 empower the Minister to do?
+  expect_instrument: [Aliens Act 1935]
+  kind: conceptual
+
+# ----------------------------------------- multi-hop: two domains in one question
+- q: I am a non-EEA machine learning engineer moving to Ireland. What permission do I need to work, and would the AI Act apply to a recruitment model I build?
+  expect_instrument: [Immigration Service Delivery guidance, AI Act, Employment Permits Act 2024]
+  kind: multihop
+- q: Does the GDPR apply to personal data processed in Irish immigration applications, and which Irish body enforces it?
+  expect_instrument: [GDPR, Data Protection Act 2018]
+  kind: multihop
+- q: If an AI system were used to decide visa applications, what would the AI Act and the Charter require?
+  expect_instrument: [AI Act, Charter of Fundamental Rights]
+  kind: multihop
+- q: How do EU free movement rights interact with Irish immigration permission for a non-EEA family member?
+  expect_instrument: [Free Movement Directive, Immigration Service Delivery guidance, "Metock"]
+  kind: multihop
+- q: What does EU law say about penalising employers of irregular migrants, and does it bind Ireland?
+  expect_instrument: [Employer Sanctions Directive]
+  kind: multihop
+
+# ----------------------------------------------------------------------- trap questions
+# No answer exists in the corpus. The correct output is the abstention sentinel.
+- q: What is the minimum salary threshold for an Irish EU Blue Card?
+  expect_abstain: true
+  kind: trap
+  why: Ireland is not bound by the Blue Card Directive (Title V opt-out). There is no Irish Blue Card.
+- q: What are Ireland's Schengen visa requirements?
+  expect_abstain: true
+  kind: trap
+  why: Ireland is not in the Schengen area and issues no Schengen visas.
+- q: Under the Single Permit Directive, how many days does Ireland have to decide an application?
+  expect_abstain: true
+  kind: trap
+  why: Ireland is not bound by the Single Permit Directive.
+- q: What does the Family Reunification Directive oblige Ireland to grant to a refugee's spouse?
+  expect_abstain: true
+  kind: trap
+  why: Ireland is not bound by the Family Reunification Directive; Irish family reunification runs on national policy.
+- q: What did the Irish High Court decide in Okonkwo v Minister for Justice [2025] IEHC 441?
+  expect_abstain: true
+  kind: trap
+  why: A fabricated citation. The corpus contains no Irish High Court judgments.
+- q: What is the penalty regime under the Irish Artificial Intelligence Act 2025?
+  expect_abstain: true
+  kind: trap
+  why: No such Act exists. Ireland implements the EU AI Act; there is no standalone Irish AI Act.
+- q: What does Article 99 of the AI Act say about Irish employment permits?
+  expect_abstain: true
+  kind: trap
+  why: Article 99 concerns penalties and says nothing about employment permits. Conflates two instruments.
+- q: What will the Critical Skills Occupations List salary threshold be in 2028?
+  expect_abstain: true
+  kind: trap
+  why: A future figure that exists in no source.
+- q: How do I apply for a United States H-1B visa from Ireland?
+  expect_abstain: true
+  kind: trap
+  why: Entirely outside the corpus, which covers EU and Irish law only.
+- q: Which section of the Data Protection Act 2018 sets the fee for an Irish work permit?
+  expect_abstain: true
+  kind: trap
+  why: The Data Protection Act 2018 has nothing to do with work permit fees. A false premise about a real Act.

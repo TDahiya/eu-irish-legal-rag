@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: eu-irish-law-rag
+    runtime: python
+    plan: free
+    region: frankfurt
+    buildCommand: |
+      pip install --upgrade pip
+      pip install -r requirements.txt
+      python -m rag.get_index
+      python -c "from fastembed import TextEmbedding; TextEmbedding('BAAI/bge-small-en-v1.5')"
+    # Streamlit must bind the port Render hands it, on all interfaces.
+    startCommand: >
+      streamlit run app.py
+      --server.port $PORT
+      --server.address 0.0.0.0
+      --server.headless true
+      --browser.gatherUsageStats false
+    healthCheckPath: /_stcore/health
+    envVars:
+      # Set in the Render dashboard, not here.
+      - key: GROQ_API_KEY
+        sync: false
+      # GitHub Release asset holding chunks.db + dense.faiss.
+      - key: INDEX_URL
+        sync: false
+      - key: PYTHON_VERSION
+        value: "3.14.3"
+      # Keep the ONNX model inside the build so it is cached between deploys
+      # rather than re-downloaded on every cold start.
+      - key: FASTEMBED_CACHE_PATH
+        value: /opt/render/project/src/.fastembed

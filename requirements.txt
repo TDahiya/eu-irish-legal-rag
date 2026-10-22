@@ -1,0 +1,6 @@
+# Runtime only — everything the deployed Streamlit app needs. Keep this list short:
+# Render free tier is 512 MB RAM.
+streamlit==1.66.1
+fastembed==0.9.0
+faiss-cpu==1.15.1
+groq==1.7.0
