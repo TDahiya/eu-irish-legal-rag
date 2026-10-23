@@ -19,7 +19,8 @@ from pathlib import Path
 
 import yaml
 
-from rag.generate import ABSTAIN, abstained, answer, client as groq_client
+from rag.generate import (ABSTAIN, abstained, answer, client as groq_client,
+                          normalise_citations)
 from rag.retrieve import LAW_TYPES, Retriever
 from rag.score import judge, live_scores
 
@@ -129,6 +130,8 @@ def main() -> int:
     ap.add_argument("--retrieval-only", action="store_true")
     ap.add_argument("--limit", type=int, help="first N questions only")
     ap.add_argument("--mode", default="oneshot", choices=("oneshot", "agentic"))
+    ap.add_argument("--rescore", action="store_true",
+                    help="recompute local scores over stored answers; no API calls")
     ap.add_argument("--fresh", action="store_true",
                     help="ignore eval/results.json and re-answer every question")
     ap.add_argument("--tpm", type=int, default=TPM_LIMIT,
@@ -167,7 +170,24 @@ def main() -> int:
 
     # ---------------- answers: generation, live scores, LLM judge
     answers = []
-    if not args.retrieval_only:
+    if args.rescore:
+        # Recompute the local scores over answers already paid for. Retrieval is
+        # deterministic and embedding is local, so this costs no API calls -- which
+        # matters when a measurement bug is found after a run that used a day's
+        # token quota. Judge verdicts are kept as they were.
+        prev = json.loads(RAW_RESULTS.read_text(encoding="utf-8"))
+        by_q = {a["q"]: a for a in prev.get("answers", [])}
+        for item in gold:
+            old = by_q.get(item["q"])
+            if old is None:
+                continue
+            text = normalise_citations(old["answer"])
+            hits = retriever.search(item["q"], k=8)
+            live = live_scores(text, hits, retriever.model)
+            answers.append({**old, "answer": text, "abstained": abstained(text),
+                            **{k: v for k, v in live.items() if k != "per_sentence"}})
+        print("rescored %d answers (no API calls)" % len(answers))
+    elif not args.retrieval_only:
         client = groq_client()
         search = _agentic_search(retriever, client) if args.mode == "agentic" else None
 
@@ -236,7 +256,8 @@ def main() -> int:
     results = {"retrieval": retrieval, "answers": answers, "mode": args.mode,
                "judged": sum(1 for a in answers if a.get("faithfulness") is not None),
                "n_questions": len(gold),
-               "n_failed": len(gold) - len(answers) if not args.retrieval_only else 0}
+               "n_failed": (0 if args.retrieval_only or args.rescore
+                            else len(gold) - len(answers))}
     RAW_RESULTS.write_text(json.dumps(results, indent=1, ensure_ascii=False),
                            encoding="utf-8")
     REPORT.write_text(render(results, gold), encoding="utf-8")
@@ -367,12 +388,20 @@ def render(results: dict, gold: list[dict]) -> str:
 
     # --- the trap questions, individually, because this is the headline
     L += ["", "### Trap questions", "",
-          "Questions with no answer in the corpus. Abstaining is the correct behaviour.",
-          "", "| question | abstained | why it is a trap |", "|---|---|---|"]
+          "Questions with no answer in the corpus. Abstaining is correct -- but so is",
+          "answering by rejecting the false premise, and that is the better response.",
+          "The `abstained` column only counts the literal refusal sentinel, so read it",
+          "with the faithfulness column: a trap answered at high faithfulness rebutted",
+          "the premise from the sources rather than inventing an answer to it.",
+          "", "| question | abstained | faithfulness | why it is a trap |",
+          "|---|---|---|---|"]
     whys = {g["q"]: g.get("why", "") for g in gold}
     for a in traps:
-        L.append("| %s | %s | %s |" % (a["q"][:70], "yes" if a["abstained"] else "**NO**",
-                                       whys.get(a["q"], "")[:80]))
+        f = a.get("faithfulness")
+        L.append("| %s | %s | %s | %s |" % (
+            a["q"][:66], "yes" if a["abstained"] else "no",
+            "--" if f is None else "%.0f%%" % (100 * f),
+            whys.get(a["q"], "")[:76]))
     return "\n".join(L) + "\n"
 
 

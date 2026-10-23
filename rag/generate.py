@@ -101,7 +101,21 @@ def answer(question: str, hits: list[dict], model: str = MODEL,
                     yield piece
         return tokens()
 
-    return client.chat.completions.create(**kwargs).choices[0].message.content
+    return normalise_citations(
+        client.chat.completions.create(**kwargs).choices[0].message.content or "")
+
+
+def normalise_citations(text: str) -> str:
+    """Rewrite full-width citation markers to the [n] the prompt asks for.
+
+    gpt-oss emits them in 17 of 57 evaluated answers -- as 【6】 and sometimes
+    【7†L13-L16】 -- regardless of the instruction. Those were invisible to
+    cited_indexes(), to the citation scores and to the UI, which silently measured
+    citation validity on only the answers that happened to comply. Normalising the
+    output is more reliable than asking the model again.
+    """
+    return re.sub("【\\s*(\\d+)[^】]*】",
+                  lambda m: "[%s]" % m.group(1), text)
 
 
 def cited_indexes(text: str) -> set[int]:

@@ -227,104 +227,47 @@ On a 512 MB box that decides it. Reproduce with `python -m eval.bench_stores`.
 
 ### Answer quality
 
-**Partial: 39 of 70 questions.** Groq's free tier allows 200,000 tokens a day and a
-full pass costs ~474,000 — the retrieved context is sent twice, once to answer and
-once to grade each claim against the sources. Runs resume from
-`eval/results.json`, so the remainder completes across quota windows.
+All 70 questions, 57 of them judged claim-by-claim (an abstention has no claims to
+grade).
 
-| metric | value | n |
-|---|---|---|
-| faithfulness (LLM-judged) | 94.9% | 36 |
-| hallucination rate | 5.1% | 36 |
-| citations pointing at a real source | 100.0% | 39 |
-| cited the best-supporting source | 99.4% | 39 |
-| grounding score (embedding proxy) | 0.840 | 39 |
-| **abstained on a trap question** | **not yet measured** | 0 |
+| metric | value |
+|---|---|
+| faithfulness (LLM-judged) | **95.2%** |
+| hallucination rate | **4.8%** |
+| citations pointing at a real source | **100%** |
+| cited the best-supporting source | 99.5% |
+| refused a trap question outright | 8 / 10 |
+| refused an answerable question | 8.3% (5 / 60) |
 
-The trap questions are the last 10 in the goldset and have not been reached. Until
-they are, this project's headline claim — that it refuses rather than invents — is
-*unmeasured*, and the table says so rather than implying otherwise.
+**On the two traps it did not refuse — it was right, and the metric was wrong.**
 
-**The cheap grounding score is not a proxy for faithfulness.** Pearson r between
-them is **0.02**. They measure different things: grounding asks whether an answer's
-sentences resemble the retrieved text, faithfulness asks whether each claim is
-actually supported, and an answer can paraphrase a source closely while asserting
-something it does not say. Read with the caveat that faithfulness barely varies
-across these 36 answers, so this sample cannot settle the relationship either way.
-The UI therefore presents the grounding score as what it is — a similarity signal —
-and the judge remains the measurement of record.
+> *"What are Ireland's Schengen visa requirements?"*
+> → *"Ireland does not participate in the Schengen acquis and therefore is not bound
+> by Schengen visa rules; it issues its own visas independently."* — **100% faithful**
 
----
+Rebutting the false premise from the sources is a *better* answer than refusing, and
+the `abstained` column counts only the literal refusal sentinel, so it scored that as
+a failure. The report now prints faithfulness beside every trap so the two cases can
+be told apart. Nothing invented an Irish Blue Card salary or a Schengen visa rule.
 
-## Run it
+The 8.3% figure is the cost of that caution: five answerable questions were refused
+when the corpus did support an answer. Tuning abstention down would raise answer
+coverage and raise hallucination with it; this is where that dial currently sits.
 
-```bash
-python -m venv .venv && .venv/Scripts/activate      # Windows
-pip install -r requirements-dev.txt
+**The embedding grounding score is still not a proxy for faithfulness** (Pearson
+r = **0.15** over 55 answers). It measures whether an answer *resembles* the sources,
+not whether they support it — an answer paraphrasing a statute in plain English
+scores lower than one copying its wording while being equally true. Faithfulness also
+barely varies here, so the sample cannot settle it either way. The UI labels the
+score as the similarity signal it is, and the judge is the measurement of record.
+This is the finding that got a feature deleted — see above.
 
-python -m rag.fetch --dry-run     # verify all 56 sources resolve
-python -m rag.fetch               # download (~25 min; polite crawl delays)
-python -m rag.chunk               # structure-aware chunking
-python -m rag.index               # FAISS + SQLite FTS5
+### A measurement bug worth recording
 
-python -m eval.run_eval --retrieval-only    # no API key needed
-export GROQ_API_KEY=...                     # free key: console.groq.com
-python -m eval.run_eval                     # adds answer quality
-python -m eval.bench_stores                 # FAISS vs Chroma
-
-streamlit run app.py
-```
-
-Locally the key can live in `.streamlit/secrets.toml` (gitignored) instead of the
-environment:
-
-```toml
-GROQ_API_KEY = "gsk_..."
-```
-
-### Tests
-
-```bash
-python -m pytest tests/
-```
-
-### Deploy
-
-[`render.yaml`](render.yaml) describes the service. Set `GROQ_API_KEY` in the Render
-dashboard; that is the only secret. The build installs dependencies, downloads the
-index from the latest GitHub Release, and warms the ONNX model so the first request
-isn't slow.
-
-To publish a rebuilt index:
-
-```bash
-tar -czf index.tar.gz -C data/index chunks.db dense.faiss
-gh release create index-v1 index.tar.gz --title "Prebuilt index"
-```
-
----
-
-## Constraints this was built under
-
-Render's free tier is **512 MB RAM, no persistent disk, sleeps after 15 minutes**.
-That ruled out torch, sentence-transformers, a cross-encoder reranker and any local
-LLM, and it is why:
-
-- embeddings run through **fastembed** (ONNX, 67 MB, no torch)
-- lexical search is **SQLite FTS5** rather than an in-memory BM25 library
-- generation is an **open-weight model over an API** rather than in-process
-- the index is **built offline and downloaded at build time** rather than written at runtime
-
-Measured: **376 MB peak RSS** through a full hybrid search plus answer scoring in a
-bare process, and the Streamlit process idles at 315 MB against 298 MB bare, so the
-real peak is roughly **390 MB against the 512 MB limit**. Scoring an answer adds only
-~74 MB, because a query embeds one text and scoring embeds a handful — the
-`batch * heads * seq_len^2` cost that makes bulk indexing expensive barely applies at
-query time.
-
-## Deliberately not built
-
-A cross-encoder reranker (won't fit; RRF captures most of the gain), RAGAS (heavy,
-LangChain-coupled, and the metrics are more defensible hand-rolled), multi-agent
-orchestration (one corpus and one tool do not need a state machine), and conversational
-memory. Each would be the next thing, in that order.
+The first full run reported citation validity on only 39 of 57 answers. `gpt-oss`
+emits full-width markers — `【6】`, sometimes `【7†L13-L16】` — in about 30% of
+answers regardless of what the prompt asks for, and those were invisible to the
+parser, the scorer and the UI alike. Answers are now normalised to `[n]` on the way
+out, which lifted coverage to 56/57 without changing the underlying quality. Because
+retrieval is deterministic and embedding is local, `--rescore` recomputed every local
+metric over the stored answers for no API calls at all.

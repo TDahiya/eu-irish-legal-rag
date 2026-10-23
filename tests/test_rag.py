@@ -247,3 +247,16 @@ def test_rrf_weights_scale_each_retriever_contribution():
 
 def test_rrf_default_weight_is_one_for_unnamed_lists():
     assert dict(rrf({"other": [5]}, weights={"bm25": 9.0}))[5] == 1.0 / (RRF_K + 1)
+
+
+def test_citation_markers_are_normalised_to_square_brackets():
+    """gpt-oss emits full-width markers in ~30% of answers regardless of the prompt.
+    Un-normalised they are invisible to the parser, the scores and the UI."""
+    from rag.generate import normalise_citations
+    assert normalise_citations("Fines reach 6% of turnover 【8】.") == \
+        "Fines reach 6% of turnover [8]."
+    # the model also appends line anchors inside the marker
+    assert normalise_citations("It applies 【7†L13-L16】 here.") == "It applies [7] here."
+    assert cited_indexes(normalise_citations("a 【6】 b 【12】")) == {6, 12}
+    # already-correct markers survive untouched
+    assert normalise_citations("plain [3] marker") == "plain [3] marker"

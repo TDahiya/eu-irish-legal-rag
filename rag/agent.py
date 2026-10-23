@@ -26,7 +26,8 @@ maps to hits[n-1] no matter how many searches happened.
 """
 from __future__ import annotations
 
-from rag.generate import ABSTAIN, MAX_TOKENS, MODEL, REASONING_EFFORT, SYSTEM
+from rag.generate import (ABSTAIN, MAX_TOKENS, MODEL, REASONING_EFFORT, SYSTEM,
+                          normalise_citations)
 from rag.retrieve import LAW_TYPES, Retriever
 
 MAX_SEARCHES = 5
@@ -112,7 +113,7 @@ def run(question: str, retriever: Retriever, client, model: str = MODEL,
         calls = msg.tool_calls or []
 
         if not calls:
-            text = msg.content or ""
+            text = normalise_citations(msg.content or "")
             break
 
         messages.append(msg)

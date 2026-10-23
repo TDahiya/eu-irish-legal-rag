@@ -28,23 +28,20 @@ level: a hit counts if it comes from an instrument the question expects.
 
 ## Answer quality (oneshot)
 
-> **Partial run: 31 of 70 questions failed** (rate limits). The figures
-> below cover only the 39 that completed.
-
 | metric | value |
 |---|---|
-| faithfulness (LLM-judged) | 94.9% |
-| hallucination rate | 5.1% |
-| grounding score (free proxy) | 0.840 |
+| faithfulness (LLM-judged) | 95.2% |
+| hallucination rate | 4.8% |
+| grounding score (free proxy) | 0.823 |
 | citations pointing at a real source | 100.0% |
-| cited the best-supporting source | 99.4% |
-| abstained on a trap question | n/a (0/0) |
-| abstained on an answerable question | 7.7% |
+| cited the best-supporting source | 99.5% |
+| abstained on a trap question | 80.0% (8/10) |
+| abstained on an answerable question | 8.3% |
 
 ### Is the free grounding score a usable proxy?
 
 Pearson r between the embedding grounding score and LLM-judged
-faithfulness over 36 answers: **0.02**.
+faithfulness over 55 answers: **0.14**.
 
 **It is not a usable proxy.** The two measure different things: the
 grounding score asks whether an answer's sentences look like the
@@ -52,7 +49,7 @@ retrieved text, and faithfulness asks whether each claim is actually
 supported. An answer can paraphrase a source closely and still assert
 something the source does not say.
 
-Read it with the caveat that faithfulness barely varies here (mean 0.95, range 0.67 over 36 answers), and a near-constant
+Read it with the caveat that faithfulness barely varies here (mean 0.95, range 0.67 over 55 answers), and a near-constant
 variable cannot correlate with anything. The honest conclusion is
 that this run cannot establish the relationship either way, so the
 UI shows the grounding score as what it is -- a similarity signal --
@@ -60,7 +57,21 @@ and the judge button remains the measurement of record.
 
 ### Trap questions
 
-Questions with no answer in the corpus. Abstaining is the correct behaviour.
+Questions with no answer in the corpus. Abstaining is correct -- but so is
+answering by rejecting the false premise, and that is the better response.
+The `abstained` column only counts the literal refusal sentinel, so read it
+with the faithfulness column: a trap answered at high faithfulness rebutted
+the premise from the sources rather than inventing an answer to it.
 
-| question | abstained | why it is a trap |
-|---|---|---|
+| question | abstained | faithfulness | why it is a trap |
+|---|---|---|---|
+| What is the minimum salary threshold for an Irish EU Blue Card? | yes | -- | Ireland is not bound by the Blue Card Directive (Title V opt-out). There is  |
+| What are Ireland's Schengen visa requirements? | no | 100% | Ireland is not in the Schengen area and issues no Schengen visas. |
+| Under the Single Permit Directive, how many days does Ireland have | yes | -- | Ireland is not bound by the Single Permit Directive. |
+| What does the Family Reunification Directive oblige Ireland to gra | no | 67% | Ireland is not bound by the Family Reunification Directive; Irish family reu |
+| What did the Irish High Court decide in Okonkwo v Minister for Jus | yes | -- | A fabricated citation. The corpus contains no Irish High Court judgments. |
+| What does Article 150 of the EU AI Act provide? | yes | -- | The AI Act ends at Article 113. Article 150 does not exist. |
+| What does Article 99 of the AI Act say about Irish employment perm | yes | -- | Article 99 concerns penalties and says nothing about employment permits. Con |
+| What will the Critical Skills Occupations List salary threshold be | yes | -- | A future figure that exists in no source. |
+| How do I apply for a United States H-1B visa from Ireland? | yes | -- | Entirely outside the corpus, which covers EU and Irish law only. |
+| Which section of the Data Protection Act 2018 sets the fee for an  | yes | -- | The Data Protection Act 2018 has nothing to do with work permit fees. A fals |
