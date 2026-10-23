@@ -29,12 +29,12 @@ FAISS_PATH = INDEX_DIR / "dense.faiss"
 
 MODEL = "BAAI/bge-small-en-v1.5"      # 384-dim, 67 MB ONNX, no torch
 
-# Small on purpose. Transformer attention is O(seq_len^2) per item and a batch is
-# allocated in one go, so with chunks up to MAX_CHARS the cost is
-# batch * heads * seq_len^2 * 4 bytes. At batch=256 that measured 4.8 GB of RSS and
-# 33 s for the first 256 chunks, purely from thrashing; at 32 it is a fraction of
-# that. Short test strings hide this completely -- it only appears on real
-# full-length chunks.
+# Sized for memory, not speed. Attention is O(seq_len^2) per item and a batch is
+# allocated in one go, so with chunks up to MAX_CHARS the cost is roughly
+# batch * heads * seq_len^2 * 4 bytes: at batch=256 that measured 4.8 GB of RSS.
+# Throughput is unaffected -- 10.9 chunks/s at batch 16 against 9.5 at 32 -- because
+# the cost is linear in total tokens however they are grouped. Short test strings
+# hide all of this: ~90-char texts ran at 115 chunks/s, real ~1230-char chunks at 10.
 BATCH = 32
 
 SCHEMA = """
