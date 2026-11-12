@@ -394,6 +394,15 @@ button, input, textarea, select { font: inherit; color: inherit; }
 .thinking i:nth-child(3) { animation-delay: .3s; }
 @keyframes pulse { 0%, 100% { opacity: .25; } 50% { opacity: 1; } }
 
+ /* A limit is not a failure: amber-free, stated plainly, keeps the refusal
+    colour reserved for the system declining to answer from the corpus. */
+.notice {
+  border: 1px solid var(--border-strong); background: var(--surface-2);
+  color: var(--text-2); border-radius: var(--r-2);
+  padding: var(--s-2); font-size: var(--t-small);
+  max-width: var(--measure);
+}
+
 .error {
   border: 1px solid var(--refusal); background: var(--refusal-bg);
   color: var(--refusal-fg); border-radius: var(--r-2);

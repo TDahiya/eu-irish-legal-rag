@@ -159,8 +159,14 @@ async function ask(question) {
         source_types: state.types, k: 8,
       }),
     });
-    if (!res.ok) throw new Error(await res.text());
-    const d = await res.json();
+    const d = await res.json().catch(() => ({ detail: "Server returned no JSON." }));
+    if (!res.ok) {
+      // A 429 still carries the retrieved sources: being out of generation
+      // budget is no reason to hide what the corpus holds.
+      out.innerHTML = `<div class="notice">${esc(d.detail || "Request refused.")}</div>`
+        + (d.hits ? renderSources(d.hits) : "");
+      return;
+    }
     state.last = d;
 
     out.innerHTML = `<div class="result enter">
@@ -190,7 +196,14 @@ async function grade() {
         hit_ids: state.last.hits.map(h => h.id),
       }),
     });
-    $("#verdict").innerHTML = renderVerdict(await res.json());
+    const v = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      $("#verdict").innerHTML = `<div class="notice" style="margin-top:var(--s-2)">${esc(v.detail || "Refused.")}</div>`;
+      btn.disabled = false;
+      btn.textContent = "Grade every claim";
+      return;
+    }
+    $("#verdict").innerHTML = renderVerdict(v);
     btn.remove();
   } catch (err) {
     $("#verdict").innerHTML = `<div class="error" style="margin-top:var(--s-2)">${esc(err.message).slice(0, 200)}</div>`;

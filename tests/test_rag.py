@@ -269,3 +269,56 @@ def test_exotic_spaces_are_normalised():
     from rag.generate import normalise_citations
     assert normalise_citations("Annex I") == "Annex I"
     assert normalise_citations("6 %") == "6 %"
+
+
+# ------------------------------------------------------------- rate limiting
+import limits as lim
+
+
+def _fresh(monkeypatch=None):
+    return lim.Limiter()
+
+
+def test_per_visitor_hourly_limit_blocks_then_explains():
+    L = _fresh()
+    for _ in range(lim.PER_HOUR):
+        assert L.check("1.2.3.4", 100) is None
+    msg = L.check("1.2.3.4", 100)
+    assert msg and "hourly limit" in msg
+
+
+def test_visitors_are_limited_independently():
+    L = _fresh()
+    for _ in range(lim.PER_HOUR):
+        L.check("1.1.1.1", 100)
+    assert L.check("1.1.1.1", 100) is not None
+    assert L.check("2.2.2.2", 100) is None      # a different visitor is unaffected
+
+
+def test_global_token_budget_refuses_before_groq_does():
+    L = _fresh()
+    L.spend(lim.DAILY_TOKENS)
+    msg = L.check("9.9.9.9", 1000)
+    assert msg and "budget is spent" in msg
+
+
+def test_budget_check_accounts_for_the_request_about_to_be_made():
+    """Reserving after the call would let one oversized request sail past."""
+    L = _fresh()
+    L.spend(lim.DAILY_TOKENS - 500)
+    assert L.check("9.9.9.9", 100) is None      # fits
+    assert L.check("9.9.9.9", 5000) is not None  # does not
+
+
+def test_client_key_prefers_the_forwarded_visitor_over_the_proxy():
+    class Req:
+        headers = {"x-forwarded-for": "203.0.113.7, 10.0.0.1"}
+        client = type("C", (), {"host": "10.0.0.1"})()
+    assert lim.client_key(Req()) == "203.0.113.7"
+
+
+def test_client_key_falls_back_to_the_socket_peer():
+    class Req:
+        headers = {}
+        client = type("C", (), {"host": "127.0.0.1"})()
+    assert lim.client_key(Req()) == "127.0.0.1"

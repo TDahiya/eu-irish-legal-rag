@@ -12,8 +12,8 @@ import os
 from contextlib import asynccontextmanager
 from pathlib import Path
 
-from fastapi import FastAPI
-from fastapi.responses import FileResponse
+from fastapi import FastAPI, Request
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
@@ -29,7 +29,11 @@ if _env.exists():
         if key and not key.startswith("#"):
             os.environ.setdefault(key, value)
 
+from limits import (DAILY_TOKENS, MAX_QUESTION_CHARS, Limiter,
+                    client_key, estimate_tokens)
+
 STATE: dict = {}
+LIMITER = Limiter()
 
 
 @asynccontextmanager
@@ -98,27 +102,66 @@ def meta() -> dict:
         "model": MODEL,
         "embed_model": EMBED_MODEL,
         "has_key": bool(os.environ.get("GROQ_API_KEY")),
+        "tokens_used_today": LIMITER.tokens_used(),
+        "daily_token_budget": DAILY_TOKENS,
     }
 
 
 @app.post("/api/ask")
-def ask(req: AskRequest) -> dict:
+def ask(req: AskRequest, request: Request):
     from rag.generate import abstained, answer
     from rag.retrieve import LAW_TYPES
     from rag.score import live_scores
+
+    question = req.question.strip()
+    if not question:
+        return JSONResponse({"detail": "Ask a question first."}, status_code=400)
+    if len(question) > MAX_QUESTION_CHARS:
+        return JSONResponse(
+            {"detail": "That question is %d characters; the limit is %d."
+                       % (len(question), MAX_QUESTION_CHARS)}, status_code=400)
 
     r = STATE["retriever"]
     types = tuple(req.source_types) or LAW_TYPES
     trace: list = []
 
+    # Retrieval is free and local, so it runs before the budget check: even a
+    # rate-limited visitor gets to see what the corpus holds.
+    preview = r.search(question, k=req.k, mode=req.fusion, source_types=types)
+    # agentic makes several calls, so reserve for several
+    reserve = estimate_tokens(preview) * (3 if req.mode == "agentic" else 1)
+
+    denied = LIMITER.check(client_key(request), reserve)
+    if denied:
+        return JSONResponse(
+            {"detail": denied, "hits": _shape(preview)}, status_code=429)
+
+    if not LIMITER.slots.acquire(blocking=False):
+        return JSONResponse(
+            {"detail": "Two answers are already being generated. This runs on one "
+                       "free instance — try again in a few seconds."},
+            status_code=503)
+
+    try:
+        return _answer(req, question, types, trace, reserve)
+    finally:
+        LIMITER.slots.release()
+
+
+def _answer(req, question, types, trace, reserve) -> dict:
+    from rag.generate import abstained, answer
+    from rag.score import live_scores
+    r = STATE["retriever"]
+
     if req.mode == "agentic":
         from rag.agent import run as agent_run
-        text, hits = agent_run(req.question, r, _client(), k=req.k,
+        text, hits = agent_run(question, r, _client(), k=req.k,
                                trace=trace, source_types=types)
     else:
-        hits = r.search(req.question, k=req.k, mode=req.fusion, source_types=types)
-        text = answer(req.question, hits, client=_client())
+        hits = r.search(question, k=req.k, mode=req.fusion, source_types=types)
+        text = answer(question, hits, client=_client())
 
+    LIMITER.spend(reserve)
     scores = live_scores(text, hits, r.model)
     return {
         "answer": text,
@@ -130,7 +173,7 @@ def ask(req: AskRequest) -> dict:
 
 
 @app.post("/api/judge")
-def judge_answer(req: JudgeRequest) -> dict:
+def judge_answer(req: JudgeRequest, request: Request):
     from rag.score import judge
     r = STATE["retriever"]
     if not req.hit_ids:
@@ -139,7 +182,20 @@ def judge_answer(req: JudgeRequest) -> dict:
     sql = "SELECT * FROM chunks WHERE id IN (%s)" % ",".join("?" * len(req.hit_ids))
     rows = {row["id"]: dict(row) for row in r.con.execute(sql, req.hit_ids)}
     hits = [rows[i] for i in req.hit_ids if i in rows]
-    return judge(req.answer, hits, _client())
+
+    reserve = estimate_tokens(hits, 1200 + len(req.answer) // 3)
+    denied = LIMITER.check(client_key(request), reserve)
+    if denied:
+        return JSONResponse({"detail": denied}, status_code=429)
+    if not LIMITER.slots.acquire(blocking=False):
+        return JSONResponse({"detail": "Busy — try again in a few seconds."},
+                            status_code=503)
+    try:
+        verdict = judge(req.answer, hits, _client())
+        LIMITER.spend(reserve)
+        return verdict
+    finally:
+        LIMITER.slots.release()
 
 
 app.mount("/static", StaticFiles(directory=WEB), name="static")
