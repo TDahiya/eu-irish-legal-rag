@@ -106,14 +106,20 @@ def answer(question: str, hits: list[dict], model: str = MODEL,
 
 
 def normalise_citations(text: str) -> str:
-    """Rewrite full-width citation markers to the [n] the prompt asks for.
+    """Make the model's output render and parse correctly.
 
     gpt-oss emits them in 17 of 57 evaluated answers -- as 【6】 and sometimes
     【7†L13-L16】 -- regardless of the instruction. Those were invisible to
     cited_indexes(), to the citation scores and to the UI, which silently measured
     citation validity on only the answers that happened to comply. Normalising the
     output is more reliable than asking the model again.
+
+    It also emits exotic spaces -- U+202F narrow no-break, U+00A0 -- between a
+    word and a numeral ("Annex I"). Fonts that lack the glyph swallow it and
+    the page shows "AnnexI"; it is also what made an eval run die with a cp1252
+    UnicodeEncodeError. Normalise them to ordinary spaces.
     """
+    text = text.replace("\u202f", " ").replace("\u00a0", " ")
     return re.sub("【\\s*(\\d+)[^】]*】",
                   lambda m: "[%s]" % m.group(1), text)
 

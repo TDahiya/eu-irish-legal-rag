@@ -1,0 +1,433 @@
+/* ===========================================================================
+   EU & Irish law — hybrid RAG
+
+   Direction: "annotated statute". The reader is checking what the law actually
+   says and needs to see where every sentence came from, so the page is built
+   like a marked-up document: one readable measure of answer, evidence in the
+   margin, numbered the way a citation is numbered.
+
+   Depth strategy: borders and surface tonal shift. No shadows anywhere. A
+   document has edges, not elevation.
+
+   Every colour has exactly one job (see --lexical / --semantic below). Orange
+   and teal encode which retriever found a source, so colour here is data, not
+   decoration — that is the whole thesis of the project made visible.
+   =========================================================================== */
+
+:root {
+  /* ---- palette: one job each -------------------------------------------- */
+  --ink:      #004777;   /* structure, headings, both-channels-agreed        */
+  --lexical:  #FF7700;   /* BM25 found it — the highlighter on a photocopy   */
+  --semantic: #00AFB5;   /* embeddings found it — the visa-sticker guilloche */
+  --refusal:  #A30000;   /* abstention only. never decorative.               */
+  --paper:    #EFD28D;   /* surface warmth and hairlines                     */
+
+  /* tints: colour behind text always pairs with its own darkest stop */
+  --lexical-bg:  #FDEBDC;  --lexical-fg:  #8A4100;
+  --semantic-bg: #DAF2F3;  --semantic-fg: #00454A;
+  --ink-bg:      #E3EDF5;  --ink-fg:      #004777;
+  --refusal-bg:  #FBE9E9;  --refusal-fg:  #A30000;
+
+  /* ---- surfaces: one hue, lightness only -------------------------------- */
+  --bg:        #FBF9F4;
+  --surface-1: #FFFFFF;
+  --surface-2: #F4F0E5;
+  --field:     #F7F4EC;   /* inputs are inset — darker than their surround   */
+
+  /* ---- four text levels. two is too flat. ------------------------------- */
+  --text-1: #0E1F2B;
+  --text-2: #4B5A67;
+  --text-3: #7C8893;
+  --text-4: #A8B1B9;
+
+  --border:        rgba(0, 71, 119, .13);
+  --border-strong: rgba(0, 71, 119, .24);
+  --grid:          rgba(0, 71, 119, .05);
+
+  /* ---- 8px spacing. nothing off this scale. ----------------------------- */
+  --s-05: 4px;  --s-1: 8px;   --s-2: 16px;  --s-3: 24px;
+  --s-4:  32px; --s-6: 48px;  --s-8: 64px;  --s-12: 96px;
+
+  /* ---- type: 1.25 ratio from a 16px reading base ------------------------ */
+  --t-caption: 12px; --t-small: 14px; --t-body: 16px;
+  --t-h3: 20px;      --t-h2: 25px;    --t-h1: 31px;  --t-display: 44px;
+
+  --font: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* ---- radius scale: small controls, medium cards, large panels --------- */
+  --r-1: 4px; --r-2: 8px; --r-3: 12px;
+
+  --ease: cubic-bezier(.23, 1, .32, 1);
+  --measure: 68ch;
+}
+
+:root[data-theme="dark"] {
+  --bg:        #08131C;
+  --surface-1: #0D1D28;
+  --surface-2: #122634;
+  --field:     #091620;
+
+  --text-1: #F0EBE1;
+  --text-2: #AAB7C1;
+  --text-3: #71818E;
+  --text-4: #4E5D69;
+
+  /* paper earns its keep in the dark: the hairlines are peach, not grey */
+  --border:        rgba(239, 210, 141, .13);
+  --border-strong: rgba(239, 210, 141, .26);
+  --grid:          rgba(239, 210, 141, .045);
+
+  /* semantic colours desaturate slightly on dark or they vibrate */
+  --lexical:  #FF8C2E;  --lexical-bg:  #2E1803;  --lexical-fg:  #FFC187;
+  --semantic: #27C2C8;  --semantic-bg: #04282A;  --semantic-fg: #8CE0E3;
+  --ink:      #5AA6E0;  --ink-bg:      #0A2538;  --ink-fg:      #A6CEEC;
+  --refusal:  #E35252;  --refusal-bg:  #2B0808;  --refusal-fg:  #F3A3A3;
+}
+
+/* ===== reset ============================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+
+html { -webkit-font-smoothing: antialiased; }
+
+body {
+  font-family: var(--font);
+  font-size: var(--t-body);
+  line-height: 1.6;
+  color: var(--text-1);
+  background: var(--bg);
+  min-height: 100vh;
+  position: relative;
+  font-variation-settings: "opsz" 14;
+}
+
+/* The grid is the Official Journal's column rule, not a tech-demo backdrop:
+   masked so it fades out rather than tiling edge to edge. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: var(--s-4) var(--s-4);
+  -webkit-mask-image: radial-gradient(ellipse 90% 55% at 50% 0%, #000 10%, transparent 72%);
+  mask-image: radial-gradient(ellipse 90% 55% at 50% 0%, #000 10%, transparent 72%);
+}
+
+body > * { position: relative; z-index: 1; }
+
+h1, h2, h3 { text-wrap: balance; font-weight: 500; line-height: 1.15; }
+p { text-wrap: pretty; }
+
+button, input, textarea, select { font: inherit; color: inherit; }
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+  border-radius: var(--r-1);
+}
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* ===== header ============================================================ */
+.masthead {
+  border-bottom: 1px solid var(--border);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(8px);
+  position: sticky; top: 0; z-index: 10;
+}
+
+.masthead-inner {
+  max-width: 1200px; margin: 0 auto;
+  padding: var(--s-2) var(--s-3);
+  display: flex; align-items: center; gap: var(--s-2);
+}
+
+.wordmark {
+  font-size: var(--t-small); font-weight: 600;
+  font-variation-settings: "opsz" 12;
+  letter-spacing: -.01em; margin-right: auto;
+  display: flex; align-items: center; gap: var(--s-1);
+}
+
+/* optical alignment: the glyph's visual mass sits low, so lift it 1px rather
+   than trusting the box centre */
+.wordmark svg { display: block; transform: translateY(-1px); }
+
+.corpus-stat {
+  font-family: var(--mono); font-size: var(--t-caption);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-3);
+}
+
+/* ===== page ============================================================== */
+.page {
+  max-width: 1200px; margin: 0 auto;
+  padding: var(--s-8) var(--s-3) var(--s-12);
+}
+
+.lede { max-width: var(--measure); margin-bottom: var(--s-6); }
+
+.lede h1 {
+  font-size: var(--t-display);
+  font-variation-settings: "opsz" 40;
+  letter-spacing: -.025em;          /* large type tightens */
+  margin-bottom: var(--s-2);
+}
+
+.lede p { color: var(--text-2); max-width: 58ch; }
+.lede .disclaimer { color: var(--text-3); font-size: var(--t-small); margin-top: var(--s-1); }
+
+/* ===== composer — the focal element ====================================== */
+.composer {
+  max-width: var(--measure);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-3);
+  background: var(--surface-1);
+  padding: var(--s-1);
+  margin-bottom: var(--s-3);
+}
+
+.composer textarea {
+  width: 100%; border: 0; background: transparent; resize: none;
+  padding: var(--s-2);
+  font-size: var(--t-h3); line-height: 1.45;
+  font-variation-settings: "opsz" 18;
+}
+.composer textarea::placeholder { color: var(--text-4); }
+.composer textarea:focus-visible { outline: 0; }
+
+.composer-foot {
+  display: flex; align-items: center; gap: var(--s-1);
+  padding: var(--s-1);
+  border-top: 1px solid var(--border);
+}
+
+/* concentric radius: outer 12 − 8 padding = inner 4... but the button is a
+   control, so it takes the control radius and the card keeps its own */
+.btn {
+  border: 1px solid var(--border-strong);
+  background: var(--surface-1);
+  border-radius: var(--r-2);
+  padding: 0 var(--s-2);
+  min-height: 40px;
+  font-size: var(--t-small); font-weight: 500;
+  cursor: pointer;
+  display: inline-flex; align-items: center; gap: var(--s-1);
+  transition: background 140ms var(--ease), border-color 140ms var(--ease),
+              transform 100ms var(--ease);
+}
+.btn:hover { background: var(--surface-2); border-color: var(--border-strong); }
+.btn:active { transform: scale(.97); }
+.btn[disabled] { opacity: .5; cursor: default; transform: none; }
+
+.btn-primary {
+  background: var(--ink); border-color: var(--ink); color: #fff;
+  margin-left: auto;
+}
+.btn-primary:hover { background: color-mix(in srgb, var(--ink) 86%, #000); }
+:root[data-theme="dark"] .btn-primary { color: #06131D; }
+
+/* ===== settings strip ==================================================== */
+.settings {
+  max-width: var(--measure);
+  display: flex; flex-wrap: wrap; gap: var(--s-1);
+  margin-bottom: var(--s-6);
+}
+
+.seg {
+  display: inline-flex; border: 1px solid var(--border);
+  border-radius: var(--r-2); overflow: hidden; background: var(--surface-1);
+}
+.seg button {
+  border: 0; background: transparent; cursor: pointer;
+  padding: 0 var(--s-2); min-height: 36px;
+  font-size: var(--t-caption); color: var(--text-2);
+  transition: background 140ms var(--ease), color 140ms var(--ease);
+}
+.seg button + button { border-left: 1px solid var(--border); }
+.seg button:hover { background: var(--surface-2); }
+.seg button[aria-pressed="true"] { background: var(--ink-bg); color: var(--ink-fg); font-weight: 500; }
+
+.chip {
+  border: 1px solid var(--border); background: var(--surface-1);
+  border-radius: var(--r-2); cursor: pointer;
+  padding: 0 var(--s-2); min-height: 36px;
+  font-size: var(--t-caption); color: var(--text-2);
+  display: inline-flex; align-items: center; gap: 6px;
+  transition: background 140ms var(--ease), color 140ms var(--ease);
+}
+.chip:hover { background: var(--surface-2); }
+.chip[aria-pressed="true"] { background: var(--ink-bg); color: var(--ink-fg); border-color: transparent; }
+.chip .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: .45; }
+.chip[aria-pressed="true"] .dot { opacity: 1; }
+
+/* ===== result: document and margin ======================================= */
+.result { display: grid; grid-template-columns: minmax(0, var(--measure)) 300px; gap: var(--s-6); align-items: start; }
+
+@media (max-width: 1040px) { .result { grid-template-columns: minmax(0, 1fr); } }
+
+.label {
+  font-size: var(--t-caption); letter-spacing: .14em; text-transform: uppercase;
+  color: var(--text-3); margin-bottom: var(--s-2);
+  font-variation-settings: "opsz" 12;
+}
+
+.answer { font-size: var(--t-body); line-height: 1.7; }
+.answer p + p { margin-top: var(--s-2); }
+
+/* a citation is a pointer you can follow — it should look like one */
+/* Sits like a footnote marker, not a tag: small, raised, minimal side padding
+   so the sentence's punctuation still reads as attached to the word. */
+.cite {
+  font-family: var(--mono); font-size: 11px;
+  color: var(--ink-fg); background: var(--ink-bg);
+  padding: 1px 3px; border-radius: 3px;
+  text-decoration: none; cursor: pointer;
+  font-variant-numeric: tabular-nums;
+  vertical-align: 2px; margin: 0 1px;
+}
+.cite:hover { background: var(--ink); color: #fff; }
+
+/* ===== the refusal — a decision, not an error ============================ */
+.refusal { display: flex; gap: var(--s-2); align-items: flex-start; }
+.refusal svg { flex: none; }
+.refusal h3 { color: var(--refusal); font-size: var(--t-h3); }
+.refusal p { color: var(--text-2); margin-top: var(--s-05); }
+
+/* ===== margin: scores + trace ============================================ */
+.margin { display: flex; flex-direction: column; gap: var(--s-4); }
+
+.metrics { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-1); }
+
+.metric {
+  background: var(--surface-2); border-radius: var(--r-2);
+  padding: var(--s-2);
+}
+.metric dt { font-size: var(--t-caption); color: var(--text-3); }
+.metric dd {
+  font-family: var(--mono); font-size: var(--t-h3); font-weight: 500;
+  font-variant-numeric: tabular-nums; margin-top: var(--s-05);
+}
+
+.note { font-size: var(--t-caption); color: var(--text-3); line-height: 1.5; }
+
+.trace { display: flex; flex-direction: column; gap: var(--s-1); }
+.trace-step {
+  font-size: var(--t-caption); color: var(--text-2);
+  display: flex; gap: var(--s-1); align-items: baseline;
+}
+.trace-step code {
+  font-family: var(--mono); font-size: 11px;
+  color: var(--text-1); background: var(--surface-2);
+  padding: 1px 4px; border-radius: var(--r-1);
+}
+
+/* ===== evidence list ===================================================== */
+.evidence { margin-top: var(--s-8); }
+.evidence > .label { max-width: var(--measure); }
+
+.source {
+  border-top: 1px solid var(--border);
+  display: grid; grid-template-columns: 4px 1fr auto; gap: var(--s-2);
+  padding: var(--s-2) 0;
+  align-items: start;
+}
+.source:last-child { border-bottom: 1px solid var(--border); }
+
+/* THE SIGNATURE — the provenance spine.
+   Orange above, teal below, split by which retriever actually found this
+   source. One glance tells you whether a question was answered by exact
+   tokens or by meaning. */
+.spine { width: 4px; border-radius: 2px; align-self: stretch; min-height: 40px; overflow: hidden; display: flex; flex-direction: column; }
+.spine i { display: block; flex: 1; }
+.spine .lex { background: var(--lexical); }
+.spine .sem { background: var(--semantic); }
+.spine .none { background: var(--border); }
+
+.source-head { font-size: var(--t-body); font-weight: 500; font-variation-settings: "opsz" 16; }
+.source-meta {
+  font-family: var(--mono); font-size: var(--t-caption);
+  color: var(--text-3); font-variant-numeric: tabular-nums;
+  margin-top: 2px;
+}
+.source-text {
+  font-size: var(--t-small); color: var(--text-2); line-height: 1.6;
+  margin-top: var(--s-1);
+}
+/* This note repeats on every source of a non-binding instrument. A filled red
+   block eight times over spends the refusal colour that abstention needs, so it
+   is a hairline rule and muted text — present, not shouting. */
+.source-note {
+  font-size: var(--t-caption); color: var(--text-2);
+  border-left: 2px solid var(--refusal);
+  border-radius: 0;                 /* single-sided borders never get radius */
+  padding: 1px 0 1px var(--s-1);
+  margin-top: var(--s-1);
+}
+.source a { color: var(--text-3); font-size: var(--t-caption); }
+
+.badge {
+  font-family: var(--mono); font-size: 11px;
+  padding: 2px var(--s-1); border-radius: var(--r-1);
+  white-space: nowrap; font-variant-numeric: tabular-nums;
+}
+.badge.both     { background: var(--ink-bg);      color: var(--ink-fg); }
+.badge.bm25     { background: var(--lexical-bg);  color: var(--lexical-fg); }
+.badge.dense    { background: var(--semantic-bg); color: var(--semantic-fg); }
+.badge.agent    { background: var(--surface-2);   color: var(--text-3); }
+
+/* ===== states ============================================================ */
+.thinking { display: flex; align-items: center; gap: var(--s-1); color: var(--text-3); font-size: var(--t-small); }
+.thinking i {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--ink);
+  animation: pulse 1.1s var(--ease) infinite;
+}
+.thinking i:nth-child(2) { animation-delay: .15s; }
+.thinking i:nth-child(3) { animation-delay: .3s; }
+@keyframes pulse { 0%, 100% { opacity: .25; } 50% { opacity: 1; } }
+
+.error {
+  border: 1px solid var(--refusal); background: var(--refusal-bg);
+  color: var(--refusal-fg); border-radius: var(--r-2);
+  padding: var(--s-2); font-size: var(--t-small);
+  max-width: var(--measure);
+}
+
+.enter { animation: rise 260ms var(--ease) both; }
+@keyframes rise { from { opacity: 0; transform: translateY(6px); } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+
+/* ===== theme toggle — 44px hit area around a 20px glyph ================== */
+.theme-toggle {
+  border: 1px solid var(--border); background: var(--surface-1);
+  border-radius: var(--r-2); cursor: pointer;
+  width: 40px; height: 40px;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--text-2);
+  transition: background 140ms var(--ease), color 140ms var(--ease);
+}
+.theme-toggle:hover { background: var(--surface-2); color: var(--text-1); }
+.theme-toggle svg { display: block; }
+:root[data-theme="dark"] .icon-sun { display: none; }
+:root:not([data-theme="dark"]) .icon-moon { display: none; }
+
+.examples { display: flex; flex-wrap: wrap; gap: var(--s-1); max-width: var(--measure); margin-bottom: var(--s-6); }
+.example {
+  border: 1px dashed var(--border-strong); background: transparent;
+  border-radius: var(--r-2); cursor: pointer; text-align: left;
+  padding: var(--s-1) var(--s-2); min-height: 36px;
+  font-size: var(--t-caption); color: var(--text-2);
+  transition: background 140ms var(--ease), border-color 140ms var(--ease);
+}
+.example:hover { background: var(--surface-2); border-style: solid; }

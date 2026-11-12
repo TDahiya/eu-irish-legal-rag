@@ -70,7 +70,7 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 
 Hybrid retrieval (SQLite FTS5 bm25 + FAISS dense, fused with RRF) over EU and Irish
 law — tech/AI regulation and immigration/work-visa — with an automated evaluation
-layer. Streamlit UI, deployed on Render free tier.
+layer. Hand-built UI served by FastAPI, deployed on Render free tier.
 
 ## Hard constraints
 
@@ -81,6 +81,10 @@ layer. Streamlit UI, deployed on Render free tier.
   locally and fetched from a GitHub Release at Render build time.
 - **Lexical search is stdlib.** `sqlite3` ships FTS5 with a built-in `bm25()` ranking
   function. Do not add a BM25 library.
+- **The UI is `web/` + `server.py`, not a framework.** Streamlit was replaced because
+  every widget click re-ran the script and discarded the answer being graded. Colour
+  carries meaning: orange = BM25 found it, teal = dense found it, red = abstention
+  only. Spacing is 8px multiples; depth is borders and tonal shift, never shadows.
 - `data/` is generated and gitignored. Everything in it must be reproducible by
   `python -m rag.fetch && python -m rag.index`.
 

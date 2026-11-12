@@ -260,3 +260,12 @@ def test_citation_markers_are_normalised_to_square_brackets():
     assert cited_indexes(normalise_citations("a 【6】 b 【12】")) == {6, 12}
     # already-correct markers survive untouched
     assert normalise_citations("plain [3] marker") == "plain [3] marker"
+
+
+def test_exotic_spaces_are_normalised():
+    """The model separates a word from a numeral with U+202F. Fonts missing the
+    glyph swallow it ("AnnexI" on the page), and it killed an eval run with a
+    cp1252 UnicodeEncodeError."""
+    from rag.generate import normalise_citations
+    assert normalise_citations("Annex I") == "Annex I"
+    assert normalise_citations("6 %") == "6 %"

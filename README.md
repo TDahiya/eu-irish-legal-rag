@@ -271,3 +271,105 @@ parser, the scorer and the UI alike. Answers are now normalised to `[n]` on the 
 out, which lifted coverage to 56/57 without changing the underlying quality. Because
 retrieval is deterministic and embedding is local, `--rescore` recomputed every local
 metric over the stored answers for no API calls at all.
+
+---
+
+## Interface
+
+The UI is a hand-built page served by FastAPI. It replaced a Streamlit app, for one
+reason that matters and one that doesn't.
+
+The one that matters: **Streamlit re-runs the whole script on every widget click**,
+so the "grade this answer" button discarded the answer it was meant to grade — the
+result lived in local variables inside an `if submitted:` block, and on the re-run
+that block simply didn't execute. The browser holding its own state makes the bug
+impossible rather than fixed.
+
+The one that doesn't: design control. Every colour has exactly one job, and two of
+them encode real data —
+
+| colour | job |
+|---|---|
+| `#004777` ink | structure, headings, "both retrievers agreed" |
+| `#FF7700` lexical | BM25 found it — the highlighter on a photocopied statute |
+| `#00AFB5` semantic | embeddings found it |
+| `#A30000` refusal | abstention only, never decorative |
+| `#EFD28D` paper | surface warmth in light mode, hairlines in dark |
+
+The signature is the **provenance spine**: a 4px bar down each source, orange above
+and teal below, split by which retriever actually found it. One glance says whether a
+question was answered by exact tokens or by meaning — the hybrid thesis, visible
+without reading a number.
+
+Type is Bricolage Grotesque on a variable optical-size axis, so one family covers the
+44px display and the 14px metadata and earns its place; JetBrains Mono appears only
+where numerals must align. Spacing is 8px multiples throughout, depth is borders and
+tonal shift with no shadows anywhere (a document has edges, not elevation), and the
+background grid is the Official Journal's column rule at 4% opacity, radially masked
+so it fades instead of tiling.
+
+## Run it
+
+```bash
+python -m venv .venv && .venv/Scripts/activate      # Windows
+pip install -r requirements-dev.txt
+
+python -m rag.fetch --dry-run     # verify every source resolves
+python -m rag.fetch               # download (polite crawl delays; ~40 min)
+python -m rag.chunk               # structure-aware chunking
+python -m rag.index               # FAISS + SQLite FTS5 (~1 hour to embed)
+
+python -m eval.run_eval --retrieval-only    # no API key needed
+export GROQ_API_KEY=...                     # free key: console.groq.com
+python -m eval.run_eval                     # adds answer quality; resumable
+python -m eval.sweep_rrf                    # fusion weight sweep
+python -m eval.bench_stores                 # FAISS vs Chroma
+
+uvicorn server:app --port 8000
+```
+
+The key can live in a gitignored `.env` (`GROQ_API_KEY=gsk_...`) instead of the
+environment; `server.py` reads it if present.
+
+### Tests
+
+```bash
+python -m pytest tests/
+```
+
+### Deploy
+
+[`render.yaml`](render.yaml) describes the service. `GROQ_API_KEY` in the Render
+dashboard is the only secret — the index is a public release asset. The build
+installs dependencies, downloads the index and warms the ONNX model so the first
+request isn't slow. One uvicorn worker on purpose: the index and model are ~300 MB
+resident and a second worker would load its own copy straight past the 512 MB limit.
+
+To publish a rebuilt index:
+
+```bash
+tar -czf index.tar.gz -C data/index chunks.db dense.faiss
+gh release create index-v2 index.tar.gz --title "Prebuilt index"
+```
+
+## Constraints this was built under
+
+Render's free tier is **512 MB RAM, no persistent disk, sleeps after 15 minutes**.
+That ruled out torch, sentence-transformers, a cross-encoder reranker and any local
+LLM, and it is why:
+
+- embeddings run through **fastembed** (ONNX, 67 MB, no torch)
+- lexical search is **SQLite FTS5** rather than an in-memory BM25 library
+- generation is an **open-weight model over an API** rather than in-process
+- the index is **built offline and downloaded at build time**
+
+Measured on Streamlit: **376 MB peak** through a full hybrid search plus answer
+scoring. FastAPI replaces ~90 MB of Streamlit with a few MB, so the ceiling moved
+further away rather than closer.
+
+## Deliberately not built
+
+A cross-encoder reranker (won't fit; RRF captures most of the gain), RAGAS (heavy,
+LangChain-coupled, and the metrics are more defensible hand-rolled), multi-agent
+orchestration (one corpus and one tool do not need a state machine), conversational
+memory, and — after measuring it — the self-correction retry described above.

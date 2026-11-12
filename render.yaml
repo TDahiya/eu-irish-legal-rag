@@ -9,14 +9,11 @@ services:
       pip install -r requirements.txt
       python -m rag.get_index
       python -c "from fastembed import TextEmbedding; TextEmbedding('BAAI/bge-small-en-v1.5')"
-    # Streamlit must bind the port Render hands it, on all interfaces.
-    startCommand: >
-      streamlit run app.py
-      --server.port $PORT
-      --server.address 0.0.0.0
-      --server.headless true
-      --browser.gatherUsageStats false
-    healthCheckPath: /_stcore/health
+    # Must bind the port Render hands it, on all interfaces. One worker: the
+    # index and the ONNX model are ~300 MB resident and a second worker would
+    # load its own copy straight past the 512 MB limit.
+    startCommand: uvicorn server:app --host 0.0.0.0 --port $PORT --workers 1
+    healthCheckPath: /healthz
     envVars:
       # Set in the Render dashboard, not here.
       - key: GROQ_API_KEY
