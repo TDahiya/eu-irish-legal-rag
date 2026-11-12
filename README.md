@@ -363,9 +363,12 @@ LLM, and it is why:
 - generation is an **open-weight model over an API** rather than in-process
 - the index is **built offline and downloaded at build time**
 
-Measured on Streamlit: **376 MB peak** through a full hybrid search plus answer
-scoring. FastAPI replaces ~90 MB of Streamlit with a few MB, so the ceiling moved
-further away rather than closer.
+Measured, both stacks, through a full hybrid search plus generation and scoring:
+**380 MB on FastAPI against ~390 MB on Streamlit.** Essentially unchanged, and that
+was not the expectation — dropping a ~90 MB framework looked like it should buy real
+headroom. It doesn't, because the FAISS index and the ONNX model account for ~300 MB
+between them and the web framework is noise beside them. The reason to leave
+Streamlit was the state bug, not the memory.
 
 ## Deliberately not built
 
