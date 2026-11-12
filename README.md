@@ -5,7 +5,7 @@ A retrieval-augmented generation pipeline over **EU technology regulation** and
 accuracy, answer faithfulness and hallucination rate — and that has already been
 used to delete one of this project's own features for not working.
 
-**Live demo:** _(URL after deploy)_ · Render's free tier sleeps after 15 minutes
+**Live demo:** [eu-irish-law-rag.onrender.com](https://eu-irish-law-rag.onrender.com) · Render's free tier sleeps after 15 minutes
 idle, so the first request takes about a minute to wake.
 
 > A research aid, not legal advice.
