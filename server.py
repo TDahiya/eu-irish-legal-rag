@@ -8,12 +8,15 @@ under Streamlit every widget click re-ran the script and discarded the answer.
 """
 from __future__ import annotations
 
+import json
 import os
+import queue
+import threading
 from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI, Request
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
@@ -142,10 +145,52 @@ def ask(req: AskRequest, request: Request):
                        "free instance — try again in a few seconds."},
             status_code=503)
 
-    try:
-        return _answer(req, question, types, trace, reserve)
-    finally:
-        LIMITER.slots.release()
+    # Answering takes 10-25s in agentic mode. Returning one response at the end
+    # of that is a blank wait with nothing to read, so the steps are streamed as
+    # newline-delimited JSON while they happen.
+    return StreamingResponse(_stream(req, question, types, reserve),
+                             media_type="application/x-ndjson")
+
+
+class _Emitter(list):
+    """Behaves as the list rag.agent already appends its trace to, and publishes
+    each step as it lands. Keeps the streaming concern out of rag/."""
+
+    def __init__(self, sink: queue.Queue):
+        super().__init__()
+        self._sink = sink
+
+    def append(self, item) -> None:
+        super().append(item)
+        self._sink.put({"step": "search", **item})
+
+
+def _stream(req, question, types, reserve):
+    sink: queue.Queue = queue.Queue()
+    trace = _Emitter(sink)
+
+    def work():
+        try:
+            sink.put({"step": "retrieving"})
+            sink.put({"done": _answer(req, question, types, trace, reserve)})
+        except Exception as exc:
+            sink.put({"error": "%s: %s" % (type(exc).__name__, str(exc)[:200])})
+        finally:
+            LIMITER.slots.release()
+            sink.put(None)
+
+    threading.Thread(target=work, daemon=True).start()
+    while True:
+        item = sink.get()
+        if item is None:
+            return
+        yield json.dumps(item, ensure_ascii=False) + "\n"
+
+
+def _emit(trace, event) -> None:
+    sink = getattr(trace, "_sink", None)
+    if sink is not None:
+        sink.put(event)
 
 
 def _answer(req, question, types, trace, reserve) -> dict:
@@ -159,9 +204,11 @@ def _answer(req, question, types, trace, reserve) -> dict:
                                trace=trace, source_types=types)
     else:
         hits = r.search(question, k=req.k, mode=req.fusion, source_types=types)
+        _emit(trace, {"step": "writing", "n": len(hits)})
         text = answer(question, hits, client=_client())
 
     LIMITER.spend(reserve)
+    _emit(trace, {"step": "scoring"})
     scores = live_scores(text, hits, r.model)
     return {
         "answer": text,

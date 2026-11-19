@@ -45,9 +45,16 @@ where n is the supporting source number, or null."""
 
 def sentences(text: str) -> list[str]:
     """Answer sentences with the [n] markers stripped, so citations don't inflate
-    similarity against a chunk that happens to contain digits."""
+    similarity against a chunk that happens to contain digits.
+
+    Splits only where a capital or quote follows the full stop. Legal prose is
+    dense with "s. 2", "Art. 6" and "No. 5", and a naive split on ". " cuts
+    inside them -- which left the fragment carrying an answer's citations below
+    the length filter, so the citation score read n/a on answers that were
+    properly cited.
+    """
     clean = re.sub(r"\[\d+\]", "", text)
-    parts = re.split(r"(?<=[.!?])\s+", clean)
+    parts = re.split(r'(?<=[.!?])\s+(?=[A-Z"“])', clean)
     return [p.strip() for p in parts if len(p.strip()) > 25]
 
 
@@ -81,15 +88,19 @@ def live_scores(answer_text: str, hits: list[dict], model) -> dict:
     best = sims.max(axis=1)
 
     # citations are per-sentence, so re-find them on the uncleaned sentences
-    raw_sents = [s for s in re.split(r"(?<=[.!?])\s+", answer_text)
+    # Count validity across the whole answer: a marker is valid or not regardless
+    # of which sentence fragment it landed in.
+    all_marks = [int(n) for n in re.findall(r"\[(\d+)\]", answer_text)]
+    total = len(all_marks)
+    valid = sum(1 for n in all_marks if 1 <= n <= len(hits))
+
+    raw_sents = [s for s in re.split(r'(?<=[.!?])\s+(?=[A-Z"“])', answer_text)
                  if len(re.sub(r"\[\d+\]", "", s).strip()) > 25]
-    valid, total, apt = 0, 0, []
+    apt = []
     per_sentence = []
     for i, raw in enumerate(raw_sents[:len(sents)]):
         marks = [int(n) for n in re.findall(r"\[(\d+)\]", raw)]
         in_range = [n for n in marks if 1 <= n <= len(hits)]
-        valid += len(in_range)
-        total += len(marks)
         if in_range and best[i] > 0:
             apt.append(max(sims[i][n - 1] for n in in_range) / best[i])
         per_sentence.append({

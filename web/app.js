@@ -77,7 +77,9 @@ function renderAnswer(d) {
     </div>`;
   }
   // [n] becomes a real pointer to the evidence below
+  // escaped first, so this cannot introduce markup from the model
   const html = esc(d.answer)
+    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
     .replace(/\[(\d+)\]/g, (_, n) => `<a class="cite" href="#src-${n}">${n}</a>`)
     .split(/\n{2,}/).map(p => `<p>${p}</p>`).join("");
   return `<div class="answer">${html}</div>`;
@@ -101,11 +103,11 @@ function renderMargin(d) {
     <div id="verdict"></div>
   </div>`;
 
-  if (d.trace && d.trace.length) {
-    out += `<div><div class="label">Agent trace</div><div class="trace">` +
+  if (d.trace && d.trace.length > 1) {
+    out += `<div><div class="label">Searches run</div><div class="trace">` +
       d.trace.map(t => `<div class="trace-step">
-        <span>searched</span><code>${esc(t.query)}</code>
-        <span>in ${esc(TYPE_LABEL[t.source_type] || "all sources")} → ${t.n_new} new</span>
+        <code>${esc(t.query)}</code>
+        <span>${esc(TYPE_LABEL[t.source_type] || "all sources")} → ${t.n_new}</span>
       </div>`).join("") + `</div></div>`;
   }
   return out;
@@ -144,10 +146,30 @@ function renderVerdict(v) {
 }
 
 /* ------------------------------------------------------------------ ask --- */
+const STEP_TEXT = {
+  retrieving: () => "Searching the corpus",
+  search: (e) => `Searched <code>${esc(e.query)}</code> in ${esc(TYPE_LABEL[e.source_type] || "all sources")} — ${e.n_new} new sources`,
+  writing: (e) => `Reading ${e.n} sources and writing the answer`,
+  scoring: () => "Scoring the answer against its sources",
+};
+
+/* The agentic path makes several model calls and takes 10-25s. Showing the
+   steps as they land turns a blank wait into something worth watching, and it
+   happens to be the most interesting part of the system to watch. */
+function renderProgress(steps, finished) {
+  return `<div class="progress">` + steps.map((s, i) => {
+    const last = i === steps.length - 1 && !finished;
+    return `<div class="step${last ? " live" : ""}">
+      <span class="step-mark">${last ? "" : "✓"}</span>
+      <span>${s}</span>
+    </div>`;
+  }).join("") + `</div>`;
+}
+
 async function ask(question) {
   const out = $("#out");
-  out.innerHTML = `<div class="thinking"><i></i><i></i><i></i>
-    <span>${state.mode === "agentic" ? "Searching, then answering" : "Answering"}…</span></div>`;
+  const steps = [];
+  out.innerHTML = renderProgress(["Starting"], false);
   $("#ask").disabled = true;
 
   try {
@@ -159,20 +181,52 @@ async function ask(question) {
         source_types: state.types, k: 8,
       }),
     });
-    const d = await res.json().catch(() => ({ detail: "Server returned no JSON." }));
+
+    // Refusals (400 / 429 / 503) come back as plain JSON, not a stream.
     if (!res.ok) {
-      // A 429 still carries the retrieved sources: being out of generation
-      // budget is no reason to hide what the corpus holds.
+      const d = await res.json().catch(() => ({ detail: "Request refused." }));
       out.innerHTML = `<div class="notice">${esc(d.detail || "Request refused.")}</div>`
         + (d.hits ? renderSources(d.hits) : "");
       return;
     }
-    state.last = d;
 
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let buf = "", result = null, failed = null;
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buf += decoder.decode(value, { stream: true });
+      const lines = buf.split("\n");
+      buf = lines.pop();
+      for (const line of lines) {
+        if (!line.trim()) continue;
+        const ev = JSON.parse(line);
+        if (ev.done) { result = ev.done; continue; }
+        if (ev.error) { failed = ev.error; continue; }
+        const fmt = STEP_TEXT[ev.step];
+        if (fmt) {
+          steps.push(fmt(ev));
+          out.innerHTML = renderProgress(steps, false);
+        }
+      }
+    }
+
+    if (failed) {
+      out.innerHTML = `<div class="error">Could not answer: ${esc(failed)}</div>`;
+      return;
+    }
+    if (!result) {
+      out.innerHTML = `<div class="error">The answer stream ended early.</div>`;
+      return;
+    }
+
+    state.last = result;
     out.innerHTML = `<div class="result enter">
-        <div>${renderAnswer(d)}</div>
-        <aside class="margin">${renderMargin(d)}</aside>
-      </div>${renderSources(d.hits)}`;
+        <div>${renderAnswer(result)}</div>
+        <aside class="margin">${renderMargin(result)}</aside>
+      </div>${renderSources(result.hits)}`;
 
     const judgeBtn = $("#judge");
     if (judgeBtn) judgeBtn.addEventListener("click", grade);

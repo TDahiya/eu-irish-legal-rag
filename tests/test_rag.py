@@ -355,3 +355,26 @@ def test_diversify_still_fills_every_slot():
     backfill, so a question genuinely answered by one act still gets k."""
     from rag.retrieve import Retriever
     assert len(Retriever().search("What does Article 5 of the AI Act prohibit?", k=8)) == 8
+
+
+def test_sentence_split_survives_legal_abbreviations():
+    """Legal prose is full of "s. 2" and "Art. 6". Splitting on every ". " cut
+    inside them, and the trailing fragment holding an answer's citations fell
+    below the length filter — so properly cited answers scored n/a."""
+    from rag.score import sentences
+    ans = ("Ireland implements it through the Regulation of AI Act 2026. This Act "
+           "sets out provisions such as the appointment of an officer and the "
+           "designation of competent authorities (see s. 2 and s. 134) [4][8].")
+    out = sentences(ans)
+    assert len(out) == 2, out
+    assert "s. 2 and s. 134" in out[1]
+
+
+def test_citation_validity_counts_the_whole_answer():
+    hits = [{"text": "alpha source"}, {"text": "beta source"}]
+    ans = ("Alpha is established by the first source and nothing else matters "
+           "here at all. Short tail (see s. 2) [1][9].")
+    s = live_scores(ans, hits, FakeEmbedder())
+    # two markers, one out of range — and both counted even though they sit in a
+    # fragment too short to be scored for grounding
+    assert s["citation_valid"] == 0.5
