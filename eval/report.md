@@ -7,24 +7,24 @@ level: a hit counts if it comes from an instrument the question expects.
 
 | retriever | recall@5 | recall@10 | MRR | nDCG@10 |
 |---|---|---|---|---|
-| bm25 | 88.3% | 91.7% | 0.850 | 0.853 |
-| dense | 85.0% | 86.7% | 0.711 | 0.729 |
-| hybrid | 90.0% | 93.3% | 0.843 | 0.838 |
+| bm25 | 91.7% | 95.0% | 0.858 | 0.862 |
+| dense | 85.0% | 91.7% | 0.719 | 0.738 |
+| hybrid | 91.7% | 96.7% | 0.850 | 0.844 |
 
 ### recall@10 by question type
 
 | question type | n | bm25 | dense | hybrid |
 |---|---|---|---|---|
-| citation | 16 | 100.0% | 81.2% | 100.0% |
-| conceptual | 31 | 87.1% | 87.1% | 87.1% |
+| citation | 16 | 100.0% | 87.5% | 100.0% |
+| conceptual | 31 | 93.5% | 93.5% | 93.5% |
 | multihop | 5 | 80.0% | 80.0% | 100.0% |
 | numeric | 8 | 100.0% | 100.0% | 100.0% |
 
 ### Where the top-5 hybrid results came from
 
-- **bm25**: 4%
-- **dense**: 4%
-- **both**: 92%
+- **bm25**: 6%
+- **dense**: 13%
+- **both**: 81%
 
 ## Answer quality (oneshot)
 

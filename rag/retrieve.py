@@ -32,6 +32,17 @@ LAW_TYPES = ("eu_law", "ie_legislation", "ie_guidance", "case_law")
 RRF_K = 60          # standard constant; damps the top-rank dominance
 POOL = 50           # candidates per retriever before fusion
 
+# One instrument may take at most this many of the k slots.
+#
+# Without it a single dominant act swallows the whole context. "How does Ireland
+# implement the EU AI Act in national law?" fused to 92 candidates of which 78
+# were the EU AI Act; all eight slots went to it, the Irish Regulation of
+# Artificial Intelligence Act 2026 sat unseen at pool position 17, and the system
+# abstained on a question the corpus answers. Capping promotes the next
+# instrument instead, which is also simply a better context: five chunks from the
+# right three acts beat eight from one.
+MAX_PER_INSTRUMENT = 3
+
 # Equal, and that is a measured result rather than the default left untouched.
 # Up-weighting lexical looked obviously right -- fusion demonstrably cost BM25 its
 # best citation answers -- but the sweep in eval/sweep_rrf.py says it trades recall
@@ -105,13 +116,43 @@ class Retriever:
             ",".join("?" * len(cand)), ",".join("?" * len(source_types)))
         return {r["id"] for r in self.con.execute(sql, (*cand, *source_types))}
 
+    def _diversify(self, fused: list[tuple[int, float]], k: int
+                   ) -> list[tuple[int, float]]:
+        """Take the top k, letting no instrument exceed MAX_PER_INSTRUMENT.
+
+        Chunks displaced by the cap are kept and used to backfill, so a query
+        whose answer genuinely lives in one act still fills every slot.
+        """
+        window = fused[:k * 8]
+        ids = [cid for cid, _ in window]
+        if not ids:
+            return []
+        inst = {a: b for a, b in self.con.execute(
+            "SELECT id, instrument FROM chunks WHERE id IN (%s)"
+            % ",".join("?" * len(ids)), ids)}
+
+        picked: list[tuple[int, float]] = []
+        overflow: list[tuple[int, float]] = []
+        seen: dict[str, int] = {}
+        for cid, score in window:
+            name = inst.get(cid, "")
+            if seen.get(name, 0) < MAX_PER_INSTRUMENT:
+                seen[name] = seen.get(name, 0) + 1
+                picked.append((cid, score))
+                if len(picked) == k:
+                    return picked
+            else:
+                overflow.append((cid, score))
+        return (picked + overflow)[:k]
+
     # ---------------------------------------------------------------------- fuse
     def search(self, question: str, k: int = 8, mode: str = "hybrid",
                source_types: tuple[str, ...] = LAW_TYPES) -> list[dict]:
         lex = self.bm25(question, POOL, source_types) if mode in ("hybrid", "bm25") else []
         den = self.dense(question, POOL, source_types) if mode in ("hybrid", "dense") else []
 
-        fused = rrf({"bm25": lex, "dense": den}, weights=RRF_WEIGHTS)[:k]
+        fused = self._diversify(rrf({"bm25": lex, "dense": den},
+                                    weights=RRF_WEIGHTS), k)
         if not fused:
             return []
 

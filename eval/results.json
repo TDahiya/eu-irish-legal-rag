@@ -7,7 +7,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 1.0,
+    "ndcg@10": 0.9424720919083771,
     "found_by": [
      "bm25",
      "bm25",
@@ -37,7 +37,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.9971876401972103,
+    "ndcg@10": 0.9447176050778178,
     "found_by": [
      "bm25",
      "bm25",
@@ -67,7 +67,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.9770153702993121,
+    "ndcg@10": 0.9447176050778178,
     "found_by": [
      "bm25",
      "bm25",
@@ -82,7 +82,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.9937947856332163,
+    "ndcg@10": 1.0,
     "found_by": [
      "bm25",
      "bm25",
@@ -97,7 +97,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.9613085758737654,
+    "ndcg@10": 0.9652102434192421,
     "found_by": [
      "bm25",
      "bm25",
@@ -157,7 +157,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.9132861715058802,
+    "ndcg@10": 0.9060254355346823,
     "found_by": [
      "bm25",
      "bm25",
@@ -187,7 +187,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 1.0,
+    "ndcg@10": 0.9424720919083771,
     "found_by": [
      "bm25",
      "bm25",
@@ -202,7 +202,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.9072291563948641,
+    "ndcg@10": 0.9076466639452656,
     "found_by": [
      "bm25",
      "bm25",
@@ -232,7 +232,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.8332128630752801,
+    "ndcg@10": 0.86034433104172,
     "found_by": [
      "bm25",
      "bm25",
@@ -247,7 +247,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.9888026041880242,
+    "ndcg@10": 1.0,
     "found_by": [
      "bm25",
      "bm25",
@@ -262,7 +262,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 1.0,
+    "ndcg@10": 0.9424720919083771,
     "found_by": [
      "bm25",
      "bm25",
@@ -322,7 +322,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 1.0,
+    "ndcg@10": 0.9709286432396581,
     "found_by": [
      "bm25",
      "bm25",
@@ -349,10 +349,10 @@
    {
     "q": "Can the non-EEA spouse of an EU citizen working in Ireland be refused residence because they never lawfully lived in the EU before?",
     "kind": "conceptual",
-    "recall@5": 0.0,
-    "recall@10": 0.0,
-    "mrr": 0.0,
-    "ndcg@10": 0.0,
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 0.25,
+    "ndcg@10": 0.5508095940041026,
     "found_by": [
      "bm25",
      "bm25",
@@ -502,7 +502,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 0.25,
-    "ndcg@10": 0.5953592473115411,
+    "ndcg@10": 0.5994173566030957,
     "found_by": [
      "bm25",
      "bm25",
@@ -532,7 +532,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.9851514063429596,
+    "ndcg@10": 0.9325720109418508,
     "found_by": [
      "bm25",
      "bm25",
@@ -547,7 +547,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.9643632283499571,
+    "ndcg@10": 1.0,
     "found_by": [
      "bm25",
      "bm25",
@@ -559,10 +559,10 @@
    {
     "q": "Can an employer in Ireland refuse to hire someone because of their nationality or race?",
     "kind": "conceptual",
-    "recall@5": 0.0,
-    "recall@10": 0.0,
-    "mrr": 0.0,
-    "ndcg@10": 0.0,
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 0.25,
+    "ndcg@10": 0.5012658353418871,
     "found_by": [
      "bm25",
      "bm25",
@@ -592,7 +592,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 1.0,
+    "ndcg@10": 0.9667147927059906,
     "found_by": [
      "bm25",
      "bm25",
@@ -622,7 +622,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.9842184869190973,
+    "ndcg@10": 0.9424720919083771,
     "found_by": [
      "bm25",
      "bm25",
@@ -637,7 +637,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 1.0,
+    "ndcg@10": 0.9667147927059906,
     "found_by": [
      "bm25",
      "bm25",
@@ -652,7 +652,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.9770153702993121,
+    "ndcg@10": 0.9447176050778178,
     "found_by": [
      "bm25",
      "bm25",
@@ -667,7 +667,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 1.0,
+    "ndcg@10": 0.9667147927059906,
     "found_by": [
      "bm25",
      "bm25",
@@ -697,7 +697,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 1.0,
+    "ndcg@10": 0.9667147927059906,
     "found_by": [
      "bm25",
      "bm25",
@@ -712,7 +712,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 1.0,
+    "ndcg@10": 0.9667147927059906,
     "found_by": [
      "bm25",
      "bm25",
@@ -727,7 +727,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.9937947856332163,
+    "ndcg@10": 0.9930783166417602,
     "found_by": [
      "bm25",
      "bm25",
@@ -757,7 +757,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.9818483242455301,
+    "ndcg@10": 1.0,
     "found_by": [
      "bm25",
      "bm25",
@@ -847,7 +847,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 1.0,
+    "ndcg@10": 0.9286241047843016,
     "found_by": [
      "bm25",
      "bm25",
@@ -909,7 +909,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.8807346094186411,
+    "ndcg@10": 0.8591935539386371,
     "found_by": [
      "dense",
      "dense",
@@ -924,7 +924,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 1.0,
+    "ndcg@10": 0.9262845298966466,
     "found_by": [
      "dense",
      "dense",
@@ -939,7 +939,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 1.0,
+    "ndcg@10": 0.9447176050778178,
     "found_by": [
      "dense",
      "dense",
@@ -967,9 +967,9 @@
     "q": "What lawful bases for processing are listed in Article 6 of the GDPR?",
     "kind": "citation",
     "recall@5": 0.0,
-    "recall@10": 0.0,
-    "mrr": 0.0,
-    "ndcg@10": 0.0,
+    "recall@10": 1.0,
+    "mrr": 0.1111111111111111,
+    "ndcg@10": 0.36181498356361597,
     "found_by": [
      "dense",
      "dense",
@@ -1089,7 +1089,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.9670943502702474,
+    "ndcg@10": 1.0,
     "found_by": [
      "dense",
      "dense",
@@ -1119,7 +1119,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.8663365527202843,
+    "ndcg@10": 0.9217868789962071,
     "found_by": [
      "dense",
      "dense",
@@ -1164,7 +1164,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.8653082042236201,
+    "ndcg@10": 0.8583865208653804,
     "found_by": [
      "dense",
      "dense",
@@ -1194,7 +1194,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.9830168297915423,
+    "ndcg@10": 0.9560290452802052,
     "found_by": [
      "dense",
      "dense",
@@ -1224,7 +1224,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 1.0,
+    "ndcg@10": 0.9228632535992205,
     "found_by": [
      "dense",
      "dense",
@@ -1239,7 +1239,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 1.0,
+    "ndcg@10": 0.9667147927059906,
     "found_by": [
      "dense",
      "dense",
@@ -1252,9 +1252,9 @@
     "q": "Can the non-EEA spouse of an EU citizen working in Ireland be refused residence because they never lawfully lived in the EU before?",
     "kind": "conceptual",
     "recall@5": 0.0,
-    "recall@10": 0.0,
-    "mrr": 0.0,
-    "ndcg@10": 0.0,
+    "recall@10": 1.0,
+    "mrr": 0.16666666666666666,
+    "ndcg@10": 0.4508533838815827,
     "found_by": [
      "dense",
      "dense",
@@ -1269,7 +1269,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.8789901909062586,
+    "ndcg@10": 0.9325210919548239,
     "found_by": [
      "dense",
      "dense",
@@ -1284,7 +1284,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.9860433320650158,
+    "ndcg@10": 1.0,
     "found_by": [
      "dense",
      "dense",
@@ -1299,7 +1299,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.9963488021549354,
+    "ndcg@10": 0.9537123696623918,
     "found_by": [
      "dense",
      "dense",
@@ -1329,7 +1329,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.9842184869190973,
+    "ndcg@10": 1.0,
     "found_by": [
      "dense",
      "dense",
@@ -1344,7 +1344,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 1.0,
+    "ndcg@10": 0.9667147927059906,
     "found_by": [
      "dense",
      "dense",
@@ -1374,7 +1374,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.9842184869190973,
+    "ndcg@10": 0.9228632535992205,
     "found_by": [
      "dense",
      "dense",
@@ -1404,7 +1404,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 0.3333333333333333,
-    "ndcg@10": 0.6942762582994471,
+    "ndcg@10": 0.6732137455414351,
     "found_by": [
      "dense",
      "dense",
@@ -1494,7 +1494,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.9971876401972103,
+    "ndcg@10": 0.9560290452802052,
     "found_by": [
      "dense",
      "dense",
@@ -1524,7 +1524,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 1.0,
+    "ndcg@10": 0.9667147927059906,
     "found_by": [
      "dense",
      "dense",
@@ -1554,7 +1554,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.9530418785472459,
+    "ndcg@10": 1.0,
     "found_by": [
      "dense",
      "dense",
@@ -1569,7 +1569,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 1.0,
+    "ndcg@10": 0.9262845298966466,
     "found_by": [
      "dense",
      "dense",
@@ -1614,7 +1614,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 1.0,
+    "ndcg@10": 0.9188490368414886,
     "found_by": [
      "dense",
      "dense",
@@ -1702,9 +1702,9 @@
     "q": "How does Ireland implement the EU AI Act in national law?",
     "kind": "conceptual",
     "recall@5": 0.0,
-    "recall@10": 0.0,
-    "mrr": 0.0,
-    "ndcg@10": 0.0,
+    "recall@10": 1.0,
+    "mrr": 0.16666666666666666,
+    "ndcg@10": 0.3562071871080222,
     "found_by": [
      "dense",
      "dense",
@@ -1719,7 +1719,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.9325172924861036,
+    "ndcg@10": 0.9176551163528843,
     "found_by": [
      "dense",
      "dense",
@@ -1734,7 +1734,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 1.0,
+    "ndcg@10": 0.9878316351280038,
     "found_by": [
      "dense",
      "dense",
@@ -1764,7 +1764,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 1.0,
+    "ndcg@10": 0.9188490368414886,
     "found_by": [
      "dense",
      "dense",
@@ -1779,7 +1779,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 1.0,
+    "ndcg@10": 0.9560290452802052,
     "found_by": [
      "dense",
      "dense",
@@ -1811,7 +1811,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.913852335159709,
+    "ndcg@10": 0.895183044469731,
     "found_by": [
      "both",
      "both",
@@ -1826,13 +1826,13 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 1.0,
+    "ndcg@10": 0.9262845298966466,
     "found_by": [
      "both",
      "both",
      "both",
-     "both",
-     "both"
+     "dense",
+     "dense"
     ]
    },
    {
@@ -1846,8 +1846,8 @@
      "both",
      "both",
      "both",
-     "both",
-     "both"
+     "bm25",
+     "dense"
     ]
    },
    {
@@ -1871,7 +1871,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 0.3333333333333333,
-    "ndcg@10": 0.6948159055899312,
+    "ndcg@10": 0.6182885020492784,
     "found_by": [
      "both",
      "both",
@@ -1886,7 +1886,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.9338192602341809,
+    "ndcg@10": 1.0,
     "found_by": [
      "both",
      "both",
@@ -1901,7 +1901,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 1.0,
+    "ndcg@10": 0.9963488021549354,
     "found_by": [
      "both",
      "both",
@@ -1931,7 +1931,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.9228632535992205,
+    "ndcg@10": 1.0,
     "found_by": [
      "both",
      "both",
@@ -1946,7 +1946,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.8932547230000344,
+    "ndcg@10": 0.9325210919548239,
     "found_by": [
      "both",
      "both",
@@ -1976,7 +1976,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.8995023444012692,
+    "ndcg@10": 0.9469024295259745,
     "found_by": [
      "both",
      "bm25",
@@ -2006,7 +2006,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.942018912975622,
+    "ndcg@10": 0.9495662644168644,
     "found_by": [
      "both",
      "both",
@@ -2051,7 +2051,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.8726787744521319,
+    "ndcg@10": 0.9134015924715543,
     "found_by": [
      "both",
      "both",
@@ -2066,13 +2066,13 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 1.0,
+    "ndcg@10": 0.9262845298966466,
     "found_by": [
      "both",
      "both",
      "both",
      "both",
-     "both"
+     "dense"
     ]
    },
    {
@@ -2096,13 +2096,13 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 1.0,
+    "ndcg@10": 0.9560290452802052,
     "found_by": [
      "both",
      "both",
      "both",
-     "both",
-     "both"
+     "dense",
+     "dense"
     ]
    },
    {
@@ -2111,13 +2111,13 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.9888026041880242,
+    "ndcg@10": 1.0,
     "found_by": [
      "both",
      "both",
      "both",
-     "both",
-     "both"
+     "dense",
+     "dense"
     ]
    },
    {
@@ -2126,13 +2126,13 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 1.0,
+    "ndcg@10": 0.9709286432396581,
     "found_by": [
      "both",
      "both",
      "both",
-     "both",
-     "both"
+     "bm25",
+     "bm25"
     ]
    },
    {
@@ -2141,22 +2141,22 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 1.0,
+    "ndcg@10": 0.9667147927059906,
     "found_by": [
      "both",
      "both",
      "both",
-     "both",
+     "dense",
      "both"
     ]
    },
    {
     "q": "Can the non-EEA spouse of an EU citizen working in Ireland be refused residence because they never lawfully lived in the EU before?",
     "kind": "conceptual",
-    "recall@5": 0.0,
-    "recall@10": 0.0,
-    "mrr": 0.0,
-    "ndcg@10": 0.0,
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "mrr": 0.25,
+    "ndcg@10": 0.5316900945208328,
     "found_by": [
      "both",
      "both",
@@ -2171,7 +2171,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 0.5,
-    "ndcg@10": 0.6276832530738976,
+    "ndcg@10": 0.618890676363047,
     "found_by": [
      "both",
      "both",
@@ -2186,7 +2186,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.9766325382721557,
+    "ndcg@10": 1.0,
     "found_by": [
      "both",
      "both",
@@ -2222,7 +2222,7 @@
      "both",
      "both",
      "both",
-     "both"
+     "dense"
     ]
    },
    {
@@ -2246,12 +2246,12 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 1.0,
+    "ndcg@10": 0.9667147927059906,
     "found_by": [
      "both",
      "both",
      "both",
-     "both",
+     "dense",
      "both"
     ]
    },
@@ -2276,13 +2276,13 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.9971876401972103,
+    "ndcg@10": 1.0,
     "found_by": [
      "both",
      "both",
      "both",
      "both",
-     "both"
+     "dense"
     ]
    },
    {
@@ -2306,7 +2306,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 0.5,
-    "ndcg@10": 0.6811534418271473,
+    "ndcg@10": 0.6665048698100114,
     "found_by": [
      "both",
      "both",
@@ -2336,7 +2336,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.913852335159709,
+    "ndcg@10": 0.9147029315959612,
     "found_by": [
      "both",
      "both",
@@ -2351,7 +2351,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.9349366583346496,
+    "ndcg@10": 0.9674679834891693,
     "found_by": [
      "both",
      "both",
@@ -2396,13 +2396,13 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 1.0,
+    "ndcg@10": 0.9708923176105698,
     "found_by": [
      "both",
      "both",
      "both",
      "both",
-     "both"
+     "dense"
     ]
    },
    {
@@ -2416,8 +2416,8 @@
      "both",
      "both",
      "both",
-     "both",
-     "both"
+     "dense",
+     "dense"
     ]
    },
    {
@@ -2426,13 +2426,13 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 1.0,
+    "ndcg@10": 0.9424720919083771,
     "found_by": [
      "both",
      "both",
      "both",
      "both",
-     "both"
+     "bm25"
     ]
    },
    {
@@ -2446,8 +2446,8 @@
      "both",
      "both",
      "both",
-     "both",
-     "both"
+     "dense",
+     "bm25"
     ]
    },
    {
@@ -2456,7 +2456,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.895183044469731,
+    "ndcg@10": 0.9469024295259745,
     "found_by": [
      "both",
      "both",
@@ -2471,13 +2471,13 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 1.0,
+    "ndcg@10": 0.9188490368414886,
     "found_by": [
      "both",
      "both",
      "both",
-     "both",
-     "both"
+     "dense",
+     "dense"
     ]
    },
    {
@@ -2501,12 +2501,12 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 1.0,
+    "ndcg@10": 0.9667147927059906,
     "found_by": [
      "both",
      "both",
      "both",
-     "both",
+     "bm25",
      "both"
     ]
    },
@@ -2516,13 +2516,13 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 1.0,
+    "ndcg@10": 0.9188490368414886,
     "found_by": [
      "both",
      "both",
      "both",
      "both",
-     "both"
+     "dense"
     ]
    },
    {
@@ -2531,7 +2531,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 1.0,
+    "ndcg@10": 0.9764093402750902,
     "found_by": [
      "both",
      "both",
@@ -2561,7 +2561,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.838847952689218,
+    "ndcg@10": 0.86034433104172,
     "found_by": [
      "both",
      "both",
@@ -2591,7 +2591,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 0.9199753853803092,
+    "ndcg@10": 0.9674679834891693,
     "found_by": [
      "both",
      "both",
@@ -2604,15 +2604,15 @@
     "q": "How does Ireland implement the EU AI Act in national law?",
     "kind": "conceptual",
     "recall@5": 0.0,
-    "recall@10": 0.0,
-    "mrr": 0.0,
-    "ndcg@10": 0.0,
+    "recall@10": 1.0,
+    "mrr": 0.14285714285714285,
+    "ndcg@10": 0.3333333333333333,
     "found_by": [
      "both",
      "both",
      "both",
-     "both",
-     "both"
+     "dense",
+     "dense"
     ]
    },
    {
@@ -2621,13 +2621,13 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 1.0,
+    "ndcg@10": 0.9228632535992205,
     "found_by": [
      "both",
      "both",
      "both",
-     "both",
-     "both"
+     "dense",
+     "dense"
     ]
    },
    {
@@ -2636,13 +2636,13 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 1.0,
+    "ndcg@10": 0.9851514063429596,
     "found_by": [
      "both",
      "both",
      "both",
      "both",
-     "both"
+     "dense"
     ]
    },
    {
@@ -2666,13 +2666,13 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 1.0,
+    "ndcg@10": 0.9188490368414886,
     "found_by": [
      "both",
      "both",
      "both",
-     "both",
-     "both"
+     "dense",
+     "dense"
     ]
    },
    {
@@ -2681,7 +2681,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 1.0,
-    "ndcg@10": 1.0,
+    "ndcg@10": 0.9447176050778178,
     "found_by": [
      "both",
      "both",
@@ -2696,7 +2696,7 @@
     "recall@5": 1.0,
     "recall@10": 1.0,
     "mrr": 0.3333333333333333,
-    "ndcg@10": 0.5,
+    "ndcg@10": 0.4911492931622974,
     "found_by": [
      "both",
      "both",

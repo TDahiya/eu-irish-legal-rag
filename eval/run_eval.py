@@ -169,7 +169,17 @@ def main() -> int:
     print("retrieval done")
 
     # ---------------- answers: generation, live scores, LLM judge
+    # A --retrieval-only run must not discard answers a previous run paid Groq
+    # for: it writes the same results.json, and an empty list would wipe them.
     answers = []
+    if args.retrieval_only and RAW_RESULTS.exists():
+        try:
+            answers = json.loads(RAW_RESULTS.read_text(encoding="utf-8")).get("answers", [])
+            if answers:
+                print("keeping %d stored answers" % len(answers))
+        except json.JSONDecodeError:
+            pass
+
     if args.rescore:
         # Recompute the local scores over answers already paid for. Retrieval is
         # deterministic and embedding is local, so this costs no API calls -- which

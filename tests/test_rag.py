@@ -322,3 +322,36 @@ def test_client_key_falls_back_to_the_socket_peer():
         headers = {}
         client = type("C", (), {"host": "127.0.0.1"})()
     assert lim.client_key(Req()) == "127.0.0.1"
+
+
+# --------------------------------------------------- per-instrument diversity
+import pytest
+
+from rag.index import DB, FAISS_PATH
+
+needs_index = pytest.mark.skipif(
+    not (DB.exists() and FAISS_PATH.exists()),
+    reason="built index not present (data/ is gitignored)")
+
+
+@needs_index
+def test_no_single_instrument_monopolises_the_context():
+    """A question naming a dominant act used to return eight chunks of it and
+    nothing else, hiding the Irish implementing Act that actually answered it."""
+    from collections import Counter
+
+    from rag.retrieve import MAX_PER_INSTRUMENT, Retriever
+    hits = Retriever().search("Ireland implementation of EU AI Act national law", k=8)
+    counts = Counter(h["instrument"] for h in hits)
+    assert max(counts.values()) <= MAX_PER_INSTRUMENT, counts
+    assert len(counts) > 1
+    # the specific regression: the Irish Act must be reachable
+    assert any("Artificial Intelligence Act 2026" in h["instrument"] for h in hits)
+
+
+@needs_index
+def test_diversify_still_fills_every_slot():
+    """Capping must not return fewer sources than asked for — displaced chunks
+    backfill, so a question genuinely answered by one act still gets k."""
+    from rag.retrieve import Retriever
+    assert len(Retriever().search("What does Article 5 of the AI Act prohibit?", k=8)) == 8
